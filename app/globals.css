@@ -1,0 +1,332 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f1ede2; /* bone — warm off-white cotton card stock */
+  --foreground: #4b463d; /* softened warm ink, as pressed into cotton */
+  /* Muted ink for secondary text. Picked to keep a 4.95:1 contrast
+     ratio against --background, satisfying WCAG 2.2 AA (>= 4.5:1)
+     for normal-size text. Do not lighten without re-checking contrast. */
+  --muted: #6b6557;
+  /* Focus indicator, 8:1 against --background (WCAG 1.4.11, 2.4.7). */
+  --focus: #4b463d;
+  /* The single luxury accent: muted antique gold, reading as engraved
+     letterpress gilt. Reserved for decorative furniture only (the
+     hairline rule, the monogram) — never body text, where it would
+     fail WCAG AA contrast on the bone stock. */
+  --accent: #9a7b3f;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --font-serif: var(--font-garamond);
+  --font-sans: var(--font-plex-sans);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-serif);
+  /* Garamond letterpress is traditionally set in all caps
+     with precise, even letter spacing. */
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  /* Debossed letterpress impression: ink sits slightly below the
+     surface — a dark edge above, light catching the bottom edge. */
+  text-shadow:
+    0 -1px 1px rgb(0 0 0 / 0.12),
+    0 1px 1px rgb(255 255 255 / 0.85);
+}
+
+/* ── Accessibility ─────────────────────────────────────────── */
+
+/* Visible keyboard focus indicator (WCAG 2.4.7 Focus Visible).
+   Mouse/tap focus is unaffected; this only applies to :focus-visible. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* Respect users who request reduced motion (WCAG 2.3.3 / 2.2.2). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Project pages: card-stock depth ─────────────────────────
+   The project detail pages sit on the light bone background, not the
+   dark desk, so this echoes .card-face with a softer shadow — the
+   home card's wide 0.25 pool would read as muddy here. */
+.paper-panel {
+  position: relative;
+  border-radius: 7px;
+  /* Lighter than --background, so --muted ink keeps its >= 4.5:1. */
+  background: #f6f1e8;
+  box-shadow:
+    0 1px 0 0 #ded7c7,
+    0 2px 6px rgb(0 0 0 / 0.05),
+    0 12px 28px rgb(0 0 0 / 0.10);
+  transition: box-shadow 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Reuse the card's paper grain (same tiled SVG noise as .card-face). */
+.paper-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* Hover lift for interactive panels (the live-site link). */
+a.paper-panel:hover {
+  box-shadow:
+    0 1px 0 0 #ded7c7,
+    0 4px 10px rgb(0 0 0 / 0.08),
+    0 18px 40px rgb(0 0 0 / 0.16);
+}
+
+/* Decorative gold hairline — the home page's single accent reused as
+   section furniture. Accent is decorative only, never text. */
+.rule-accent {
+  height: 1px;
+  border: 0;
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+/* ── Business card ───────────────────────────────────────────
+   The home page presents itself as a bone card resting on a dark
+   desk, with the project list on the reverse (3D flip). Scoped via
+   :has() so other pages keep the plain bone background. */
+body:has(.business-card) {
+  /* Dark desaturated mahogany desk with a soft pool of light. */
+  background:
+    radial-gradient(
+      120% 90% at 50% 24%,
+      #2a221b,
+      #1a1510 55%,
+      #0e0b08 100%
+    )
+    #0e0b08;
+}
+
+/* Footer sits on the dark desk here — swap the ink tokens for light
+   equivalents (#8f887a keeps >= 4.5:1 on the #0e0b08 edges, where the
+   footer sits) and drop the letterpress shadow, which only makes
+   sense on paper. */
+body:has(.business-card) footer {
+  --foreground: #f1ede2;
+  --muted: #8f887a;
+  text-shadow: none;
+}
+
+/* Entrance: the card settles into place — a short fade with a small
+   slide and tilt, no overshoot. Luxury interfaces don't bounce, so
+   the easing is a plain ease-out. Runs once on mount; the global
+   reduced-motion rule collapses it to an instant reveal. */
+.card-stage {
+  animation: card-enter 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) rotateX(3deg) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* "Holding the card": a restrained parallax tilt driven by the
+   pointer (--rx/--ry, set in JS, capped at ~3deg). Sits between the
+   perspective stage and the flip so the two transforms compose
+   without fighting. preserve-3d keeps the flip working underneath.
+   The pointer JS is gated on (pointer: fine) and reduced-motion. */
+.card-tilt {
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* 3D flip. The container rotates; each face hides its reverse side.
+   The transition is neutralised by the global reduced-motion rule,
+   which degrades the flip to an instant swap. */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.35, 0, 0.2, 1);
+}
+
+.card-3d.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: relative;
+  backface-visibility: hidden;
+  border-radius: 7px;
+  /* Card stock reads a touch warmer and lighter than the bone desk
+     tone — a sheet of cotton paper rather than pure cream. Lighter
+     than --background, so --muted ink keeps its >= 4.5:1 contrast. */
+  background: #f6f1e8;
+  /* Depth without weight: a very thin lit paper edge for card
+     thickness, a close contact shadow, then a wide soft pool. The
+     large blur at low opacity reads as a card resting on a surface
+     rather than a modal floating above it. */
+  box-shadow:
+    0 1px 0 0 #ded7c7,
+    0 4px 10px rgb(0 0 0 / 0.08),
+    0 20px 50px rgb(0 0 0 / 0.25);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+/* Specular sheen: a soft pool of reflected light that tracks the
+   cursor (--mx/--my, set on .card-tilt). Held near-invisible until
+   the pointer is over the card (--sheen), like light catching a
+   sheet of paper as you angle it. soft-light keeps it from ever
+   looking like a glossy overlay. */
+.card-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    55% 55% at var(--mx, 50%) var(--my, 50%),
+    rgb(255 255 255 / 0.5),
+    transparent 60%
+  );
+  opacity: var(--sheen, 0);
+  mix-blend-mode: soft-light;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* Faint paper grain over the card stock (tiled SVG noise). */
+.card-face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  pointer-events: none;
+}
+
+/* Overlapping-initials monogram tucked into the top-right corner,
+   the second initial laid over the first like the Rolls-Royce badge. */
+.card-monogram {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  font-size: 2.75rem;
+  line-height: 1;
+  /* Gilt monogram: the accent held back to a soft watermark so it
+     reads as a pressed badge, not a printed letter. */
+  color: color-mix(in srgb, var(--accent) 60%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── "Selected Work" dog-ear peel ────────────────────────────
+   Simulated folded corner co-located with the Selected Work button
+   on the front face. Rest: a subtle folded corner. Hover/keyboard
+   focus of the button: the flap lifts to reveal a sliver of "back"
+   stock, hinting the card flips. Visual affordance only — the button
+   stays the single click target and the whole card still flips. */
+.dogear {
+  display: inline-flex;
+  align-items: flex-end;
+  padding: 0.9rem 1.15rem; /* ~old bottom-4 / right-5 label placement */
+  pointer-events: none;    /* wrapper never catches clicks... */
+}
+
+.dogear-label {
+  pointer-events: auto;    /* ...only the button does */
+}
+
+.dogear-fold {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 34px;
+  height: 34px;
+  border-bottom-right-radius: 7px; /* hug the card's 7px corner */
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Revealed "back" patch under the flap — a touch darker/cooler than
+   the #f6f1e8 front stock, with faint hairlines hinting at a list. */
+.dogear-fold::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 6px,
+      rgb(75 70 61 / 0.06) 6px 7px
+    ),
+    linear-gradient(135deg, #efe8db 0%, #e6dccb 100%);
+  box-shadow: inset 2px 2px 3px rgb(0 0 0 / 0.10);
+}
+
+/* The lifting flap — the front sheet's corner folding up. */
+.dogear-fold::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  background: linear-gradient(315deg, #f6f1e8 0%, #efe9dd 70%, #e9e2d3 100%);
+  box-shadow:
+    -1px -1px 2px rgb(0 0 0 / 0.12),
+    0 0 0 0.5px rgb(222 215 199 / 0.9); /* lit paper edge #ded7c7 */
+  transform-origin: 100% 100%;
+  transform: none;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+
+/* Peel on hover OR keyboard focus of the button. */
+.dogear.group:hover .dogear-fold::after,
+.dogear.group:focus-within .dogear-fold::after {
+  transform: scale(0.45);
+  box-shadow:
+    -2px -2px 5px rgb(0 0 0 / 0.22),
+    0 0 0 0.5px rgb(222 215 199 / 0.9);
+}
+.dogear.group:hover .dogear-fold::before,
+.dogear.group:focus-within .dogear-fold::before {
+  box-shadow: inset 3px 3px 5px rgb(0 0 0 / 0.14);
+}
+
+/* Reduced motion: no lift animation. Rest partially peeled so the
+   "there's a back" hint survives statically; interaction adds no move. */
+@media (prefers-reduced-motion: reduce) {
+  .dogear-fold::after {
+    transform: scale(0.6);
+  }
+  .dogear.group:hover .dogear-fold::after,
+  .dogear.group:focus-within .dogear-fold::after {
+    transform: scale(0.6);
+  }
+}
