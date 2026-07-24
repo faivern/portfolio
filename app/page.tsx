@@ -15,6 +15,8 @@ export default function Home() {
   const backRef = useRef<HTMLElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);
   const mounted = useRef(false);
+  // Where the current pointer press started (nearest link/button, if any).
+  const pressRef = useRef<Element | null>(null);
 
   // Flipping makes the visible face inert, which would silently drop
   // keyboard focus to <body>; move it to the revealed face instead.
@@ -68,9 +70,22 @@ export default function Home() {
         >
         <div
           className={`card-3d grid sm:aspect-[7/4] ${flipped ? "is-flipped" : ""}`}
+          onPointerDown={(e) => {
+            // The tilt moves the card under the pointer, so a press that
+            // starts on a link can end slightly off it — the click then
+            // targets a common ancestor and would read as a flip. Remember
+            // where the press began and let it through instead.
+            pressRef.current = (e.target as HTMLElement).closest("a, button");
+          }}
           onClick={(e) => {
-            // Links/buttons handle their own clicks; anywhere else flips.
-            if ((e.target as HTMLElement).closest("a, button")) return;
+            if (pressRef.current) {
+              pressRef.current = null;
+              return;
+            }
+            // Links/buttons handle their own clicks; clicks inside a link
+            // list (separators, padding, scrollbar, empty rows) are dead
+            // hits near a target and do nothing. Anywhere else flips.
+            if ((e.target as HTMLElement).closest("a, button, ul")) return;
             setFlipped((f) => !f);
           }}
         >
@@ -119,7 +134,7 @@ export default function Home() {
                     key={l.label}
                     className={
                       i > 0
-                        ? "before:mx-3 before:text-muted before:content-['·']"
+                        ? "before:text-muted before:content-['·']"
                         : undefined
                     }
                   >
@@ -128,7 +143,7 @@ export default function Home() {
                       {...(external
                         ? { target: "_blank", rel: "noopener noreferrer" }
                         : {})}
-                      className="inline-block py-2 text-muted underline-offset-4 hover:text-foreground hover:underline"
+                      className="inline-block px-3 py-2 text-muted underline-offset-4 hover:text-foreground hover:underline"
                     >
                       {l.label}
                       {external && (
@@ -146,7 +161,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setFlipped(true)}
-                className="dogear-label relative z-10 cursor-pointer font-sans text-[0.6rem] tracking-[0.25em] text-muted hover:text-foreground"
+                className="dogear-label relative z-10 -m-2 cursor-pointer p-2 font-sans text-[0.6rem] tracking-[0.25em] text-muted hover:text-foreground"
               >
                 Selected Work
               </button>
@@ -169,22 +184,36 @@ export default function Home() {
             </h2>
 
             <ul className="mt-2 min-h-0 flex-1 divide-y divide-foreground/10 overflow-y-auto overflow-x-hidden overscroll-contain">
-              {projects.map((p) => (
-                <li key={p.slug}>
-                  <Link
-                    href={`/projects/${p.slug}`}
-                    className="group -mx-8 flex items-center justify-between gap-6 px-8 py-2.5"
-                  >
-                    <span className="font-serif text-base tracking-[0.04em] underline-offset-4 group-hover:underline">
-                      {p.title}
-                    </span>
-                    <span className="shrink-0 font-sans text-xs tracking-widest text-muted">
-                      {p.year}
-                    </span>
-                  </Link>
-                </li>
-              ))}
+              {projects
+                .filter((p) => p.featured)
+                .map((p) => (
+                  <li key={p.slug}>
+                    <Link
+                      href={`/projects/${p.slug}`}
+                      className="group -mx-8 block px-8 py-3"
+                    >
+                      <span className="flex items-center justify-between gap-6">
+                        <span className="font-serif text-base tracking-[0.04em] underline-offset-4 group-hover:underline">
+                          {p.title}
+                        </span>
+                        <span className="shrink-0 font-sans text-xs tracking-widest text-muted">
+                          {p.year}
+                        </span>
+                      </span>
+                      <span className="mt-1 line-clamp-2 block font-sans text-xs leading-relaxed text-muted">
+                        {p.description}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
             </ul>
+
+            <Link
+              href="/projects"
+              className="mt-1 inline-block self-center py-2 font-sans text-[0.6rem] tracking-[0.25em] text-muted underline-offset-4 hover:text-foreground hover:underline"
+            >
+              All projects →
+            </Link>
 
             <button
               type="button"

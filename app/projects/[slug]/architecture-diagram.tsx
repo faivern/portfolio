@@ -1,10 +1,11 @@
 import type { Diagram, DiagramNode } from "../data";
 
-// The SVG is drawn in a fixed 640-wide coordinate space and scales
-// with the page column; below min-w it becomes a horizontal scroller
+// The SVG is drawn in a coordinate space sized to the column count
+// (wider diagrams get a wider viewBox) and scales with the page
+// column; below the natural width it becomes a horizontal scroller
 // so the labels never shrink beneath legibility.
-const VIEW_W = 640;
-const COL_W = 150;
+const COL_W = 170;
+const COL_GAP = 48;
 const MIN_GAP = 24;
 // Keeps edge attachment points away from node corners.
 const EDGE_PAD = 14;
@@ -13,7 +14,7 @@ type PlacedNode = DiagramNode & { x: number; y: number; h: number };
 
 function nodeHeight(node: DiagramNode) {
   const lines = node.details?.length ?? 0;
-  return 34 + (lines > 0 ? 8 + lines * 13 : 0);
+  return 38 + (lines > 0 ? 8 + lines * 15 : 0);
 }
 
 function layout(diagram: Diagram) {
@@ -24,10 +25,9 @@ function layout(diagram: Diagram) {
     columns.set(node.column, col);
   }
   const colKeys = [...columns.keys()].sort((a, b) => a - b);
-  const gapX =
-    colKeys.length > 1
-      ? (VIEW_W - colKeys.length * COL_W) / (colKeys.length - 1)
-      : 0;
+  const viewW =
+    colKeys.length * COL_W + Math.max(0, colKeys.length - 1) * COL_GAP;
+  const gapX = COL_GAP;
 
   const height = Math.max(
     ...colKeys.map((key) => {
@@ -57,7 +57,7 @@ function layout(diagram: Diagram) {
     }
   });
 
-  return { placed, height };
+  return { placed, height, viewW };
 }
 
 function edgeGeometry(diagram: Diagram, placed: Map<string, PlacedNode>) {
@@ -101,7 +101,7 @@ function edgeGeometry(diagram: Diagram, placed: Map<string, PlacedNode>) {
 }
 
 export default function ArchitectureDiagram({ diagram }: { diagram: Diagram }) {
-  const { placed, height } = layout(diagram);
+  const { placed, height, viewW } = layout(diagram);
   const lines = edgeGeometry(diagram, placed);
 
   const nodeLabel = (id: string) =>
@@ -130,8 +130,9 @@ export default function ArchitectureDiagram({ diagram }: { diagram: Diagram }) {
       >
         <svg
           aria-hidden="true"
-          viewBox={`-1 -1 ${VIEW_W + 2} ${height + 2}`}
-          className="block w-full min-w-[560px]"
+          viewBox={`-1 -1 ${viewW + 2} ${height + 2}`}
+          className="block w-full"
+          style={{ minWidth: viewW }}
         >
           <defs>
             <marker
@@ -163,8 +164,8 @@ export default function ArchitectureDiagram({ diagram }: { diagram: Diagram }) {
                 />
                 <text
                   x={node.x + 14}
-                  y={node.y + offset + 21}
-                  fontSize={11.5}
+                  y={node.y + offset + 24}
+                  fontSize={14}
                   className="fill-foreground"
                 >
                   {node.label}
@@ -173,8 +174,8 @@ export default function ArchitectureDiagram({ diagram }: { diagram: Diagram }) {
                   <text
                     key={detail}
                     x={node.x + 14}
-                    y={node.y + offset + 38 + i * 13}
-                    fontSize={9}
+                    y={node.y + offset + 41 + i * 15}
+                    fontSize={10.5}
                     className="fill-muted font-sans normal-case tracking-normal"
                   >
                     {detail}
@@ -202,8 +203,8 @@ export default function ArchitectureDiagram({ diagram }: { diagram: Diagram }) {
               {edge.label && (
                 <text
                   x={(sx + tx) / 2}
-                  y={Math.min(sy, ty) - 5}
-                  fontSize={9}
+                  y={Math.min(sy, ty) - 6}
+                  fontSize={10.5}
                   textAnchor="middle"
                   className="fill-muted font-sans normal-case tracking-normal"
                 >
@@ -215,7 +216,7 @@ export default function ArchitectureDiagram({ diagram }: { diagram: Diagram }) {
         </svg>
       </div>
       {diagram.caption && (
-        <figcaption className="mt-3 font-sans text-xs normal-case tracking-normal leading-relaxed text-muted [text-shadow:none]">
+        <figcaption className="mt-3 font-sans text-sm normal-case tracking-normal leading-relaxed text-muted [text-shadow:none]">
           {diagram.caption}
         </figcaption>
       )}

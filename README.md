@@ -28,7 +28,9 @@ cp .env.example .env.local   # then edit NEXT_PUBLIC_SITE_URL
 
 - Site-wide identity, links and description: `lib/site.ts`
 - Projects: `app/projects/data.ts` — media lives in
-  `public/projects/<slug>/` and is referenced by absolute path
+  `public/projects/<slug>/` and is referenced by absolute path. The 3–4
+  entries flagged `featured: true` appear on the business card back; the
+  full list lives on the `/projects` index page
 - Optional per-project architecture diagram: set `diagram` (nodes in
   columns, labelled edges) in `app/projects/data.ts`; rendered as inline
   SVG by `app/projects/[slug]/architecture-diagram.tsx` — no image
@@ -41,8 +43,9 @@ cp .env.example .env.local   # then edit NEXT_PUBLIC_SITE_URL
 
 - Semantic landmarks (`main`/`footer`) live in `app/layout.tsx`; pages render
   inside the shared `<main id="content">`. There is no site-wide header/navbar —
-  contact links live on the front of the home-page business card; projects are
-  on its reverse (card flip on click, instant swap under reduced motion).
+  contact links live on the front of the home-page business card; featured
+  projects are on its reverse (card flip on click, instant swap under reduced
+  motion), with the full list on `/projects`.
 - First focusable element is a "skip to main content" link.
 - Never use `text-foreground/<opacity>` for text — it fails contrast
   requirements. Use the `text-muted` token (4.95:1) for secondary text
@@ -96,6 +99,7 @@ app/
   not-found.tsx         # 404
   robots.ts sitemap.ts manifest.ts
   privacy/              # GDPR privacy policy
+  projects/             # full index of all projects
   projects/[slug]/      # project detail pages (statically generated)
 lib/
   site.ts               # single source of truth for identity/metadata

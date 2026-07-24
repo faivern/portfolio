@@ -17,6 +17,12 @@
 //             the first screenshot (like Cinelas). Set `liveUrl`.
 //    "demo" → not deployed (e.g. school work): shows the video demo
 //             instead. Set `video`.
+//
+//  `featured` (optional): the 3–4 projects shown on the business card
+//  back. Everything is listed on the /projects index page regardless.
+//
+//  `category`: grouping header on the /projects index page (projects
+//  are grouped under their category in data order).
 // ─────────────────────────────────────────────────────────────
 export type DiagramNode = {
   id: string;
@@ -46,6 +52,11 @@ export type Project = {
   title: string;
   description: string;
   year: string;
+  // Featured projects appear on the business card back; the rest are
+  // listed on the /projects index page only. Keep it to 3–4.
+  featured?: boolean;
+  // Grouping header on the /projects index page, e.g. "Web Apps".
+  category: string;
   techStack: string[];
   // Architecture as a spec sheet: each row maps a layer/role to its
   // choice (and, if useful, a short reason). Rendered as label → value.
@@ -63,8 +74,10 @@ export const projects: Project[] = [
   {
     slug: "Cinelas",
     title: "Movie & TV Discovery Platform",
-    description: "Full-stack media discovery platform featuring external API integration, AI-powered recommendations, and user management.",
+    description: "A full-stack web app for discovering movies and TV shows, with data from an external API, AI-powered recommendations, and user accounts.",
     year: "2025",
+    featured: true,
+    category: "Web Apps",
     techStack: [".NET", "React", "PostgreSQL", "Docker", "Azure"],
     status: "live",
     githubUrl: "https://www.github.com/faivern/streaming-app",
@@ -83,13 +96,19 @@ export const projects: Project[] = [
   {
     slug: "Booking-Platform",
     title: "Booking Platform for Service Businesses",
-    description: "Full-stack booking platform featuring real-time communication, SMS verification, and automated customer workflows.",
+    description: "A booking platform for service businesses with a live-updating admin dashboard, SMS phone verification, and automated confirmation and reminder emails.",
     year: "2026",
+    featured: true,
+    category: "Web Apps",
     techStack: ["React", ".NET", "SQL Server", "Twilio", "SignalR"],
     status: "demo",
     githubUrl: "https://github.com/faivern/booking-service-platform",
     architecture: [
-      
+      { label: "Frontend", value: "React SPA — admin dashboard + booking flow" },
+      { label: "API", value: ".NET — REST + SignalR for real-time updates" },
+      { label: "Auth", value: "JWT + SMS one-time codes (Twilio)" },
+      { label: "Data", value: "SQL Server via EF Core" },
+      { label: "Email", value: "Confirmations + reminders via background queue" },
     ],
     diagram: {
       nodes: [
@@ -122,7 +141,7 @@ export const projects: Project[] = [
         { from: "api", to: "smtp", label: "Email queue", kind: "async" },
       ],
       caption:
-        "Bookings flow through the REST API and are persisted to SQL Server via EF Core, while the SignalR hub pushes live updates to the admin dashboard. Customers confirm their phone number with a one-time code sent through Twilio SMS; confirmation and reminder emails leave via a background queue, off the request path.",
+        "When a customer books, the React app calls the .NET REST API, which saves the booking to SQL Server through EF Core. The SignalR hub then pushes the new booking to the admin dashboard in real time, so staff see it without refreshing. Customers verify their phone number with a one-time code sent by Twilio SMS. Confirmation and reminder emails are sent by a background job, so they never slow down the booking request.",
     },
     video: "/projects/Booking-Platform/booking-demo.mp4", // TODO: add the demo video
     screenshots: [],
@@ -130,8 +149,10 @@ export const projects: Project[] = [
   {
     slug: "Cinelas-TV",
     title: "Self-Hosted Media Browser for Google TV",
-    description: "Self-hosted media browser for Google TV combining TMDB metadata with Jellyfin playback of an owned media library, served from a Raspberry Pi.",
+    description: "A self-hosted media browser for Google TV that combines TMDB metadata with playback of your own media library through Jellyfin, all served from a Raspberry Pi.",
     year: "2026",
+    featured: true,
+    category: "Apps & Systems",
     techStack: ["React", "Capacitor", "ASP.NET Core", "PostgreSQL", "Jellyfin", "Docker"],
     status: "demo",
     githubUrl: "https://github.com/faivern/cinelas-tv",
@@ -160,7 +181,7 @@ export const projects: Project[] = [
         { from: "api", to: "tmdb", label: "Metadata (cached)" },
       ],
       caption:
-        "The Google TV app is a thin client: every request goes through nginx to the ASP.NET Core backend, which owns all business logic. Metadata comes from TMDB, application state lives in PostgreSQL, and Jellyfin streams owned media directly through nginx — the backend never proxies video bytes.",
+        "The TV app is a thin client — it only renders the UI. Every request goes through nginx to the ASP.NET Core backend, which holds all the business logic. Movie and show metadata comes from TMDB, app state (users, lists, reviews) is stored in PostgreSQL, and Jellyfin streams the actual video files directly through nginx, so the backend never has to move video bytes itself.",
     },
     video: "/projects/Cinelas-TV/demo.mp4", // TODO: add the demo video
     screenshots: [],
@@ -168,8 +189,9 @@ export const projects: Project[] = [
   {
     slug: "Distributed-Ad-Platform",
     title: "Distributed Ad Platform",
-    description: "Distributed .NET system for managing advertisements and subscribers across decoupled services — an MVC web app, a Web API, and a WinForms desktop client kept in sync over HTTP.",
+    description: "A distributed .NET system for managing advertisements and subscribers across three separate apps — an MVC web app, a Web API, and a Windows desktop client — that stay in sync over HTTP.",
     year: "2026",
+    category: "Apps & Systems",
     techStack: ["ASP.NET Core MVC", "Web API", "EF Core", "SQL Server", "WinForms"],
     status: "demo",
     githubUrl: "https://github.com/faivern/distributed-ad-platform",
@@ -195,15 +217,17 @@ export const projects: Project[] = [
         { from: "api", to: "subdb", label: "EF Core" },
       ],
       caption:
-        "Two decoupled services each own their database: the AdSystem MVC app manages ads and advertisers in its own SQL Server database and syncs subscriber changes to the SubscriberSystem Web API over HTTP, while the WinForms desktop client talks to the same API for subscriber CRUD.",
+        "The system is split into two independent services, each with its own SQL Server database. The AdSystem MVC web app manages ads and advertisers, and forwards subscriber changes to the SubscriberSystem Web API over HTTP. The WinForms desktop client talks to that same Web API to create, edit, and remove subscribers.",
     },
     screenshots: [],
   },
   {
     slug: "Sky-Tracker-AI",
     title: "ADS-B Flight Tracker with AI Query Layer",
-    description: "End-to-end flight tracking platform: a Raspberry Pi with an RTL-SDR antenna captures live aircraft broadcasts into PostgreSQL, visualized in a radar UI with an MQTT-connected ESP32 gadget and a natural-language AI query layer.",
+    description: "An end-to-end flight tracking platform: a Raspberry Pi with a radio antenna captures live aircraft broadcasts into PostgreSQL, shown on a radar-style web UI, with an ESP32 desk gadget for nearby-flight alerts and an AI layer that answers questions in plain English.",
     year: "2026",
+    featured: true,
+    category: "Apps & Systems",
     techStack: ["Java", "Spring Boot", "React", "FastAPI", "PostgreSQL", "ESP32"],
     status: "demo",
     githubUrl: "https://github.com/faivern/sky-tracker-ai",
@@ -235,15 +259,16 @@ export const projects: Project[] = [
         { from: "api", to: "web", label: "REST · WebSocket", kind: "duplex" },
       ],
       caption:
-        "A Raspberry Pi with an RTL-SDR dongle and 1090 MHz antenna captures live aircraft transponder broadcasts, decoded by readsb and streamed over TCP to a Spring Boot ingest service that sessionizes flights and fills PostgreSQL. A REST API serves stats and a live WebSocket feed to the React radar UI, the FastAPI AI layer answers natural-language questions with read-only parameterized SQL, and geofence events travel over MQTT to an ESP32 desk gadget. (Work in progress — this is the intended design.)",
+        "A Raspberry Pi with an RTL-SDR dongle and a 1090 MHz antenna picks up live aircraft transponder broadcasts. The readsb decoder turns them into a data stream that a Spring Boot service reads over TCP, groups into individual flights, and writes to PostgreSQL in batches. From there, a REST API and a live WebSocket feed power the React radar UI, the FastAPI AI layer answers plain-English questions by generating read-only SQL queries, and geofence events are published over MQTT to an ESP32 desk gadget that alerts when an aircraft passes overhead. (Work in progress — this is the intended design.)",
     },
     screenshots: ["/projects/Sky-Tracker-AI/architecture-v1.0.png"],
   },
   {
     slug: "AI-Customer-Insight",
     title: "AI Customer Insight CLI",
-    description: "Command-line tool that turns raw customer feedback CSVs into structured Markdown insight reports — sentiment, key themes, quick wins, and long-term actions — using the OpenAI API.",
+    description: "A command-line tool that turns raw customer feedback (CSV files) into a structured Markdown report — sentiment, key themes, quick wins, and long-term actions — using the OpenAI API.",
     year: "2026",
+    category: "CLI Tools",
     techStack: ["Python", "OpenAI API", "pandas", "typer"],
     status: "demo",
     githubUrl: "https://github.com/faivern/ai-customer-insight",
@@ -266,15 +291,16 @@ export const projects: Project[] = [
         { from: "cli", to: "report", label: "Render" },
       ],
       caption:
-        "The CLI loads a feedback CSV with pandas, computes stats like response count and average rating, then sends a sampled batch to the OpenAI Responses API. The model's summary is merged with the computed stats and rendered as a Markdown report with themes, recommended improvements, quick wins, and long-term actions.",
+        "The CLI loads a feedback CSV with pandas and computes basic stats such as response count and average rating. It then sends a sample of the feedback to the OpenAI API, merges the model's summary with those stats, and renders everything as a Markdown report with key themes, quick wins, and long-term recommendations.",
     },
     screenshots: [],
   },
   {
     slug: "Content-Management-AI",
     title: "Secure AI Text Analysis CLI",
-    description: "Security-first CLI for intelligent text analysis — summarization, translation, and sentiment — on .txt and .pdf files, with prompt-injection protection, schema-validated responses, and structured JSON output.",
+    description: "A security-first command-line tool that summarizes, translates, and analyzes the sentiment of .txt and .pdf files, with prompt-injection protection, schema-validated AI responses, and structured JSON output.",
     year: "2025",
+    category: "CLI Tools",
     techStack: ["Python", "OpenAI API", "PyPDF2", "pytest"],
     status: "demo",
     githubUrl: "https://github.com/faivern/content-management-ai",
@@ -298,24 +324,8 @@ export const projects: Project[] = [
         { from: "cli", to: "json", label: "Validate · save" },
       ],
       caption:
-        "The CLI extracts text from .txt or .pdf files, detects the language, and sends it to the OpenAI API wrapped in isolation markers as a first layer of prompt-injection protection. Responses are validated against a strict JSON schema before being accepted, API calls retry with exponential backoff, and results are saved as timestamped JSON with word count and detected language.",
+        "The CLI extracts text from a .txt or .pdf file and detects its language. Before sending anything to the OpenAI API, it wraps the text in isolation markers — a first line of defense against prompt-injection attacks hidden inside the document. Every response is validated against a strict JSON schema before it is accepted, failed API calls are retried with exponential backoff, and results are saved as timestamped JSON files with word count and detected language.",
     },
-    screenshots: [],
-  },
-  {
-    slug: "project-three",
-    title: "Project Three", 
-    description: "Keep each description to a single sentence.",
-    year: "2023",
-    techStack: ["Go", "Docker", "AWS"],
-    status: "demo",
-    githubUrl: "https://github.com/your-username/project-three", // TODO: replace with the real repo
-    architecture: [
-      // Map each layer/role to its choice, e.g.
-      { label: "Service", value: "Go" },
-      { label: "Infra", value: "Docker · AWS" },
-    ],
-    video: "/projects/project-three/demo.mp4", // TODO: add the demo video
     screenshots: [],
   },
 ];

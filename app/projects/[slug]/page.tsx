@@ -63,11 +63,11 @@ export default async function ProjectPage({
             <h1 className="font-serif text-3xl tracking-[0.08em] sm:text-4xl">
               {project.title}
             </h1>
-            <span className="shrink-0 font-serif text-xs tracking-widest text-muted">
+            <span className="shrink-0 font-serif text-sm tracking-widest text-muted">
               {project.year}
             </span>
           </div>
-          <p className="mt-3 font-serif text-lg text-muted">
+          <p className="mt-3 font-serif text-xl leading-relaxed text-muted">
             {project.description}
           </p>
         </header>
@@ -78,7 +78,7 @@ export default async function ProjectPage({
           <section aria-labelledby="live-heading" className="mt-12">
             <h2
               id="live-heading"
-              className="font-serif text-[0.65rem] tracking-[0.35em] text-muted"
+              className="font-serif text-xs tracking-[0.3em] text-muted"
             >
               Live site
             </h2>
@@ -116,7 +116,7 @@ export default async function ProjectPage({
           <section aria-labelledby="demo-heading" className="mt-12">
             <h2
               id="demo-heading"
-              className="font-serif text-[0.65rem] tracking-[0.35em] text-muted"
+              className="font-serif text-xs tracking-[0.3em] text-muted"
             >
               Demo
             </h2>
@@ -138,7 +138,7 @@ export default async function ProjectPage({
           <section aria-labelledby="screenshots-heading" className="mt-12">
             <h2
               id="screenshots-heading"
-              className="font-serif text-[0.65rem] tracking-[0.35em] text-muted"
+              className="font-serif text-xs tracking-[0.3em] text-muted"
             >
               Screenshots
             </h2>
@@ -152,11 +152,11 @@ export default async function ProjectPage({
         <section aria-labelledby="tech-stack-heading" className="mt-12">
           <h2
             id="tech-stack-heading"
-            className="font-serif text-[0.65rem] tracking-[0.35em] text-muted"
+            className="font-serif text-xs tracking-[0.3em] text-muted"
           >
             Tech Stack
           </h2>
-          <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 font-serif text-sm">
+          <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 font-serif text-base">
             {project.techStack.map((tech) => (
               <li key={tech}>{tech}</li>
             ))}
@@ -166,7 +166,7 @@ export default async function ProjectPage({
         <section aria-labelledby="architecture-heading" className="mt-12">
           <h2
             id="architecture-heading"
-            className="font-serif text-[0.65rem] tracking-[0.35em] text-muted"
+            className="font-serif text-xs tracking-[0.3em] text-muted"
           >
             Architecture
           </h2>
@@ -177,10 +177,10 @@ export default async function ProjectPage({
                 key={row.label}
                 className="flex items-baseline justify-between gap-6"
               >
-                <dt className="font-serif text-[0.65rem] tracking-[0.3em] text-muted">
+                <dt className="shrink-0 font-serif text-xs tracking-[0.2em] text-muted">
                   {row.label}
                 </dt>
-                <dd className="text-right font-serif text-sm">{row.value}</dd>
+                <dd className="text-right font-serif text-base">{row.value}</dd>
               </div>
             ))}
           </dl>
@@ -190,7 +190,7 @@ export default async function ProjectPage({
           <section aria-labelledby="source-heading" className="mt-12">
             <h2
               id="source-heading"
-              className="font-serif text-[0.65rem] tracking-[0.35em] text-muted"
+              className="font-serif text-xs tracking-[0.3em] text-muted"
             >
               Source
             </h2>
@@ -198,7 +198,7 @@ export default async function ProjectPage({
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-4 inline-flex items-center gap-2.5 font-serif text-sm underline-offset-4 hover:underline"
+              className="group mt-4 inline-flex items-center gap-2.5 font-serif text-base underline-offset-4 hover:underline"
             >
               <svg
                 viewBox="0 0 16 16"
