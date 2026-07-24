@@ -8,10 +8,14 @@ and Tailwind CSS 4. Fully static, no tracking, no cookies.
 ```bash
 npm install
 npm run dev     # development server
-npm run build   # production build
-npm start       # serve the production build
+npm run build   # static export → out/ (plain HTML/CSS/JS, no Node server)
 npm run lint    # ESLint (flat config, includes jsx-a11y rules)
 ```
+
+The site is a fully static export (`output: "export"` in `next.config.ts`).
+Deploy by copying `out/` to any static web server; `deploy/nginx.conf` is the
+reference nginx config (security headers, routing, 404, MIME fixes) for the
+Raspberry Pi host.
 
 Set the canonical origin before deploying (used by OpenGraph, sitemap and
 robots.txt):
@@ -63,10 +67,14 @@ cp .env.example .env.local   # then edit NEXT_PUBLIC_SITE_URL
 ### Security
 
 - HTTP security headers (CSP, HSTS, nosniff, frame-ancestors, Referrer-Policy,
-  Permissions-Policy) are configured in `next.config.ts`.
+  Permissions-Policy) are configured in `deploy/nginx.conf` — a static export
+  cannot set headers from `next.config.ts`, so nginx owns them.
 - The CSP allows inline scripts because the site is statically rendered
   (no per-request nonce). If you move to dynamic rendering, switch to a
   nonce-based CSP (see the Next.js CSP guide, `proxy.ts`).
+- Never reintroduce server-only features (`headers()`/`redirects()`/
+  `rewrites()` in `next.config.ts`, server actions, request-reading route
+  handlers, the default `next/image` optimizer) — they break `output: "export"`.
 
 ### SEO
 
