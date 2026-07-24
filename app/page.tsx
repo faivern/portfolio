@@ -26,6 +26,11 @@ export default function Home() {
       return;
     }
     (flipped ? backRef : frontRef).current?.focus({ preventScroll: true });
+    // Flipped: the back lies flat, so level any tilt the front picked up.
+    if (flipped) {
+      tiltRef.current?.style.setProperty("--rx", "0deg");
+      tiltRef.current?.style.setProperty("--ry", "0deg");
+    }
   }, [flipped]);
 
   // Pointer-driven tilt + sheen. Only for fine pointers (not touch)
@@ -43,9 +48,12 @@ export default function Home() {
     const r = el.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width; // 0..1
     const py = (e.clientY - r.top) / r.height;
-    // Cap tilt at 2.5deg each way; a restrained "held card" angle.
-    el.style.setProperty("--ry", `${(px - 0.5) * 5}deg`);
-    el.style.setProperty("--rx", `${(py - 0.5) * -5}deg`);
+    // The back face lies flat — no tilt there, only the sheen tracks.
+    if (!flipped) {
+      // Cap tilt at 2.5deg each way; a restrained "held card" angle.
+      el.style.setProperty("--ry", `${(px - 0.5) * 5}deg`);
+      el.style.setProperty("--rx", `${(py - 0.5) * -5}deg`);
+    }
     el.style.setProperty("--mx", `${px * 100}%`);
     el.style.setProperty("--my", `${py * 100}%`);
     el.style.setProperty("--sheen", "1");
@@ -210,7 +218,7 @@ export default function Home() {
 
             <Link
               href="/projects"
-              className="mt-1 inline-block self-center py-2 font-sans text-[0.6rem] tracking-[0.25em] text-muted underline-offset-4 hover:text-foreground hover:underline"
+              className="mt-2 inline-block self-center py-3 font-sans text-[0.7rem] tracking-[0.35em] text-muted underline-offset-4 hover:text-foreground hover:underline"
             >
               All projects →
             </Link>
@@ -218,9 +226,10 @@ export default function Home() {
             <button
               type="button"
               onClick={() => setFlipped(false)}
-              className="sr-only font-sans text-[0.6rem] tracking-[0.25em] text-muted focus-visible:not-sr-only focus-visible:absolute focus-visible:bottom-4 focus-visible:left-5 hover:text-foreground"
+              className="absolute bottom-3 left-4 -m-2 cursor-pointer p-2 font-sans text-base text-muted hover:text-foreground"
             >
-              Back
+              <span aria-hidden="true">←</span>
+              <span className="sr-only">Back to the front of the card</span>
             </button>
           </section>
         </div>

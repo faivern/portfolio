@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { EB_Garamond, IBM_Plex_Sans } from "next/font/google";
 import { site } from "@/lib/site";
+import { projects } from "./projects/data";
 import "./globals.css";
 
 const garamond = EB_Garamond({
@@ -18,22 +19,27 @@ const plexSans = IBM_Plex_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} | Portfolio`,
-    template: `%s — ${site.name}`,
+    // The home page is a client component, so its title comes from this
+    // default: "Gustaf Faivre | Software Developer".
+    default: `${site.plainName} | ${site.jobTitle}`,
+    template: `%s | ${site.plainName}`,
   },
   description: site.description,
+  authors: [{ name: site.plainName, url: site.url }],
+  creator: site.plainName,
+  publisher: site.plainName,
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: site.locale,
     url: site.url,
-    siteName: site.name,
-    title: `${site.name} | ${site.role}`,
+    siteName: site.plainName,
+    title: `${site.plainName} | ${site.jobTitle}`,
     description: site.description,
   },
   twitter: {
     card: "summary",
-    title: `${site.name} | ${site.role}`,
+    title: `${site.plainName} | ${site.jobTitle}`,
     description: site.description,
   },
   robots: { index: true, follow: true },
@@ -44,15 +50,34 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-const personJsonLd = {
+// Technologies are collected from the project data — nothing invented here.
+const knowsAbout = [...new Set(projects.flatMap((p) => p.techStack))].sort();
+
+const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: site.name,
-  jobTitle: site.role,
-  url: site.url,
-  email: `mailto:${site.email}`,
-  address: { "@type": "PostalAddress", addressCountry: "SE" },
-  sameAs: site.links.map((l) => l.href),
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${site.url}/#person`,
+      name: site.plainName,
+      givenName: site.givenName,
+      familyName: site.familyName,
+      jobTitle: site.jobTitle,
+      url: site.url,
+      email: `mailto:${site.email}`,
+      address: { "@type": "PostalAddress", addressCountry: "SE" },
+      knowsAbout,
+      sameAs: site.links.map((l) => l.href),
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${site.url}/#website`,
+      name: site.plainName,
+      url: site.url,
+      inLanguage: "en",
+      author: { "@id": `${site.url}/#person` },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -91,7 +116,9 @@ export default function RootLayout({
 
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
         />
       </body>
     </html>

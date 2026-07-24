@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { projects } from "./data";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "All projects — web apps, tools, and experiments.",
+  description: `All projects by ${site.plainName} — web apps, systems, and CLI tools.`,
   alternates: { canonical: "/projects" },
   openGraph: {
     title: "Projects",
-    description: "All projects — web apps, tools, and experiments.",
+    description: `All projects by ${site.plainName} — web apps, systems, and CLI tools.`,
     url: "/projects",
   },
 };

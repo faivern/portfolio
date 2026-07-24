@@ -75,7 +75,7 @@ export const projects: Project[] = [
     slug: "Cinelas",
     title: "Movie & TV Discovery Platform",
     description: "A full-stack web app for discovering movies and TV shows, with data from an external API, AI-powered recommendations, and user accounts.",
-    year: "2025",
+    year: "2026",
     featured: true,
     category: "Web Apps",
     techStack: [".NET", "React", "PostgreSQL", "Docker", "Azure"],
@@ -83,11 +83,38 @@ export const projects: Project[] = [
     githubUrl: "https://www.github.com/faivern/streaming-app",
     liveUrl: "https://cinelas.com",
     architecture: [
-      { label: "Frontend", value: "React SPA" },
-      { label: "API", value: ".NET REST services" },
-      { label: "Data", value: "PostgreSQL" },
+      { label: "Frontend", value: "React SPA — React Query + Axios, 20+ custom hooks" },
+      { label: "API", value: ".NET REST — TmdbService with 6-hour cache" },
+      { label: "Auth", value: "Google OAuth · secure cookie sessions" },
+      { label: "Data", value: "PostgreSQL — lists, tracking, reviews" },
+      { label: "Rankings", value: "Bayesian rating algorithm (IMDb-style)" },
       { label: "Infra", value: "Docker · Azure" },
     ],
+    diagram: {
+      nodes: [
+        {
+          id: "spa",
+          label: "React SPA",
+          details: ["React Query · Axios", "TypeScript"],
+          column: 0,
+        },
+        {
+          id: "api",
+          label: ".NET API",
+          details: ["REST controllers", "TmdbService · 6h cache", "Google OAuth"],
+          column: 1,
+        },
+        { id: "db", label: "PostgreSQL", details: ["Lists · tracking", "Reviews"], column: 2 },
+        { id: "tmdb", label: "TMDB API", details: ["1.3M+ titles"], column: 2 },
+      ],
+      edges: [
+        { from: "spa", to: "api", label: "REST" },
+        { from: "api", to: "db", label: "SQL" },
+        { from: "api", to: "tmdb", label: "Metadata (cached)" },
+      ],
+      caption:
+        "The React SPA talks to the .NET REST API through React Query and Axios. Movie and TV metadata requests go through the backend's TmdbService, which caches TMDB responses for six hours to keep the app fast and stay within API rate limits. Everything the user creates — custom lists, watch tracking, and four-dimension reviews — lives in PostgreSQL, and popularity rankings use a Bayesian (IMDb-style) rating algorithm so titles with few votes don't top the charts. Sign-in is handled by Google OAuth with secure cookie sessions, and the whole stack runs in Docker on Azure.",
+    },
     video: "/projects/Cinelas/demo.mp4",
     screenshots: [
       "/projects/cinelasMedia/screenshot-1.png"
@@ -190,7 +217,7 @@ export const projects: Project[] = [
     slug: "Distributed-Ad-Platform",
     title: "Distributed Ad Platform",
     description: "A distributed .NET system for managing advertisements and subscribers across three separate apps — an MVC web app, a Web API, and a Windows desktop client — that stay in sync over HTTP.",
-    year: "2026",
+    year: "2025",
     category: "Apps & Systems",
     techStack: ["ASP.NET Core MVC", "Web API", "EF Core", "SQL Server", "WinForms"],
     status: "demo",
@@ -264,10 +291,45 @@ export const projects: Project[] = [
     screenshots: ["/projects/Sky-Tracker-AI/architecture-v1.0.png"],
   },
   {
+    slug: "Portfolio",
+    title: "Personal Portfolio — Self-Hosted Static Site",
+    description: "This very site: a fully static Next.js export served by nginx on a Raspberry Pi behind Cloudflare, built privacy-first (no cookies, no analytics) and accessibility-first (WCAG 2.2 AA).",
+    year: "2026",
+    category: "Apps & Systems",
+    techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "nginx", "Cloudflare", "Raspberry Pi"],
+    status: "live",
+    githubUrl: "https://github.com/faivern/portfolio",
+    liveUrl: "https://gustaffaivre.dev",
+    architecture: [
+      { label: "Frontend", value: "Next.js 16 App Router · React 19 · Tailwind CSS 4" },
+      { label: "Rendering", value: "Fully static export — no Node server at runtime" },
+      { label: "Web server", value: "nginx — CSP/HSTS headers, static routing, immutable asset caching" },
+      { label: "Edge", value: "Cloudflare — DNS, TLS termination, www→apex redirect" },
+      { label: "Host", value: "Raspberry Pi — out/ deployed via rsync" },
+      { label: "Privacy/A11y", value: "No cookies or analytics · WCAG 2.2 AA" },
+    ],
+    diagram: {
+      nodes: [
+        { id: "visitor", label: "Visitor", column: 0 },
+        { id: "cf", label: "Cloudflare", details: ["DNS · TLS termination", "www→apex 301"], column: 1 },
+        { id: "nginx", label: "nginx · Raspberry Pi", details: ["Security headers", "Static routing · caching"], column: 2 },
+        { id: "out", label: "Static export", details: ["next build → out/", "Plain HTML/CSS/JS"], column: 3 },
+      ],
+      edges: [
+        { from: "visitor", to: "cf", label: "HTTPS" },
+        { from: "cf", to: "nginx", label: "Proxied" },
+        { from: "nginx", to: "out", label: "try_files" },
+      ],
+      caption:
+        "Every request hits Cloudflare first, which handles DNS, terminates TLS, and redirects www to the apex domain before proxying to nginx on a Raspberry Pi. nginx applies the HTTP security headers (CSP, HSTS, nosniff, frame-ancestors) — a static export can't set them from next.config.ts — and serves plain HTML/CSS/JS straight from disk, with hashed build assets cached immutably. There is no Node server at runtime: deploying is just `next build` and rsyncing the `out/` folder to the Pi.",
+    },
+    screenshots: [], // TODO: add "/projects/Portfolio/screenshot-1.png" (homepage preview for the live-site card)
+  },
+  {
     slug: "AI-Customer-Insight",
     title: "AI Customer Insight CLI",
     description: "A command-line tool that turns raw customer feedback (CSV files) into a structured Markdown report — sentiment, key themes, quick wins, and long-term actions — using the OpenAI API.",
-    year: "2026",
+    year: "2025",
     category: "CLI Tools",
     techStack: ["Python", "OpenAI API", "pandas", "typer"],
     status: "demo",

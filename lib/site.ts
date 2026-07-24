@@ -11,13 +11,19 @@ const siteUrl = (
 ).replace(/\/+$/, "");
 
 export const site = {
+  // Display form (stylized on the business card) vs. plain form used for
+  // metadata, JSON-LD and other machine-facing identity.
   name: "Gustaf FAIVRE",
+  plainName: "Gustaf Faivre",
+  givenName: "Gustaf",
+  familyName: "Faivre",
   role: "Software Developer — FullStack",
+  jobTitle: "Software Developer",
   location: "Sweden",
   email: "gustaf.faivre@outlook.com",
   url: siteUrl,
   description:
-    "Selected work, architecture notes and contact of Gustaf FAIVRE, full-stack software developer based in Sweden.",
+    "Portfolio of Gustaf Faivre, a software developer building full-stack applications, AI-powered systems, cloud services and personal software projects.",
   locale: "en_US",
   links: [
     { label: "GitHub", href: "https://github.com/faivern" },
