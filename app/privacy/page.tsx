@@ -21,7 +21,7 @@ export default function PrivacyPage() {
             href="/"
             className="inline-block py-2 font-serif text-xs tracking-[0.25em] text-muted underline-offset-4 hover:text-foreground hover:underline"
           >
-            ← back Home
+            ←&#xFE0E; back Home
           </Link>
           <h1 className="font-serif text-3xl tracking-[0.08em] sm:text-4xl">
             Privacy

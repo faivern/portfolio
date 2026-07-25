@@ -77,7 +77,7 @@ export default function Home() {
           onPointerLeave={handlePointerLeave}
         >
         <div
-          className={`card-3d grid sm:aspect-[7/4] ${flipped ? "is-flipped" : ""}`}
+          className={`card-3d grid h-[26rem] sm:aspect-[7/4] sm:h-auto ${flipped ? "is-flipped" : ""}`}
           onPointerDown={(e) => {
             // The tilt moves the card under the pointer, so a press that
             // starts on a link can end slightly off it, the click then
@@ -220,7 +220,7 @@ export default function Home() {
               href="/projects"
               className="mt-6 inline-block self-center py-3 font-sans text-[0.7rem] tracking-[0.35em] text-muted underline-offset-4 hover:text-foreground hover:underline"
             >
-              All projects →
+              All projects →&#xFE0E;
             </Link>
 
             <button
@@ -228,7 +228,7 @@ export default function Home() {
               onClick={() => setFlipped(false)}
               className="absolute bottom-3 left-4 -m-2 cursor-pointer p-2 font-sans text-base text-muted hover:text-foreground"
             >
-              <span aria-hidden="true">←</span>
+              <span aria-hidden="true">←&#xFE0E;</span>
               <span className="sr-only">Back to the front of the card</span>
             </button>
           </section>

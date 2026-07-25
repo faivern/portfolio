@@ -152,11 +152,11 @@ export default function RootLayout({
         </main>
 
         <footer className="px-6 py-8 sm:px-8">
-          <div className="relative flex items-center justify-between gap-4 border-t border-foreground/20 pt-6">
+          <div className="relative flex flex-col items-center gap-4 border-t border-foreground/20 pt-6 text-center sm:flex-row sm:justify-between sm:text-left">
             <p className="font-sans text-[0.65rem] tracking-[0.3em] text-muted">
               &copy; {new Date().getFullYear()} {site.plainName}
             </p>
-            <ul className="flex items-center gap-1">
+            <ul className="flex flex-wrap items-center justify-center gap-1">
               {contactLinks.map((l) => {
                 const external = !l.href.startsWith("mailto:");
                 const Icon = contactIcons[l.label];

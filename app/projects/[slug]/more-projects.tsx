@@ -59,7 +59,7 @@ export default function MoreProjects({ projects }: { projects: MoreProject[] }) 
             aria-label="Previous projects"
             className="inline-block px-2 py-2 font-serif text-xs tracking-[0.25em] text-muted underline-offset-4 hover:text-foreground hover:underline disabled:cursor-default disabled:opacity-40 disabled:hover:text-muted disabled:hover:no-underline"
           >
-            ← Prev
+            ←&#xFE0E; Prev
           </button>
           <span
             aria-label={`Page ${page + 1} of ${pageCount}`}
@@ -74,7 +74,7 @@ export default function MoreProjects({ projects }: { projects: MoreProject[] }) 
             aria-label="Next projects"
             className="inline-block px-2 py-2 font-serif text-xs tracking-[0.25em] text-muted underline-offset-4 hover:text-foreground hover:underline disabled:cursor-default disabled:opacity-40 disabled:hover:text-muted disabled:hover:no-underline"
           >
-            Next →
+            Next →&#xFE0E;
           </button>
         </div>
       )}

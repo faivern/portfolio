@@ -65,7 +65,7 @@ export default async function ProjectPage({
           href="/"
           className="inline-block py-2 font-serif text-xs tracking-[0.25em] text-muted underline-offset-4 hover:text-foreground hover:underline"
         >
-          ← Business Card
+          ←&#xFE0E; Business Card
         </Link>
 
         <header className="mt-8">
@@ -122,7 +122,7 @@ export default async function ProjectPage({
                   aria-hidden="true"
                   className="shrink-0 font-serif text-sm text-muted group-hover:text-foreground"
                 >
-                  ↗
+                  ↗&#xFE0E;
                 </span>
               </span>
             </a>
@@ -188,7 +188,7 @@ export default async function ProjectPage({
                       aria-hidden="true"
                       className="text-muted group-hover:text-foreground"
                     >
-                      ↗
+                      ↗&#xFE0E;
                     </span>
                     <span className="sr-only"> (opens in a new tab)</span>
                   </a>
@@ -215,7 +215,7 @@ export default async function ProjectPage({
                       aria-hidden="true"
                       className="text-muted group-hover:text-foreground"
                     >
-                      ↗
+                      ↗&#xFE0E;
                     </span>
                     <span className="sr-only"> (opens in a new tab)</span>
                   </a>

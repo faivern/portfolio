@@ -23,7 +23,7 @@ export default function NotFound() {
             href="/"
             className="inline-block py-2 font-serif text-xs tracking-[0.25em] underline-offset-4 hover:underline"
           >
-            ← Back to the homepage
+            ←&#xFE0E; Back to the homepage
           </Link>
         </p>
       </div>

@@ -142,7 +142,7 @@ export default function ScreenshotGallery({
                   aria-label="Previous screenshot"
                   className="inline-block px-2 py-2 font-serif text-xs tracking-[0.25em] text-white/70 underline-offset-4 hover:text-white hover:underline"
                 >
-                  ← Prev
+                  ←&#xFE0E; Prev
                 </button>
               )}
               <span className="font-serif text-xs tracking-[0.25em] text-white/70">
@@ -155,7 +155,7 @@ export default function ScreenshotGallery({
                   aria-label="Next screenshot"
                   className="inline-block px-2 py-2 font-serif text-xs tracking-[0.25em] text-white/70 underline-offset-4 hover:text-white hover:underline"
                 >
-                  Next →
+                  Next →&#xFE0E;
                 </button>
               )}
               <button

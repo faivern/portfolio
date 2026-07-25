@@ -30,7 +30,7 @@ export default function ProjectsPage() {
           href="/"
           className="inline-block py-2 font-serif text-xs tracking-[0.25em] text-muted underline-offset-4 hover:text-foreground hover:underline"
         >
-          ← Business Card
+          ←&#xFE0E; Business Card
         </Link>
 
         <header className="mt-8">
