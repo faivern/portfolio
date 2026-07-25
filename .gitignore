@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# local test scratch
+/.flip-test/
+
 # next.js
 /.next/
 /out/
