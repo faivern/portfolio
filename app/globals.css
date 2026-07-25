@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f1ede2; /* bone — warm off-white cotton card stock */
+  --background: #f1ede2; /* bone, warm off-white cotton card stock */
   --foreground: #4b463d; /* softened warm ink, as pressed into cotton */
   /* Muted ink for secondary text. Picked to keep a 4.95:1 contrast
      ratio against --background, satisfying WCAG 2.2 AA (>= 4.5:1)
@@ -11,7 +11,7 @@
   --focus: #4b463d;
   /* The single luxury accent: muted antique gold, reading as engraved
      letterpress gilt. Reserved for decorative furniture only (the
-     hairline rule, the monogram) — never body text, where it would
+     hairline rule, the monogram), never body text, where it would
      fail WCAG AA contrast on the bone stock. */
   --accent: #9a7b3f;
 }
@@ -34,7 +34,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   /* Debossed letterpress impression: ink sits slightly below the
-     surface — a dark edge above, light catching the bottom edge. */
+     surface, a dark edge above, light catching the bottom edge. */
   text-shadow:
     0 -1px 1px rgb(0 0 0 / 0.12),
     0 1px 1px rgb(255 255 255 / 0.85);
@@ -64,7 +64,7 @@ body {
 
 /* ── Project pages: card-stock depth ─────────────────────────
    The project detail pages sit on the light bone background, not the
-   dark desk, so this echoes .card-face with a softer shadow — the
+   dark desk, so this echoes .card-face with a softer shadow, the
    home card's wide 0.25 pool would read as muddy here. */
 .paper-panel {
   position: relative;
@@ -97,7 +97,7 @@ a.paper-panel:hover {
     0 18px 40px rgb(0 0 0 / 0.16);
 }
 
-/* Decorative gold hairline — the home page's single accent reused as
+/* Decorative gold hairline, the home page's single accent reused as
    section furniture. Accent is decorative only, never text. */
 .rule-accent {
   height: 1px;
@@ -121,7 +121,7 @@ body:has(.business-card) {
     #0e0b08;
 }
 
-/* Footer sits on the dark desk here — swap the ink tokens for light
+/* Footer sits on the dark desk here, swap the ink tokens for light
    equivalents (#8f887a keeps >= 4.5:1 on the #0e0b08 edges, where the
    footer sits) and drop the letterpress shadow, which only makes
    sense on paper. */
@@ -131,7 +131,7 @@ body:has(.business-card) footer {
   text-shadow: none;
 }
 
-/* Entrance: the card settles into place — a short fade with a small
+/* Entrance: the card settles into place, a short fade with a small
    slide and tilt, no overshoot. Luxury interfaces don't bounce, so
    the easing is a plain ease-out. Runs once on mount; the global
    reduced-motion rule collapses it to an instant reveal. */
@@ -176,9 +176,15 @@ body:has(.business-card) footer {
 .card-face {
   position: relative;
   backface-visibility: hidden;
+  /* Firefox: a face with no 3D transform of its own is not culled
+     correctly inside the nested preserve-3d contexts above, when
+     flipped, its backface stays visible and the card shows mirrored
+     content. An explicit translateZ(0) anchors the face in 3D space
+     so backface culling kicks in (verified via .flip-test bisect). */
+  transform: translateZ(0);
   border-radius: 7px;
   /* Card stock reads a touch warmer and lighter than the bone desk
-     tone — a sheet of cotton paper rather than pure cream. Lighter
+     tone, a sheet of cotton paper rather than pure cream. Lighter
      than --background, so --muted ink keeps its >= 4.5:1 contrast. */
   background: #f6f1e8;
   /* Depth without weight: a very thin lit paper edge for card
@@ -247,7 +253,7 @@ body:has(.business-card) footer {
    Simulated folded corner co-located with the Selected Work button
    on the front face. Rest: a subtle folded corner. Hover/keyboard
    focus of the button: the flap lifts to reveal a sliver of "back"
-   stock, hinting the card flips. Visual affordance only — the button
+   stock, hinting the card flips. Visual affordance only, the button
    stays the single click target and the whole card still flips. */
 .dogear {
   display: inline-flex;
@@ -272,7 +278,7 @@ body:has(.business-card) footer {
   z-index: 0;
 }
 
-/* Revealed "back" patch under the flap — a touch darker/cooler than
+/* Revealed "back" patch under the flap, a touch darker/cooler than
    the #f6f1e8 front stock, with faint hairlines hinting at a list. */
 .dogear-fold::before {
   content: "";
@@ -289,7 +295,7 @@ body:has(.business-card) footer {
   box-shadow: inset 2px 2px 3px rgb(0 0 0 / 0.10);
 }
 
-/* The lifting flap — the front sheet's corner folding up. */
+/* The lifting flap, the front sheet's corner folding up. */
 .dogear-fold::after {
   content: "";
   position: absolute;

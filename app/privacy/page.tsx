@@ -43,7 +43,7 @@ export default function PrivacyPage() {
             </h2>
             <p className="mt-3">
               This is a static portfolio site. No cookies, no tracking, no
-              analytics, no ads — the owner doesn&apos;t collect anything about
+              analytics, no ads, the owner doesn&apos;t collect anything about
               you. Fonts are self-hosted, so your browser never talks to Google
               or any other third party while you&apos;re here.
             </p>
@@ -51,7 +51,7 @@ export default function PrivacyPage() {
               The company hosting this site briefly processes technical data
               like your IP address in its server logs, as needed to deliver and
               secure the site. That happens under the hosting provider&apos;s
-              own terms — the owner never sees or uses it.
+              own terms, the owner never sees or uses it.
             </p>
           </section>
 
@@ -79,7 +79,7 @@ export default function PrivacyPage() {
               Your Rights
             </h2>
             <p className="mt-3">
-              You have the usual GDPR rights — access (Art. 15), rectification
+              You have the usual GDPR rights: access (Art. 15), rectification
               (Art. 16), erasure (Art. 17), restriction (Art. 18), portability
               (Art. 20) and objection (Art. 21). To exercise any of them, email{" "}
               <a

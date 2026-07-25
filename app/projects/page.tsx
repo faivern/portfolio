@@ -5,11 +5,11 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: `All projects by ${site.plainName} — web apps, systems, and CLI tools.`,
+  description: `All projects by ${site.plainName}, web apps, systems, and CLI tools.`,
   alternates: { canonical: "/projects" },
   openGraph: {
     title: "Projects",
-    description: `All projects by ${site.plainName} — web apps, systems, and CLI tools.`,
+    description: `All projects by ${site.plainName}, web apps, systems, and CLI tools.`,
     url: "/projects",
   },
 };
@@ -63,13 +63,18 @@ export default function ProjectsPage() {
                     <span className="flex items-baseline justify-between gap-6">
                       <span className="font-serif text-xl tracking-[0.04em] underline-offset-4 group-hover:underline">
                         {p.title}
+                        {p.wip && (
+                          <span className="ml-3 inline-block rounded-md border border-accent/60 px-2 py-0.5 align-middle font-serif text-xs tracking-[0.15em] text-muted no-underline">
+                            Work in progress
+                          </span>
+                        )}
                       </span>
                       <span className="shrink-0 font-serif text-sm tracking-widest text-muted">
                         {p.year}
                       </span>
                     </span>
                     <span className="mt-2 block font-serif text-base leading-relaxed text-muted">
-                      {p.description}
+                      {p.tagline}
                     </span>
                   </Link>
                 </li>

@@ -5,7 +5,7 @@ export const dynamic = "force-static";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${site.plainName} — ${site.jobTitle}`,
+    name: `${site.plainName}, ${site.jobTitle}`,
     short_name: site.plainName,
     description: site.description,
     start_url: "/",

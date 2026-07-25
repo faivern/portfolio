@@ -17,7 +17,7 @@ export const site = {
   plainName: "Gustaf Faivre",
   givenName: "Gustaf",
   familyName: "Faivre",
-  role: "Software Developer — FullStack",
+  role: "Software Developer, FullStack",
   jobTitle: "Software Developer",
   location: "Sweden",
   email: "gustaf.faivre@outlook.com",

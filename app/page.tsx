@@ -1,7 +1,7 @@
 "use client";
 
 // ─────────────────────────────────────────────────────────────
-//  EDIT ME — placeholder content. Replace with your own details.
+//  EDIT ME, placeholder content. Replace with your own details.
 // ─────────────────────────────────────────────────────────────
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -48,7 +48,7 @@ export default function Home() {
     const r = el.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width; // 0..1
     const py = (e.clientY - r.top) / r.height;
-    // The back face lies flat — no tilt there, only the sheen tracks.
+    // The back face lies flat, no tilt there, only the sheen tracks.
     if (!flipped) {
       // Cap tilt at 2.5deg each way; a restrained "held card" angle.
       el.style.setProperty("--ry", `${(px - 0.5) * 5}deg`);
@@ -80,7 +80,7 @@ export default function Home() {
           className={`card-3d grid sm:aspect-[7/4] ${flipped ? "is-flipped" : ""}`}
           onPointerDown={(e) => {
             // The tilt moves the card under the pointer, so a press that
-            // starts on a link can end slightly off it — the click then
+            // starts on a link can end slightly off it, the click then
             // targets a common ancestor and would read as a flip. Remember
             // where the press began and let it through instead.
             pressRef.current = (e.target as HTMLElement).closest("a, button");
@@ -209,7 +209,7 @@ export default function Home() {
                         </span>
                       </span>
                       <span className="mt-1 line-clamp-2 block font-sans text-xs leading-relaxed text-muted">
-                        {p.description}
+                        {p.tagline}
                       </span>
                     </Link>
                   </li>
@@ -218,7 +218,7 @@ export default function Home() {
 
             <Link
               href="/projects"
-              className="mt-2 inline-block self-center py-3 font-sans text-[0.7rem] tracking-[0.35em] text-muted underline-offset-4 hover:text-foreground hover:underline"
+              className="mt-6 inline-block self-center py-3 font-sans text-[0.7rem] tracking-[0.35em] text-muted underline-offset-4 hover:text-foreground hover:underline"
             >
               All projects →
             </Link>

@@ -1,4 +1,4 @@
-# Portfolio — Gustaf FAIVRE
+# Portfolio: Gustaf FAIVRE
 
 Personal portfolio built with Next.js 16 (App Router), React 19, TypeScript
 and Tailwind CSS 4. Fully static, no tracking, no cookies.
@@ -27,31 +27,31 @@ cp .env.example .env.local   # then edit NEXT_PUBLIC_SITE_URL
 ## Editing Content
 
 - Site-wide identity, links and description: `lib/site.ts`
-- Projects: `app/projects/data.ts` — media lives in
-  `public/projects/<slug>/` and is referenced by absolute path. The 3–4
+- Projects: `app/projects/data.ts`, media lives in
+  `public/projects/<slug>/` and is referenced by absolute path. Each project
+  page leads with `tagline` (one punchy line under the title, also used on
+  the card back and index), then media, links, tech stack, an About
+  paragraph (`description`), and 3–4 `highlights`. Write `description` and
+  `highlights` for a non-technical reader (think HR), plain language, no
+  jargon; the tech stack chips carry the technical signal. The 3–4
   entries flagged `featured: true` appear on the business card back; the
   full list lives on the `/projects` index page
-- Optional per-project architecture diagram: set `diagram` (nodes in
-  columns, labelled edges) in `app/projects/data.ts`; rendered as inline
-  SVG by `app/projects/[slug]/architecture-diagram.tsx` — no image
-  assets, themed by the design tokens, described to screen readers via
-  a generated `aria-label`
 
 ## Conventions
 
 ### Accessibility (WCAG 2.2 AA)
 
 - Semantic landmarks (`main`/`footer`) live in `app/layout.tsx`; pages render
-  inside the shared `<main id="content">`. There is no site-wide header/navbar —
+  inside the shared `<main id="content">`. There is no site-wide header/navbar,
   contact links live on the front of the home-page business card; featured
   projects are on its reverse (card flip on click, instant swap under reduced
   motion), with the full list on `/projects`.
 - First focusable element is a "skip to main content" link.
-- Never use `text-foreground/<opacity>` for text — it fails contrast
+- Never use `text-foreground/<opacity>` for text, it fails contrast
   requirements. Use the `text-muted` token (4.95:1) for secondary text
   instead. See `app/globals.css`.
 - The single accent is `--accent` (muted gold). Reserve it for decorative
-  furniture only (the card's hairline rule and monogram) — never body text,
+  furniture only (the card's hairline rule and monogram), never body text,
   where it fails WCAG AA contrast on the bone stock.
 - Keep focus styles intact (`:focus-visible` in `app/globals.css`); test
   keyboard-only navigation after UI changes.
@@ -62,7 +62,7 @@ cp .env.example .env.local   # then edit NEXT_PUBLIC_SITE_URL
 
 ### Privacy (GDPR)
 
-- The site sets no cookies and runs no analytics — do not add any without
+- The site sets no cookies and runs no analytics, do not add any without
   also adding a consent mechanism and updating `/privacy`.
 - Fonts are self-hosted via `next/font` (no third-party requests).
 - Privacy policy lives at `/privacy`; update "Last updated" when it changes.
@@ -70,14 +70,14 @@ cp .env.example .env.local   # then edit NEXT_PUBLIC_SITE_URL
 ### Security
 
 - HTTP security headers (CSP, HSTS, nosniff, frame-ancestors, Referrer-Policy,
-  Permissions-Policy) are configured in `deploy/nginx.conf` — a static export
+  Permissions-Policy) are configured in `deploy/nginx.conf`, a static export
   cannot set headers from `next.config.ts`, so nginx owns them.
 - The CSP allows inline scripts because the site is statically rendered
   (no per-request nonce). If you move to dynamic rendering, switch to a
   nonce-based CSP (see the Next.js CSP guide, `proxy.ts`).
 - Never reintroduce server-only features (`headers()`/`redirects()`/
   `rewrites()` in `next.config.ts`, server actions, request-reading route
-  handlers, the default `next/image` optimizer) — they break `output: "export"`.
+  handlers, the default `next/image` optimizer), they break `output: "export"`.
 
 ### SEO
 
