@@ -273,7 +273,7 @@ export default async function ProjectPage({
               <span className="inline-flex items-center gap-1.5">
                 <ProjectCategoryIcon
                   category={project.category}
-                  className="h-4 w-4"
+                  className="h-5 w-5"
                 />
                 {project.category}
               </span>

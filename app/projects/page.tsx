@@ -74,7 +74,7 @@ export default function ProjectsPage() {
                   <span className="inline-flex items-center gap-2 font-serif text-sm tracking-[0.16em]">
                     <ProjectCategoryIcon
                       category={category}
-                      className="h-4 w-4"
+                      className="h-5 w-5"
                     />
                     {category}
                   </span>
@@ -106,7 +106,7 @@ export default function ProjectsPage() {
                   >
                     <ProjectCategoryIcon
                       category={category}
-                      className="h-5 w-5"
+                      className="h-7 w-7 shrink-0"
                     />
                     {category}
                   </h2>

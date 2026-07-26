@@ -201,7 +201,7 @@ export default function Home() {
                 {site.profile.about}
               </p>
 
-              <div className="flex flex-col gap-2.5 border-y border-foreground/10 py-3 normal-case font-sans text-[0.7rem] leading-snug tracking-[0.035em] text-muted">
+              <div className="flex flex-col gap-2.5 border-y border-foreground/10 py-3 normal-case font-sans text-[0.85rem] leading-snug tracking-[0.035em] text-muted">
                 <p className="inline-flex items-start gap-1.5">
                   <FaLocationDot
                     aria-hidden="true"
@@ -236,7 +236,7 @@ export default function Home() {
               </div>
 
               <div className="flex min-h-0 flex-1 flex-col">
-                <h3 className="font-sans text-[0.62rem] font-medium tracking-[0.24em] text-muted pb-2">
+                <h3 className="font-sans text-[0.68rem] font-medium tracking-[0.24em] text-muted pb-2">
                   How I Like to Build
                 </h3>
                 <dl className="mt-2 grid flex-1 grid-cols-2 content-start gap-x-4 gap-y-3 sm:grid-rows-2 sm:content-stretch sm:gap-x-8 sm:gap-y-4">
@@ -266,11 +266,11 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="-mx-6 grid min-h-14 shrink-0 grid-cols-[3.5rem_1fr_3.5rem] items-center border-t border-accent/50 px-4 sm:-mx-8">
+            <div className="relative -mx-6 min-h-14 shrink-0 border-t border-accent/50 sm:-mx-8">
               <button
                 type="button"
                 onClick={() => setFlipped(false)}
-                className="justify-self-start cursor-pointer p-2 font-sans text-base text-muted hover:text-foreground"
+                className="relative z-10 ml-4 flex min-h-14 cursor-pointer items-center p-2 font-sans text-base text-muted hover:text-foreground"
               >
                 <span aria-hidden="true">←&#xFE0E;</span>
                 <span className="sr-only">Back to the front of the card</span>
@@ -278,7 +278,7 @@ export default function Home() {
 
               <Link
                 href="/projects"
-                className="justify-self-center py-3 text-center font-sans text-[0.72rem] tracking-[0.28em] text-muted underline-offset-4 hover:text-foreground hover:underline"
+                className="absolute inset-0 flex items-center justify-center px-14 text-center font-sans text-[0.78rem] tracking-[0.28em] text-muted underline-offset-4 hover:text-foreground hover:underline"
               >
                 Explore all projects <span aria-hidden="true">→&#xFE0E;</span>
               </Link>

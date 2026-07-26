@@ -29,12 +29,10 @@ export function ProjectCategoryIcon({ category, ...props }: Props) {
   if (category === "Systems & Integration") {
     return (
       <svg {...shared}>
-        <circle cx="12" cy="12" r="2.5" />
-        <circle cx="5" cy="5" r="2" />
-        <circle cx="19" cy="5" r="2" />
-        <circle cx="5" cy="19" r="2" />
-        <circle cx="19" cy="19" r="2" />
-        <path d="m6.5 6.5 3.7 3.7m3.6 0 3.7-3.7m-7.3 7.3-3.7 3.7m7.3-3.7 3.7 3.7" />
+        <rect x="1.5" y="2.5" width="7" height="6" rx="1.25" />
+        <rect x="15.5" y="2.5" width="7" height="6" rx="1.25" />
+        <rect x="8.5" y="15" width="7" height="5.5" rx="1.25" />
+        <path d="M5 8.5v2m-1.5 0h3m12.5-2v2m-1.5 0h3M5 10.5v2h14v-2M12 12.5V15m0 5.5V22m-1.5 0h3" />
       </svg>
     );
   }

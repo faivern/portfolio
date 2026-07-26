@@ -43,7 +43,7 @@ export default function MoreProjects({
                 <span className="inline-flex items-center gap-1.5">
                   <ProjectCategoryIcon
                     category={project.category}
-                    className="h-3.5 w-3.5"
+                    className="h-4 w-4"
                   />
                   {project.category}
                 </span>

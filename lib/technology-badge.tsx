@@ -66,12 +66,12 @@ export function TechnologyBadge({
   const technologyIcon = technologyIcons[technology] ?? fallbackIcon;
   const className =
     variant === "full"
-      ? "inline-flex items-center gap-1.5 rounded-sm border border-foreground/15 px-2.5 py-1 font-sans text-[0.65rem] normal-case tracking-normal text-muted [text-shadow:none]"
+      ? "inline-flex items-center gap-1.5 rounded-sm border border-foreground/15 px-2.5 py-1 font-sans text-[0.80rem] normal-case tracking-normal text-muted [text-shadow:none]"
       : variant === "profile"
-        ? "inline-flex items-center gap-1.5 rounded-sm border border-foreground/15 px-2 py-1 font-sans text-[0.65rem] normal-case leading-none tracking-normal text-muted [text-shadow:none]"
-        : "inline-flex items-center gap-1.5 rounded-sm border border-foreground/15 px-2 py-1 font-sans text-[0.65rem] tracking-[0.08em] text-muted";
+        ? "inline-flex items-center gap-1.5 rounded-sm border border-foreground/15 px-2 py-1 font-sans text-[0.85rem] normal-case leading-none tracking-normal text-muted [text-shadow:none]"
+        : "inline-flex items-center gap-1.5 rounded-sm border border-foreground/15 px-2 py-1 font-sans text-[0.75rem] tracking-[0.08em] text-muted";
   const iconClassName =
-    variant === "profile" ? "h-3.5 w-3.5" : "h-3 w-3";
+    variant === "profile" ? "h-4.5 w-4.5" : "h-4 w-4";
 
   return (
     <Tag className={className}>
