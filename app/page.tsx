@@ -5,8 +5,13 @@
 // ─────────────────────────────────────────────────────────────
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { projects } from "./projects/data";
+import {
+  FaBriefcase,
+  FaGraduationCap,
+  FaLocationDot,
+} from "react-icons/fa6";
 import { site } from "@/lib/site";
+import { TechnologyBadge } from "@/lib/technology-badge";
 // ─────────────────────────────────────────────────────────────
 
 export default function Home() {
@@ -68,35 +73,35 @@ export default function Home() {
   };
 
   return (
-    <div className="business-card flex flex-1 items-center justify-center px-6 py-16 sm:px-8">
-      <div className="card-stage w-full max-w-[782px] [perspective:1600px]">
+    <div className="business-card flex flex-1 items-center justify-center px-6 py-6 sm:px-8 sm:py-10 lg:py-16">
+      <div className="card-stage w-full max-w-[929px] [perspective:1600px]">
         <div
           ref={tiltRef}
           className="card-tilt"
           onPointerMove={handlePointerMove}
           onPointerLeave={handlePointerLeave}
         >
-        <div
-          className={`card-3d grid h-[26rem] sm:aspect-[7/4] sm:h-auto ${flipped ? "is-flipped" : ""}`}
-          onPointerDown={(e) => {
-            // The tilt moves the card under the pointer, so a press that
-            // starts on a link can end slightly off it, the click then
-            // targets a common ancestor and would read as a flip. Remember
-            // where the press began and let it through instead.
-            pressRef.current = (e.target as HTMLElement).closest("a, button");
-          }}
-          onClick={(e) => {
-            if (pressRef.current) {
-              pressRef.current = null;
-              return;
-            }
-            // Links/buttons handle their own clicks; clicks inside a link
-            // list (separators, padding, scrollbar, empty rows) are dead
-            // hits near a target and do nothing. Anywhere else flips.
-            if ((e.target as HTMLElement).closest("a, button, ul")) return;
-            setFlipped((f) => !f);
-          }}
-        >
+          <div
+            className={`card-3d grid h-[43rem] min-[360px]:h-[40rem] min-[480px]:h-[36rem] sm:h-[31rem] md:aspect-[7/4] md:h-auto ${flipped ? "is-flipped" : ""}`}
+            onPointerDown={(e) => {
+              // The tilt moves the card under the pointer, so a press that
+              // starts on a link can end slightly off it, the click then
+              // targets a common ancestor and would read as a flip. Remember
+              // where the press began and let it through instead.
+              pressRef.current = (e.target as HTMLElement).closest("a, button");
+            }}
+            onClick={(e) => {
+              if (pressRef.current) {
+                pressRef.current = null;
+                return;
+              }
+              // Links/buttons handle their own clicks; clicks inside a link
+              // list (separators, padding, empty rows) are dead hits near a
+              // target and do nothing. Anywhere else flips.
+              if ((e.target as HTMLElement).closest("a, button, ul")) return;
+              setFlipped((f) => !f);
+            }}
+          >
           {/* ── Front: the pure card ─────────────────────────── */}
           <section
             ref={frontRef}
@@ -171,68 +176,115 @@ export default function Home() {
                 onClick={() => setFlipped(true)}
                 className="dogear-label relative z-10 -m-2 cursor-pointer p-2 font-sans text-[0.6rem] tracking-[0.25em] text-muted hover:text-foreground"
               >
-                Selected Work
+                About Me
               </button>
             </span>
           </section>
 
-          {/* ── Back: selected work ──────────────────────────── */}
+          {/* ── Back: profile ────────────────────────────────── */}
           <section
             ref={backRef}
             tabIndex={-1}
-            aria-labelledby="selected-work"
+            aria-labelledby="about-me"
             inert={!flipped}
-            className="card-face card-back col-start-1 row-start-1 flex min-h-[280px] cursor-pointer flex-col px-8 py-7"
+            className="card-face card-back col-start-1 row-start-1 flex min-h-[280px] cursor-pointer flex-col overflow-hidden px-6 pt-6 sm:px-8 sm:pt-7"
           >
             <h2
-              id="selected-work"
-              className="text-center font-sans text-[0.65rem] tracking-[0.35em] text-muted"
+              id="about-me"
+              className="text-center font-sans text-[0.72rem] tracking-[0.35em] text-muted"
             >
-              Selected Work
+              About Me
             </h2>
 
-            <ul className="mt-2 min-h-0 flex-1 divide-y divide-foreground/10 overflow-y-auto overflow-x-hidden overscroll-contain">
-              {projects
-                .filter((p) => p.featured)
-                .map((p) => (
-                  <li key={p.slug}>
-                    <Link
-                      href={`/projects/${p.slug}`}
-                      className="group -mx-8 block px-8 py-3"
+            <div className="mt-4 flex min-h-0 flex-1 flex-col gap-4 pb-4">
+              <p className="max-w-[52rem] normal-case font-serif text-base leading-[1.45] tracking-[0.025em] sm:text-[1.05rem]">
+                {site.profile.about}
+              </p>
+
+              <div className="flex flex-col gap-2.5 border-y border-foreground/10 py-3 normal-case font-sans text-[0.7rem] leading-snug tracking-[0.035em] text-muted">
+                <p className="inline-flex items-start gap-1.5">
+                  <FaLocationDot
+                    aria-hidden="true"
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                  />
+                  {site.location}
+                </p>
+                <p className="inline-flex items-start gap-1.5">
+                  <FaGraduationCap
+                    aria-hidden="true"
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                  />
+                  <span>
+                    <span>{site.profile.education.degree}</span>
+                    <span aria-hidden="true"> · </span>
+                    <span className="sr-only">, </span>
+                    <span>
+                      {site.profile.education.institution}
+                      <span aria-hidden="true"> · </span>
+                      <span className="sr-only">, </span>
+                      {site.profile.education.period}
+                    </span>
+                  </span>
+                </p>
+                <p className="inline-flex items-start gap-1.5">
+                  <FaBriefcase
+                    aria-hidden="true"
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                  />
+                  {site.profile.availability}
+                </p>
+              </div>
+
+              <div className="flex min-h-0 flex-1 flex-col">
+                <h3 className="font-sans text-[0.62rem] font-medium tracking-[0.24em] text-muted pb-2">
+                  How I Like to Build
+                </h3>
+                <dl className="mt-2 grid flex-1 grid-cols-2 content-start gap-x-4 gap-y-3 sm:grid-rows-2 sm:content-stretch sm:gap-x-8 sm:gap-y-4">
+                  {site.profile.skillGroups.map((group) => (
+                    <div
+                      key={group.label}
+                      className="min-w-0"
                     >
-                      <span className="flex items-center justify-between gap-6">
-                        <span className="font-serif text-base tracking-[0.04em] underline-offset-4 group-hover:underline">
-                          {p.title}
-                        </span>
-                        <span className="shrink-0 font-sans text-xs tracking-widest text-muted">
-                          {p.year}
-                        </span>
-                      </span>
-                      <span className="mt-1 line-clamp-2 block font-sans text-xs leading-relaxed text-muted">
-                        {p.tagline}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-            </ul>
+                      <dt className="font-sans text-[0.62rem] font-medium tracking-[0.2em] text-muted">
+                        {group.label}
+                      </dt>
+                      <dd className="mt-1.5">
+                        <ul className="flex flex-wrap gap-1">
+                          {group.skills.map((technology) => (
+                            <TechnologyBadge
+                              key={technology}
+                              as="li"
+                              technology={technology}
+                              variant="profile"
+                            />
+                          ))}
+                        </ul>
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
 
-            <Link
-              href="/projects"
-              className="mt-6 inline-block self-center py-3 font-sans text-[0.7rem] tracking-[0.35em] text-muted underline-offset-4 hover:text-foreground hover:underline"
-            >
-              All projects →&#xFE0E;
-            </Link>
+            <div className="-mx-6 grid min-h-14 shrink-0 grid-cols-[3.5rem_1fr_3.5rem] items-center border-t border-accent/50 px-4 sm:-mx-8">
+              <button
+                type="button"
+                onClick={() => setFlipped(false)}
+                className="justify-self-start cursor-pointer p-2 font-sans text-base text-muted hover:text-foreground"
+              >
+                <span aria-hidden="true">←&#xFE0E;</span>
+                <span className="sr-only">Back to the front of the card</span>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setFlipped(false)}
-              className="absolute bottom-3 left-4 -m-2 cursor-pointer p-2 font-sans text-base text-muted hover:text-foreground"
-            >
-              <span aria-hidden="true">←&#xFE0E;</span>
-              <span className="sr-only">Back to the front of the card</span>
-            </button>
+              <Link
+                href="/projects"
+                className="justify-self-center py-3 text-center font-sans text-[0.72rem] tracking-[0.28em] text-muted underline-offset-4 hover:text-foreground hover:underline"
+              >
+                Explore all projects <span aria-hidden="true">→&#xFE0E;</span>
+              </Link>
+            </div>
           </section>
-        </div>
+          </div>
         </div>
       </div>
     </div>

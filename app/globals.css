@@ -107,7 +107,7 @@ a.paper-panel:hover {
 
 /* ── Business card ───────────────────────────────────────────
    The home page presents itself as a bone card resting on a dark
-   desk, with the project list on the reverse (3D flip). Scoped via
+   desk, with a concise personal profile on the reverse (3D flip). Scoped via
    :has() so other pages keep the plain bone background. */
 body:has(.business-card) {
   /* Dark desaturated mahogany desk with a soft pool of light. */
@@ -249,8 +249,8 @@ body:has(.business-card) footer {
   user-select: none;
 }
 
-/* ── "Selected Work" dog-ear peel ────────────────────────────
-   Simulated folded corner co-located with the Selected Work button
+/* ── "About Me" dog-ear peel ─────────────────────────────────
+   Simulated folded corner co-located with the About Me button
    on the front face. Rest: a subtle folded corner. Hover/keyboard
    focus of the button: the flap lifts to reveal a sliver of "back"
    stock, hinting the card flips. Visual affordance only, the button

@@ -1,13 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { ProjectMedia } from "../data";
 
 export default function ScreenshotGallery({
   title,
   screenshots,
 }: {
   title: string;
-  screenshots: string[];
+  screenshots: ProjectMedia[];
 }) {
   const [active, setActive] = useState<number | null>(null);
   const [zoomed, setZoomed] = useState(false);
@@ -39,6 +40,23 @@ export default function ScreenshotGallery({
       if (e.key === "Escape") close();
       else if (e.key === "ArrowLeft") prev();
       else if (e.key === "ArrowRight") next();
+      else if (e.key === "Tab" && dialogRef.current) {
+        const focusable = Array.from(
+          dialogRef.current.querySelectorAll<HTMLElement>(
+            'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])',
+          ),
+        );
+        const first = focusable[0];
+        const last = focusable.at(-1);
+        if (!first || !last) return;
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
@@ -50,38 +68,52 @@ export default function ScreenshotGallery({
 
   return (
     <>
-      <div className="mt-4 grid gap-4">
-        {screenshots.map((src, i) => (
-          <button
-            key={src}
-            type="button"
-            onClick={(e) => {
-              lastTriggerRef.current = e.currentTarget;
-              setActive(i);
-            }}
-            aria-label={`View ${title}, screenshot ${i + 1} of ${screenshots.length}, in full size`}
-            className="group relative block w-full cursor-zoom-in overflow-hidden"
+      <div className="mt-5 grid gap-5 md:grid-cols-2">
+        {screenshots.map((media, i) => (
+          <figure
+            key={media.src}
+            className="paper-panel flex min-w-0 flex-col overflow-hidden border border-foreground/10"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={src} alt="" className="relative z-[1] w-full" />
-            {/* Click affordance: always visible, brightens on hover/focus */}
-            <span
-              aria-hidden="true"
-              className="absolute right-2 bottom-2 z-[2] flex items-center gap-1.5 bg-background/80 px-2 py-1 font-serif text-[0.6rem] tracking-[0.2em] text-muted group-hover:bg-background group-hover:text-foreground group-focus-visible:bg-background group-focus-visible:text-foreground"
+            <button
+              type="button"
+              onClick={(e) => {
+                lastTriggerRef.current = e.currentTarget;
+                setActive(i);
+              }}
+              aria-label={`View ${title}, image ${i + 1} of ${screenshots.length}, in full size`}
+              className="group relative flex min-h-0 flex-1 cursor-zoom-in items-center justify-center overflow-hidden bg-[#e8e2d6]"
             >
-              <svg
-                viewBox="0 0 16 16"
-                className="h-3 w-3"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
+              {/* The button provides the accessible name; the thumbnail is decorative. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={media.src}
+                width={media.width}
+                height={media.height}
+                alt=""
+                loading="lazy"
+                className="relative z-[1] h-auto w-full"
+              />
+              <span
+                aria-hidden="true"
+                className="absolute right-2 bottom-2 z-[2] flex items-center gap-1.5 bg-background/90 px-2 py-1 font-serif text-[0.6rem] tracking-[0.2em] text-muted group-hover:bg-background group-hover:text-foreground group-focus-visible:bg-background group-focus-visible:text-foreground"
               >
-                <circle cx="7" cy="7" r="4.5" />
-                <path d="m10.5 10.5 3 3" />
-              </svg>
-              Enlarge
-            </span>
-          </button>
+                <svg
+                  viewBox="0 0 16 16"
+                  className="h-3 w-3"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <circle cx="7" cy="7" r="4.5" />
+                  <path d="m10.5 10.5 3 3" />
+                </svg>
+                Enlarge
+              </span>
+            </button>
+            <figcaption className="relative z-[1] border-t border-foreground/10 px-4 py-3 font-sans text-xs leading-relaxed normal-case tracking-normal text-muted [text-shadow:none]">
+              {media.caption}
+            </figcaption>
+          </figure>
         ))}
       </div>
 
@@ -90,7 +122,7 @@ export default function ScreenshotGallery({
           ref={dialogRef}
           role="dialog"
           aria-modal="true"
-          aria-label={`${title}, screenshot ${active + 1} of ${screenshots.length}`}
+          aria-label={`${title}, image ${active + 1} of ${screenshots.length}`}
           tabIndex={-1}
           onClick={close}
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/85 p-6"
@@ -123,8 +155,10 @@ export default function ScreenshotGallery({
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={screenshots[active]}
-                  alt={`${title}, screenshot ${active + 1}`}
+                  src={screenshots[active].src}
+                  width={screenshots[active].width}
+                  height={screenshots[active].height}
+                  alt={screenshots[active].alt}
                   className={
                     zoomed
                       ? "max-w-none border border-white/20"

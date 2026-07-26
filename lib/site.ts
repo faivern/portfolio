@@ -17,13 +17,56 @@ export const site = {
   plainName: "Gustaf Faivre",
   givenName: "Gustaf",
   familyName: "Faivre",
-  role: "Software Developer, FullStack",
+  role: "Software Developer — FullStack",
   jobTitle: "Software Developer",
-  location: "Sweden",
+  location: "Karlstad, Sweden",
   email: "gustaf.faivre@outlook.com",
   url: siteUrl,
   description:
     "Portfolio of Gustaf Faivre, a software developer building full-stack applications, AI-powered systems, cloud services and personal software projects.",
+  profile: {
+    about:
+      "Building from idea to production-ready software used by real people. I enjoy the full development lifecycle, especially applying AI to make systems smarter.",
+    availability: "Open to work / connect",
+    education: {
+      degree: "B.Sc. Information Systems Development",
+      institution: "Karlstad University",
+      period: "2022–2025",
+    },
+    skillGroups: [
+      {
+        label: "Frontend",
+        skills: [
+          "Next.js",
+          "React",
+          "JavaScript",
+          "TypeScript",
+          "Tailwind",
+          "HTML",
+          "CSS",
+        ],
+      },
+      {
+        label: "Backend",
+        skills: ["Java", "Spring Boot", "Python", "C#", ".NET", "nginx"],
+      },
+      {
+        label: "Databases",
+        skills: ["PostgreSQL", "SQL Server", "MongoDB"],
+      },
+      {
+        label: "AI, Tools & DevOps",
+        skills: [
+          "Claude Code",
+          "Linux",
+          "Docker",
+          "Git",
+          "GitHub",
+          "Azure DevOps",
+        ],
+      },
+    ],
+  },
   locale: "en_US",
   links: [
     { label: "GitHub", href: "https://github.com/faivern" },

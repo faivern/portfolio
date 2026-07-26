@@ -26,26 +26,41 @@ cp .env.example .env.local   # then edit NEXT_PUBLIC_SITE_URL
 
 ## Editing Content
 
-- Site-wide identity, links and description: `lib/site.ts`
-- Projects: `app/projects/data.ts`, media lives in
-  `public/projects/<slug>/` and is referenced by absolute path. Each project
-  page leads with `tagline` (one punchy line under the title, also used on
-  the card back and index), then media, links, tech stack, an About
-  paragraph (`description`), and 3–4 `highlights`. Write `description` and
-  `highlights` for a non-technical reader (think HR), plain language, no
-  jargon; the tech stack chips carry the technical signal. The 3–4
-  entries flagged `featured: true` appear on the business card back; the
-  full list lives on the `/projects` index page
+- Site-wide identity, links, profile, technical stack and description:
+  `lib/site.ts`. The business-card reverse presents the stack in four concise
+  groups; project pages provide the project-specific technical context.
+- Tech-stack icon assignments: `lib/technology-badge.tsx`. Icons come from a
+  generated local subset of `tech-stack-icons`; add new catalog IDs to
+  `scripts/generate-tech-stack-icons.mjs` and run
+  `npm run generate:tech-icons`. Do not edit the generated file directly.
+- Projects: `app/projects/data.ts`; media lives in
+  `public/projects/<slug>/` and is referenced by absolute path. Detail pages
+  are ultra-short editorial case studies for recruiters: a human `tagline`,
+  `problem`, `solution`, three titled `highlights`, and two short
+  `technicalProof` entries. Keep the main copy below roughly 200 words and
+  explain why an engineering choice matters instead of writing documentation.
+  `description` is the concise metadata summary. Each screenshot supplies
+  intrinsic dimensions, descriptive alt text, and a visible caption; optional
+  `example` data renders a first-party input/output visual for projects without
+  screenshots. All projects live on `/projects`; the business-card reverse
+  instead holds the short profile and grouped technical stack from `lib/site.ts`.
+  Use `category` for the single primary engineering focus and `platforms` for
+  important interfaces or architectural surfaces; `projectCategories` defines
+  display order. Related-project cards prefer the same category, then shared
+  platforms.
 
 ## Conventions
 
 ### Accessibility (WCAG 2.2 AA)
 
-- Semantic landmarks (`main`/`footer`) live in `app/layout.tsx`; pages render
-  inside the shared `<main id="content">`. There is no site-wide header/navbar,
-  contact links live on the front of the home-page business card; featured
-  projects are on its reverse (card flip on click, instant swap under reduced
-  motion), with the full list on `/projects`.
+- Semantic landmarks live in `app/layout.tsx` (`main`) and
+  `lib/site-footer.tsx` (`footer`); pages render inside the shared
+  `<main id="content">`. The footer renders on every page except `/`, where
+  the business card already carries the contact links. There is no site-wide
+  header/navbar, contact links live on the front of the home-page business
+  card; a short profile and technical stack are on its reverse (card flip on
+  click, instant swap under reduced motion), with no nested scrolling. The full
+  work index lives on `/projects`.
 - First focusable element is a "skip to main content" link.
 - Never use `text-foreground/<opacity>` for text, it fails contrast
   requirements. Use the `text-muted` token (4.95:1) for secondary text

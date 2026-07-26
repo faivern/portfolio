@@ -1,205 +1,506 @@
-// ─────────────────────────────────────────────────────────────
-//  EDIT ME, project content. Media files live in
-//  public/projects/<slug>/ and are referenced by absolute path,
-//  e.g. "/projects/project-one/demo.mp4". Sections without content
-//  (no video, no screenshots) are hidden.
-//
-//  Page layout (top → bottom): title + `tagline` (one punchy line),
-//  the main media (live-site card or demo video), Live Demo/GitHub
-//  links, tech stack, an About paragraph (`description`), 3–4
-//  `highlights`, and extra screenshots.
-//
-//  Write `description` and `highlights` for a non-technical reader
-//  (think HR): what the thing does and why it's impressive, in plain
-//  language, no jargon. The tech stack chips carry the technical
-//  signal.
-//
-//  `status` picks how the project shows its main media:
-//    "live" → published site: shows a large live-site card embedding
-//             the first screenshot (like Cinelas). Set `liveUrl`.
-//    "demo" → not deployed (e.g. school work): shows the video demo
-//             instead. Set `video`.
-//  Fallback order for the main media slot: live-site card → video →
-//  screenshots gallery. A project that isn't hosted and can't be
-//  recorded shows its screenshots in the media slot instead.
-//
-//  `wip` (optional): renders a "Work in progress" tag next to the
-//  title on the project page and the /projects index.
-//
-//  `featured` (optional): the 3–4 projects shown on the business card
-//  back. Everything is listed on the /projects index page regardless.
-//
-//  `category`: grouping header on the /projects index page (projects
-//  are grouped under their category in data order).
-// ─────────────────────────────────────────────────────────────
+// Project copy is written for a one-minute recruiter scan. Keep the story
+// human and concise; use `technicalProof` for the engineering signal.
+// Media is always local so the portfolio makes no third-party requests.
+export const projectCategories = [
+  "Web",
+  "Systems & Integration",
+  "Device Apps",
+  "CLI Tools",
+] as const;
+
+export type ProjectCategory = (typeof projectCategories)[number];
+
+export type ProjectPlatform =
+  | "Web"
+  | "Website"
+  | "Google TV"
+  | "Desktop"
+  | "API"
+  | "Backend"
+  | "Hardware"
+  | "CLI"
+  | "Self-hosted"
+  | "Self-hosted server";
+
+export type ProjectHighlight = {
+  title: string;
+  detail: string;
+};
+
+export type ProjectProof = {
+  title: string;
+  detail: string;
+};
+
+export type ProjectMedia = {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  caption: string;
+};
+
+export type ProjectExample = {
+  inputLabel: string;
+  input: string;
+  outputLabel: string;
+  output: string;
+};
+
 export type Project = {
   slug: string;
   title: string;
-  // One punchy line under the title, what was built, at what scale.
-  // Also used on the /projects index and the business card back.
   tagline: string;
-  // Short "About" paragraph: what the product does, in plain language
-  // a non-technical reader understands. Also used for the page's
-  // metadata description.
   description: string;
-  // 3–4 highlights that sell the project to a non-technical reader.
-  highlights: string[];
+  problem: string;
+  solution: string;
+  highlights: ProjectHighlight[];
+  technicalProof: ProjectProof[];
+  example?: ProjectExample;
   year: string;
-  // Shows a "Work in progress" tag next to the title.
   wip?: boolean;
-  // Featured projects appear on the business card back; the rest are
-  // listed on the /projects index page only. Keep it to 3–4.
-  featured?: boolean;
-  // Grouping header on the /projects index page, e.g. "Web Apps".
-  category: string;
+  category: ProjectCategory;
+  platforms: ProjectPlatform[];
   techStack: string[];
   status: "live" | "demo";
-  // Set githubUrl / liveUrl to the project's links; leave undefined to hide them.
   githubUrl?: string;
   liveUrl?: string;
   video?: string;
-  screenshots: string[];
+  screenshots: ProjectMedia[];
 };
 
 export const projects: Project[] = [
   {
     slug: "Cinelas",
     title: "Movie & TV Discovery Platform",
-    tagline: "A production movie & TV discovery platform, live at cinelas.com, indexing 1.3M+ titles.",
+    tagline:
+      "A live discovery platform that turns 1.3 million titles into a personal place to explore, track, and collect.",
     description:
-      "Ever spent half an evening scrolling, not knowing what to watch? Cinelas fixes that. It knows about more than 1.3 million movies and shows, learns your taste to suggest what you'd actually enjoy, and lets you build lists, track what you've seen, and rate titles in detail. It's a real, live product at cinelas.com, open to everyone.",
+      "Cinelas helps people discover, track, rate, and organise more than 1.3 million movies and TV shows.",
+    problem:
+      "Streaming offers endless choice, but finding something worth watching often means bouncing between services, lists, and review sites.",
+    solution:
+      "Cinelas brings discovery, rich title information, personal lists, viewing progress, and detailed ratings into one responsive product anyone can use.",
     highlights: [
-      "A live product anyone can sign up for and use today, not a demo",
-      "Suggests what to watch next based on your personal taste, across 1.3M+ titles",
-      "Fair rankings: a title with five rave reviews can't outrank one loved by thousands",
-      "Stays fast by remembering movie data instead of re-fetching it on every visit",
+      {
+        title: "Live product",
+        detail: "Anyone can create an account and use it today.",
+      },
+      {
+        title: "1.3M+ titles",
+        detail: "Movies and shows stay searchable in one catalogue.",
+      },
+      {
+        title: "One home for taste",
+        detail: "Lists, progress, and four-part ratings travel together.",
+      },
+    ],
+    technicalProof: [
+      {
+        title: "Fast repeat browsing",
+        detail:
+          "A caching layer remembers frequently requested movie data instead of fetching it again.",
+      },
+      {
+        title: "Fairer rankings",
+        detail:
+          "Bayesian scoring balances a high rating against how many people actually rated the title.",
+      },
     ],
     year: "2026",
-    featured: true,
-    category: "Web Apps",
+    category: "Web",
+    platforms: ["Web"],
     techStack: [".NET", "React", "PostgreSQL", "Docker", "Azure"],
     status: "live",
     githubUrl: "https://www.github.com/faivern/streaming-app",
     liveUrl: "https://cinelas.com",
-    video: "/projects/Cinelas/demo.mp4",
     screenshots: [
-      "/projects/cinelasMedia/screenshot-1.png"
+      {
+        src: "/projects/cinelasMedia/screenshot-1.png",
+        width: 1911,
+        height: 912,
+        alt: "Cinelas home page showing rows of movie and television recommendations",
+        caption: "The live discovery experience at cinelas.com.",
+      },
+      {
+        src: "/projects/Cinelas/discover.webp",
+        width: 1186,
+        height: 1185,
+        alt: "Cinelas discover panel with filters for finding movies and television shows",
+        caption: "Focused filters help turn a huge catalogue into a useful shortlist.",
+      },
+      {
+        src: "/projects/Cinelas/review.webp",
+        width: 536,
+        height: 906,
+        alt: "Cinelas review form with separate ratings for story, acting, visuals, and soundtrack",
+        caption: "A review captures more nuance than a single star score.",
+      },
     ],
   },
   {
     slug: "Booking-Platform",
     title: "Booking Platform for Service Businesses",
-    tagline: "End-to-end booking for service businesses: real-time admin dashboard, SMS verification, automated reminders.",
+    tagline:
+      "A complete booking journey for customers, with a live operations view for the people running the business.",
     description:
-      "Booking an appointment, minus the phone tag. Customers pick a time in a few taps and confirm their phone number with a text-message code. Staff see new bookings appear on their dashboard the moment they happen, and the system sends confirmation and reminder emails on its own.",
+      "A booking platform with customer verification, real-time staff updates, and automated confirmations and reminders.",
+    problem:
+      "Phone-based booking creates interruptions, missed details, and avoidable no-shows for both customers and staff.",
+    solution:
+      "Customers choose and confirm an appointment in a guided flow while staff manage availability and see every new booking arrive instantly.",
     highlights: [
-      "New bookings appear on the staff dashboard instantly, no refresh needed",
-      "Phone verification by text message keeps fake bookings out",
-      "Confirmation and reminder emails go out automatically, so staff don't have to chase no-shows",
-      "Separate, secure sign-ins for customers and staff",
+      {
+        title: "Book in a few steps",
+        detail: "Services, times, details, and confirmation form one clear flow.",
+      },
+      {
+        title: "Live staff view",
+        detail: "New bookings appear without refreshing the dashboard.",
+      },
+      {
+        title: "Less chasing",
+        detail: "Verification, confirmations, and reminders run automatically.",
+      },
+    ],
+    technicalProof: [
+      {
+        title: "Real-time by design",
+        detail:
+          "SignalR pushes booking changes directly to the correct organisation dashboard.",
+      },
+      {
+        title: "Work happens off-screen",
+        detail:
+          "Background services queue emails and schedule reminders without slowing the booking flow.",
+      },
     ],
     year: "2026",
-    featured: true,
-    category: "Web Apps",
+    category: "Web",
+    platforms: ["Web"],
     techStack: ["React", ".NET", "SQL Server", "Twilio", "SignalR"],
     status: "demo",
     githubUrl: "https://github.com/faivern/booking-service-platform",
-    video: "/projects/Booking-Platform/booking-demo.mp4", // TODO: add the demo video
-    screenshots: [],
+    video: "/projects/Booking-Platform/booking-demo.mp4",
+    screenshots: [
+      {
+        src: "/projects/Booking-Platform/admin-dashboard.webp",
+        width: 1920,
+        height: 947,
+        alt: "Booking administration dashboard listing appointments and their current status",
+        caption: "Staff can filter, review, and update the day’s bookings in one place.",
+      },
+      {
+        src: "/projects/Booking-Platform/customer-booking.webp",
+        width: 1920,
+        height: 1334,
+        alt: "Customer booking flow showing a calendar and available appointment times",
+        caption: "Availability is presented as a guided customer journey.",
+      },
+      {
+        src: "/projects/Booking-Platform/confirmation-email.webp",
+        width: 760,
+        height: 607,
+        alt: "Appointment confirmation email with service, date, time, and booking details",
+        caption: "Customers receive the details automatically after booking.",
+      },
+    ],
   },
   {
     slug: "Cinelas-TV",
     title: "Self-Hosted Media Browser for Google TV",
-    tagline: "A Google TV app that pairs TMDB discovery with your own media library, self-hosted on a Raspberry Pi.",
+    tagline:
+      "A remote-first television experience that connects rich movie discovery with a private media library at home.",
     description:
-      "Turns a Google TV into the ultimate couch companion: browse movies and shows with posters, ratings, and summaries, then play your own collection, all from one remote-friendly interface. Everything runs on a Raspberry Pi at home, no subscriptions or cloud services involved.",
+      "A Google TV app for browsing movie information and playing a personal media library from a self-hosted server.",
+    problem:
+      "Personal media and online discovery usually live in separate interfaces that were designed for a mouse, not a sofa and remote.",
+    solution:
+      "Cinelas TV joins both worlds in a focused ten-foot interface, with the library and streaming server running privately on a Raspberry Pi.",
     highlights: [
-      "A real TV app, navigated with the remote from the couch",
-      "Combines a personal movie collection with rich info about every title in one screen",
-      "Video streams straight to the TV, so even a tiny Raspberry Pi keeps up",
-      "Fully self-hosted at home: no subscriptions, nothing sent to third parties",
+      {
+        title: "Made for the sofa",
+        detail: "Every screen and action works with a television remote.",
+      },
+      {
+        title: "Browse, then play",
+        detail: "Rich title details sit beside the media already owned.",
+      },
+      {
+        title: "Private by default",
+        detail: "The personal library stays on a server at home.",
+      },
     ],
+    technicalProof: [
+      {
+        title: "Small server, smooth playback",
+        detail:
+          "Video streams directly to the TV so the Raspberry Pi does not become a bottleneck.",
+      },
+      {
+        title: "Two surfaces, one product",
+        detail:
+          "A Google TV client and self-hosted API are designed as one connected experience.",
+      },
+    ],
+    example: {
+      inputLabel: "On the television",
+      input: "Discover titles\nNavigate by remote\nChoose from your library",
+      outputLabel: "On the home server",
+      output: "Match metadata\nFind the media file\nStream directly to Google TV",
+    },
     year: "2026",
-    featured: true,
-    category: "Apps & Systems",
-    techStack: ["React", "Capacitor", "ASP.NET Core", "PostgreSQL", "Jellyfin", "Docker"],
+    category: "Device Apps",
+    platforms: ["Google TV", "Self-hosted server"],
+    techStack: [
+      "React",
+      "Capacitor",
+      "ASP.NET Core",
+      "PostgreSQL",
+      "Jellyfin",
+      "Docker",
+    ],
     status: "demo",
-    githubUrl: "https://github.com/faivern/cinelas-tv",
-    video: "/projects/Cinelas-TV/demo.mp4", // TODO: add the demo video
     screenshots: [],
   },
   {
     slug: "Distributed-Ad-Platform",
     title: "Distributed Ad Platform",
-    tagline: "Three separate .NET apps, web, API, and desktop, managing ads and subscribers in sync over HTTP.",
+    tagline:
+      "Three independent applications that keep advertisements and subscriber information working as one system.",
     description:
-      "Three programs working as one: a website where companies manage their ads, a behind-the-scenes service that keeps the subscriber register, and a desktop app for staff to manage subscribers. Change something in one place and the others stay in sync automatically.",
+      "A systems integration project connecting a web application, central API, and desktop administration client.",
+    problem:
+      "When separate tools manage related information, duplicated data and manual hand-offs quickly create disagreements.",
+    solution:
+      "The platform separates advertising and subscriber responsibilities while connecting the web, API, and desktop experiences through clear service boundaries.",
     highlights: [
-      "One system split into three apps that keep each other up to date",
-      "Website and desktop app talk to the same central service, so data never disagrees",
-      "Each part can be maintained and deployed on its own",
+      {
+        title: "Three applications",
+        detail: "Web, API, and desktop clients each have a focused job.",
+      },
+      {
+        title: "Shared truth",
+        detail: "Interfaces read and update subscriber data through one service.",
+      },
+      {
+        title: "Independent parts",
+        detail: "Each application can change without replacing the whole system.",
+      },
+    ],
+    technicalProof: [
+      {
+        title: "Boundaries with a purpose",
+        detail:
+          "Advertising and subscriber data live in separate applications and databases.",
+      },
+      {
+        title: "One service, different clients",
+        detail:
+          "The website and Windows application communicate with the same HTTP API.",
+      },
     ],
     year: "2025",
-    category: "Apps & Systems",
-    techStack: ["ASP.NET Core MVC", "Web API", "EF Core", "SQL Server", "WinForms"],
+    category: "Systems & Integration",
+    platforms: ["Web", "Desktop", "API"],
+    techStack: [
+      "ASP.NET Core MVC",
+      "Web API",
+      "EF Core",
+      "SQL Server",
+      "WinForms",
+    ],
     status: "demo",
     githubUrl: "https://github.com/faivern/distributed-ad-platform",
-    screenshots: [],
+    screenshots: [
+      {
+        src: "/projects/Distributed-Ad-Platform/ad-system.webp",
+        width: 1468,
+        height: 1271,
+        alt:
+          "Web application showing a grid of advertisements with subscriber and business labels, prices, and sellers",
+        caption: "The public-facing web application manages the advertising side.",
+      },
+      {
+        src: "/projects/Distributed-Ad-Platform/desktop-subscriber.webp",
+        width: 1141,
+        height: 637,
+        alt: "Windows desktop application for creating and managing subscribers",
+        caption: "A separate desktop client manages subscribers through the shared API.",
+      },
+    ],
   },
   {
     slug: "Sky-Tracker-AI",
     title: "ADS-B Flight Tracker with AI Query Layer",
-    tagline: "Live aircraft tracking from a real radio antenna, with an AI layer that answers questions in plain English.",
+    tagline:
+      "A real antenna-to-screen system that turns aircraft broadcasts into a live radar, useful answers, and a physical alert.",
     description:
-      "Ever wondered which plane is flying over your house right now? A small antenna on a Raspberry Pi listens to the radio signals aircraft constantly broadcast and shows them live on a radar-style map. You can ask questions in plain English, like 'what's the highest plane overhead?', and a little desk gadget lights up when one passes by. (Work in progress.)",
+      "A work-in-progress integrated system spanning radio hardware, live data, a radar interface, AI queries, and an ESP32 desk gadget.",
+    problem:
+      "Aircraft broadcast a constant stream of useful data, but radio messages alone do not answer the simple question: what is above me right now?",
+    solution:
+      "Sky Tracker captures those signals, turns them into flight sessions and a live map, and makes the history searchable in everyday language.",
     highlights: [
-      "Tracks real aircraft live, picked up straight from their radio broadcasts",
-      "Ask questions in plain English, the AI translates them into database lookups",
-      "A radar-style web map updates in real time",
-      "A physical desk gadget alerts you when a plane flies overhead",
+      {
+        title: "Real-world input",
+        detail: "A home antenna receives broadcasts from actual aircraft.",
+      },
+      {
+        title: "Ask naturally",
+        detail: "Questions become safe, read-only lookups over flight history.",
+      },
+      {
+        title: "Software meets hardware",
+        detail: "An ESP32 desk light reacts when aircraft enter the area.",
+      },
+    ],
+    technicalProof: [
+      {
+        title: "A complete data journey",
+        detail:
+          "Radio data moves through ingestion, PostgreSQL, an API, WebSockets, and the radar UI.",
+      },
+      {
+        title: "AI with guardrails",
+        detail:
+          "The query service uses parameterised SQL and a read-only database connection.",
+      },
     ],
     year: "2026",
     wip: true,
-    featured: true,
-    category: "Apps & Systems",
-    techStack: ["Java", "Spring Boot", "React", "FastAPI", "PostgreSQL", "ESP32"],
+    category: "Systems & Integration",
+    platforms: ["Web", "Backend", "Hardware"],
+    techStack: [
+      "Java",
+      "Spring Boot",
+      "React",
+      "FastAPI",
+      "PostgreSQL",
+      "ESP32",
+    ],
     status: "demo",
     githubUrl: "https://github.com/faivern/sky-tracker-ai",
-    screenshots: ["/projects/Sky-Tracker-AI/architecture-v1.0.png"],
+    screenshots: [
+      {
+        src: "/projects/Sky-Tracker-AI/architecture-v1.0.png",
+        width: 1527,
+        height: 877,
+        alt: "Sky Tracker architecture from radio antenna through ingestion, database, web radar, AI service, and ESP32 alert",
+        caption: "One data path connects an antenna in the garden to software and hardware experiences.",
+      },
+    ],
   },
   {
     slug: "Portfolio",
     title: "Personal Portfolio: Self-Hosted Static Site",
-    tagline: "This very site, privacy-first and self-hosted on a Raspberry Pi, with zero third-party requests.",
+    tagline:
+      "The site you are using now: a private, accessible portfolio served from a Raspberry Pi at home.",
     description:
-      "The site you're looking at right now. It's built to respect every visitor: fast, fully usable by keyboard and screen readers, and completely private, no cookies, no tracking, not a single request to a third party. It runs on a Raspberry Pi at home.",
+      "A privacy-first, accessible static portfolio with no tracking or third-party requests, self-hosted on a Raspberry Pi.",
+    problem:
+      "A portfolio should be memorable and easy for anyone to use without quietly trading visitor privacy for convenience.",
+    solution:
+      "This site presents the work as a tactile digital business card and fast static case studies, with accessibility and privacy built into every layer.",
     highlights: [
-      "You're using it right now",
-      "Accessible to everyone: fully keyboard-navigable and screen-reader friendly",
-      "Privacy by design: no cookies, no analytics, zero third-party requests",
-      "Self-hosted on a Raspberry Pi, yet loads fast anywhere in the world",
+      {
+        title: "Zero tracking",
+        detail: "No cookies, analytics, or requests to third parties.",
+      },
+      {
+        title: "Built for everyone",
+        detail: "Keyboard and screen-reader use are treated as core paths.",
+      },
+      {
+        title: "Self-hosted",
+        detail: "A Raspberry Pi serves the static export through nginx.",
+      },
+    ],
+    technicalProof: [
+      {
+        title: "Static on purpose",
+        detail:
+          "Every route is exported to plain files, reducing server work and attack surface.",
+      },
+      {
+        title: "Accessible details",
+        detail:
+          "Landmarks, focus handling, contrast, and reduced motion are part of the design system.",
+      },
     ],
     year: "2026",
-    category: "Apps & Systems",
-    techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "nginx", "Cloudflare", "Raspberry Pi"],
+    category: "Web",
+    platforms: ["Website", "Self-hosted"],
+    techStack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "nginx",
+      "Cloudflare",
+      "Raspberry Pi",
+    ],
     status: "live",
     githubUrl: "https://github.com/faivern/portfolio",
     liveUrl: "https://gustaffaivre.dev",
-    screenshots: ["/projects/Portfolio/screenshot-1.png"],
+    screenshots: [
+      {
+        src: "/projects/Portfolio/screenshot-1.png",
+        width: 934,
+        height: 551,
+        alt: "Portfolio home page showing a letterpress-style business card on a dark desk",
+        caption: "The business card is both the introduction and the navigation.",
+      },
+    ],
   },
   {
     slug: "AI-Customer-Insight",
     title: "AI Customer Insight CLI",
-    tagline: "Turns raw customer feedback CSVs into structured, actionable reports.",
+    tagline:
+      "A focused tool that turns a spreadsheet of customer comments into the report a decision-maker actually needs.",
     description:
-      "Reads through hundreds of customer feedback comments and writes the report a manager actually wants: how customers feel overall, the themes that keep coming up, quick wins, and what to fix long-term. What would take days of reading takes minutes.",
+      "A command-line tool that combines statistics and AI to turn raw customer feedback into structured, actionable reports.",
+    problem:
+      "Useful themes hide inside hundreds of comments, and reading them manually is slow, subjective, and difficult to repeat.",
+    solution:
+      "The tool combines ratings with language analysis to produce a consistent report of sentiment, themes, quick wins, and longer-term actions.",
     highlights: [
-      "Turns a spreadsheet of raw feedback into a ready-to-read report",
-      "Combines hard statistics with AI-written summaries, so numbers back up the narrative",
-      "Handles large feedback files without tripping AI usage limits",
+      {
+        title: "From CSV to report",
+        detail: "One command turns raw comments into readable Markdown.",
+      },
+      {
+        title: "Numbers plus narrative",
+        detail: "Ratings support the themes and recommendations.",
+      },
+      {
+        title: "Ready to act on",
+        detail: "Quick wins are separated from longer-term improvements.",
+      },
     ],
+    technicalProof: [
+      {
+        title: "Works beyond one prompt",
+        detail:
+          "Large files are sampled and processed without exceeding model limits.",
+      },
+      {
+        title: "Repeatable output",
+        detail:
+          "A defined report structure makes different feedback runs easy to compare.",
+      },
+    ],
+    example: {
+      inputLabel: "Raw feedback",
+      input:
+        'Hundreds of CSV rows\n“Checkout fails on mobile.”\n“Support was quick and friendly.”',
+      outputLabel: "Decision-ready report",
+      output:
+        "Overall sentiment\nTop recurring themes\nQuick wins\nLong-term actions",
+    },
     year: "2025",
     category: "CLI Tools",
+    platforms: ["CLI"],
     techStack: ["Python", "OpenAI API", "pandas", "typer"],
     status: "demo",
     githubUrl: "https://github.com/faivern/ai-customer-insight",
@@ -208,16 +509,49 @@ export const projects: Project[] = [
   {
     slug: "Content-Management-AI",
     title: "Secure AI Text Analysis CLI",
-    tagline: "A security-first CLI for AI text analysis: summarize, translate, and score sentiment.",
+    tagline:
+      "A deliberately sceptical document assistant that summarises, translates, and reads sentiment without trusting every input or output.",
     description:
-      "An assistant for working with text documents: it summarizes, translates, and gauges the tone of .txt and .pdf files. It's built to be skeptical, documents can't trick it into ignoring its instructions, and every answer from the AI is checked before it's shown.",
+      "A security-first command-line assistant for summarising, translating, and analysing sentiment in text and PDF documents.",
+    problem:
+      "AI can speed up document work, but an uploaded file can contain hostile instructions and a model response can arrive in an unexpected shape.",
+    solution:
+      "The assistant isolates document content, performs the requested analysis, and validates the structured result before saving or showing it.",
     highlights: [
-      "Summarizes, translates, and scores the sentiment of documents in seconds",
-      "Defended against 'prompt injection': hidden instructions inside a document can't hijack it",
-      "Every AI answer is validated before it's trusted",
+      {
+        title: "Three useful jobs",
+        detail: "Summarise, translate, or gauge sentiment from one tool.",
+      },
+      {
+        title: "More than plain text",
+        detail: "Both text files and PDFs follow the same clear workflow.",
+      },
+      {
+        title: "Checked before trusted",
+        detail: "Unexpected AI responses are rejected rather than passed on.",
+      },
     ],
+    technicalProof: [
+      {
+        title: "Defends its instructions",
+        detail:
+          "Document content is isolated so embedded prompts cannot quietly change the task.",
+      },
+      {
+        title: "Fails clearly",
+        detail:
+          "Schema validation, retries, and explicit errors make model failures manageable.",
+      },
+    ],
+    example: {
+      inputLabel: "Untrusted document",
+      input: "TXT or PDF\nRequested task\nPotential embedded instructions",
+      outputLabel: "Validated result",
+      output: "Known JSON shape\nLanguage and word count\nTimestamped output file",
+    },
     year: "2025",
     category: "CLI Tools",
+    platforms: ["CLI"],
     techStack: ["Python", "OpenAI API", "PyPDF2", "pytest"],
     status: "demo",
     githubUrl: "https://github.com/faivern/content-management-ai",
@@ -226,5 +560,5 @@ export const projects: Project[] = [
 ];
 
 export function getProject(slug: string): Project | undefined {
-  return projects.find((p) => p.slug === slug);
+  return projects.find((project) => project.slug === slug);
 }
