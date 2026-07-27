@@ -35,6 +35,7 @@ const technologyIcons: Record<string, TechStackIconName> = {
   TypeScript: "typescript",
   Tailwind: "tailwindcss",
   "Tailwind CSS": "tailwindcss",
+  Bootstrap: "bootstrap5",
   HTML: "html5",
   CSS: "css3",
   MongoDB: "mongodb",

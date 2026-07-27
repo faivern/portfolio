@@ -66,6 +66,8 @@ export type Project = {
   githubUrl?: string;
   liveUrl?: string;
   video?: string;
+  videoPoster?: string;
+  videoPlaceholder?: boolean;
   screenshots: ProjectMedia[];
 };
 
@@ -196,6 +198,7 @@ export const projects: Project[] = [
     status: "demo",
     githubUrl: "https://github.com/faivern/booking-service-platform",
     video: "/projects/Booking-Platform/booking-demo.mp4",
+    videoPoster: "/projects/Booking-Platform/admin-dashboard.webp",
     screenshots: [
       {
         src: "/projects/Booking-Platform/admin-dashboard.webp",
@@ -281,37 +284,40 @@ export const projects: Project[] = [
     slug: "Distributed-Ad-Platform",
     title: "Distributed Ad Platform",
     tagline:
-      "Three independent applications that keep advertisements and subscriber information working as one system.",
+      "A self-service advertising workflow for a newspaper, connecting subscriber benefits, business advertisers, and back-office management without duplicating customer data.",
     description:
-      "A systems integration project connecting a web application, central API, and desktop administration client.",
+      "A newspaper advertising platform that reuses subscriber records through an API, automates advertiser pricing, and keeps subscriber administration separate.",
     problem:
-      "When separate tools manage related information, duplicated data and manual hand-offs quickly create disagreements.",
+      "A newspaper needs to serve both subscribers and business advertisers. Copying subscriber details into the advertising system would create duplicate records, extra administration, and a greater risk of conflicting customer information.",
     solution:
-      "The platform separates advertising and subscriber responsibilities while connecting the web, API, and desktop experiences through clear service boundaries.",
+      "Subscribers identify themselves with a subscription number, review details retrieved from the subscriber service, and place an advert for free. Companies enter their own billing details and receive the standard 40 SEK advertising price automatically.",
     highlights: [
       {
-        title: "Three applications",
-        detail: "Web, API, and desktop clients each have a focused job.",
+        title: "Self-service intake",
+        detail:
+          "One guided web flow adapts to subscribers and business advertisers.",
       },
       {
-        title: "Shared truth",
-        detail: "Interfaces read and update subscriber data through one service.",
+        title: "Subscriber benefit",
+        detail:
+          "A subscription number unlocks saved customer details and zero-cost advertising.",
       },
       {
-        title: "Independent parts",
-        detail: "Each application can change without replacing the whole system.",
+        title: "Less duplicate data",
+        detail:
+          "Subscriber information remains owned by one system and is reused through its API.",
       },
     ],
     technicalProof: [
       {
-        title: "Boundaries with a purpose",
+        title: "Two systems, two databases",
         detail:
-          "Advertising and subscriber data live in separate applications and databases.",
+          "Advertising and subscriber responsibilities stay independently deployable, with their own data models and storage.",
       },
       {
-        title: "One service, different clients",
+        title: "API-led workflows",
         detail:
-          "The website and Windows application communicate with the same HTTP API.",
+          "The advertising site retrieves existing customers while a Windows CRUD client manages subscriber records through the same HTTP API.",
       },
     ],
     year: "2025",
@@ -319,6 +325,7 @@ export const projects: Project[] = [
     platforms: ["Web", "Desktop", "API"],
     techStack: [
       "ASP.NET Core MVC",
+      "Bootstrap",
       "Web API",
       "EF Core",
       "SQL Server",
@@ -326,6 +333,7 @@ export const projects: Project[] = [
     ],
     status: "demo",
     githubUrl: "https://github.com/faivern/distributed-ad-platform",
+    video: "/projects/Distributed-Ad-Platform/ad-platform-demo.mp4",
     screenshots: [
       {
         src: "/projects/Distributed-Ad-Platform/ad-system.webp",
@@ -333,14 +341,16 @@ export const projects: Project[] = [
         height: 1271,
         alt:
           "Web application showing a grid of advertisements with subscriber and business labels, prices, and sellers",
-        caption: "The public-facing web application manages the advertising side.",
+        caption:
+          "The advertising site clearly distinguishes subscriber and business listings.",
       },
       {
         src: "/projects/Distributed-Ad-Platform/desktop-subscriber.webp",
         width: 1141,
         height: 637,
         alt: "Windows desktop application for creating and managing subscribers",
-        caption: "A separate desktop client manages subscribers through the shared API.",
+        caption:
+          "Back-office staff manage the subscriber records reused by the advertising workflow.",
       },
     ],
   },

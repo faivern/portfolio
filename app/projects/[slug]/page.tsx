@@ -194,7 +194,7 @@ function ProjectHero({ project }: { project: Project }) {
           controls
           playsInline
           preload="metadata"
-          poster={project.screenshots[0]?.src}
+          poster={project.videoPoster}
           aria-label={`Video demonstration of ${project.title}`}
           className="relative z-[1] w-full"
         >
@@ -203,6 +203,42 @@ function ProjectHero({ project }: { project: Project }) {
         </video>
         <figcaption className="relative z-[1] border-t border-foreground/10 px-4 py-3 font-sans text-xs leading-relaxed normal-case tracking-normal text-muted [text-shadow:none] sm:px-5">
           A guided demonstration of the customer and staff booking experience.
+        </figcaption>
+      </figure>
+    );
+  }
+
+  if (project.videoPlaceholder) {
+    return (
+      <figure className="paper-panel overflow-hidden border border-foreground/10">
+        <div className="relative z-[1] flex aspect-video items-center justify-center bg-[#e8e2d6] p-8 text-center">
+          <div>
+            <svg
+              viewBox="0 0 48 48"
+              fill="none"
+              aria-hidden="true"
+              className="mx-auto h-12 w-12 text-muted"
+            >
+              <circle
+                cx="24"
+                cy="24"
+                r="22"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <path d="m20 16 13 8-13 8V16Z" fill="currentColor" />
+            </svg>
+            <p className="mt-5 font-serif text-xs tracking-[0.3em] text-muted">
+              Video walkthrough
+            </p>
+            <p className="mt-2 font-sans text-sm normal-case tracking-normal text-muted [text-shadow:none]">
+              Coming soon
+            </p>
+          </div>
+        </div>
+        <figcaption className="relative z-[1] border-t border-foreground/10 px-4 py-3 font-sans text-xs leading-relaxed normal-case tracking-normal text-muted [text-shadow:none] sm:px-5">
+          A guided demonstration of the subscriber and business advertising
+          workflows will be added here.
         </figcaption>
       </figure>
     );
@@ -255,7 +291,10 @@ export default async function ProjectPage({
   const project = getProject(slug);
   if (!project) notFound();
 
-  const supportingScreenshots = project.screenshots.slice(1);
+  const supportingScreenshots =
+    project.video || project.videoPlaceholder
+      ? project.screenshots.slice(project.videoPoster ? 1 : 0)
+      : project.screenshots.slice(1);
 
   return (
     <div className="flex flex-1 justify-center px-6 py-14 sm:px-8 sm:py-20">

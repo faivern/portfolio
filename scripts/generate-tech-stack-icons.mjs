@@ -17,6 +17,7 @@ const catalog = Function(
 )();
 const iconNames = [
   "azure",
+  "bootstrap5",
   "c#",
   "c++",
   "claude",
