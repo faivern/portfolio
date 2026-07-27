@@ -202,7 +202,8 @@ function ProjectHero({ project }: { project: Project }) {
           Your browser does not support embedded video.
         </video>
         <figcaption className="relative z-[1] border-t border-foreground/10 px-4 py-3 font-sans text-xs leading-relaxed normal-case tracking-normal text-muted [text-shadow:none] sm:px-5">
-          A guided demonstration of the customer and staff booking experience.
+          {project.videoCaption ??
+            `A guided demonstration of ${project.title}.`}
         </figcaption>
       </figure>
     );

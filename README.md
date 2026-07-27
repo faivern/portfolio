@@ -44,10 +44,11 @@ cp .env.example .env.local   # then edit NEXT_PUBLIC_SITE_URL
   `example` data renders a first-party input/output visual for projects without
   screenshots. Set `videoPlaceholder` while a walkthrough is pending so every
   screenshot remains under "A closer look"; replace it with `video` when the
-  local MP4 is ready. An optional `videoPoster` uses the matching first
-  screenshot as the poster and keeps it out of the gallery. All projects live on
-  `/projects`; the business-card reverse instead holds the short profile and
-  grouped technical stack from `lib/site.ts`.
+  local MP4 is ready. Set `videoCaption` for a project-specific visible caption.
+  An optional `videoPoster` uses the matching first screenshot as the poster and
+  keeps it out of the gallery. All projects live on `/projects`; the
+  business-card reverse instead holds the short profile and grouped technical
+  stack from `lib/site.ts`.
   Use `category` for the single primary engineering focus and `platforms` for
   important interfaces or architectural surfaces; `projectCategories` defines
   display order. Related-project cards prefer the same category, then shared

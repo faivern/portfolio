@@ -67,6 +67,7 @@ export type Project = {
   liveUrl?: string;
   video?: string;
   videoPoster?: string;
+  videoCaption?: string;
   videoPlaceholder?: boolean;
   screenshots: ProjectMedia[];
 };
@@ -199,6 +200,8 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/faivern/booking-service-platform",
     video: "/projects/Booking-Platform/booking-demo.mp4",
     videoPoster: "/projects/Booking-Platform/admin-dashboard.webp",
+    videoCaption:
+      "A guided demonstration of the customer and staff booking experience.",
     screenshots: [
       {
         src: "/projects/Booking-Platform/admin-dashboard.webp",
@@ -334,6 +337,8 @@ export const projects: Project[] = [
     status: "demo",
     githubUrl: "https://github.com/faivern/distributed-ad-platform",
     video: "/projects/Distributed-Ad-Platform/ad-platform-demo.mp4",
+    videoCaption:
+      "A walkthrough of the connected advertising and subscriber-management workflows.",
     screenshots: [
       {
         src: "/projects/Distributed-Ad-Platform/ad-system.webp",
@@ -481,37 +486,40 @@ export const projects: Project[] = [
     slug: "AI-Customer-Insight",
     title: "AI Customer Insight CLI",
     tagline:
-      "A focused tool that turns a spreadsheet of customer comments into the report a decision-maker actually needs.",
+      "A guided CLI that turns a CSV of customer comments into a decision-ready report, with every analysis stage made visible.",
     description:
-      "A command-line tool that combines statistics and AI to turn raw customer feedback into structured, actionable reports.",
+      "A guided command-line tool that validates customer feedback, combines dataset metrics with AI analysis, and produces a structured Markdown report.",
     problem:
       "Useful themes hide inside hundreds of comments, and reading them manually is slow, subjective, and difficult to repeat.",
     solution:
-      "The tool combines ratings with language analysis to produce a consistent report of sentiment, themes, quick wins, and longer-term actions.",
+      "The guided workflow validates the CSV, calculates dataset metrics, prepares safe samples, previews the findings, and saves themes and prioritised actions as a shareable Markdown report.",
     highlights: [
       {
-        title: "From CSV to report",
-        detail: "One command turns raw comments into readable Markdown.",
+        title: "Guided from the start",
+        detail:
+          "Run it with no arguments to choose a CSV interactively, or provide a path directly.",
       },
       {
-        title: "Numbers plus narrative",
-        detail: "Ratings support the themes and recommendations.",
+        title: "Progress you can see",
+        detail:
+          "Five clear stages show validation, metrics, safety checks, AI analysis, and report creation.",
       },
       {
-        title: "Ready to act on",
-        detail: "Quick wins are separated from longer-term improvements.",
+        title: "Useful before you leave",
+        detail:
+          "A terminal preview surfaces the top themes and next steps while the full report is saved.",
       },
     ],
     technicalProof: [
       {
-        title: "Works beyond one prompt",
+        title: "Guarded inputs",
         detail:
-          "Large files are sampled and processed without exceeding model limits.",
+          "Required columns are validated, samples are capped and sanitised, and feedback is treated as untrusted data rather than instructions.",
       },
       {
-        title: "Repeatable output",
+        title: "Structured, repeatable output",
         detail:
-          "A defined report structure makes different feedback runs easy to compare.",
+          "Model responses are checked before a fixed report structure turns metrics and insights into comparable findings.",
       },
     ],
     example: {
@@ -528,7 +536,29 @@ export const projects: Project[] = [
     techStack: ["Python", "OpenAI API", "pandas", "typer"],
     status: "demo",
     githubUrl: "https://github.com/faivern/ai-customer-insight",
-    screenshots: [],
+    video: "/projects/AI-Customer-Insight/AI-Customer-Insight-Demo.mp4",
+    videoCaption:
+      "The guided workflow turns an example CSV into a preview and a saved customer insight report.",
+    screenshots: [
+      {
+        src: "/projects/AI-Customer-Insight/Input-and-Worflow.png",
+        width: 1091,
+        height: 878,
+        alt:
+          "AI Customer Insight terminal showing five completed analysis stages, dataset metrics, an insight preview, and the saved report path",
+        caption:
+          "The CLI keeps validation, safety checks, progress, and the most useful findings visible.",
+      },
+      {
+        src: "/projects/AI-Customer-Insight/Output-Full-Report.png",
+        width: 1579,
+        height: 891,
+        alt:
+          "Generated customer insight report showing response metrics, a summary, top themes, prioritised improvements, quick wins, and long-term actions",
+        caption:
+          "The saved Markdown report separates evidence, themes, quick wins, and longer-term actions.",
+      },
+    ],
   },
   {
     slug: "Content-Management-AI",
