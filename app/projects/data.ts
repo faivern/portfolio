@@ -409,7 +409,7 @@ export const projects: Project[] = [
     slug: "Portfolio",
     title: "Personal Portfolio: Self-Hosted Static Site",
     tagline:
-      "The site you are using now: a private, accessible portfolio served from a Raspberry Pi at home.",
+      "The site you are using now: a privacy-friendly, accessible portfolio self-hosted on a Raspberry Pi at my home.",
     description:
       "A privacy-first, accessible static portfolio with no tracking or third-party requests, self-hosted on a Raspberry Pi.",
     problem:
@@ -419,7 +419,7 @@ export const projects: Project[] = [
     highlights: [
       {
         title: "Zero tracking",
-        detail: "No cookies, analytics, or requests to third parties.",
+        detail: "No cookies, analytics, or tracking scripts.",
       },
       {
         title: "Built for everyone",
@@ -427,7 +427,7 @@ export const projects: Project[] = [
       },
       {
         title: "Self-hosted",
-        detail: "A Raspberry Pi serves the static export through nginx.",
+        detail: "A Raspberry Pi serves the static export through nginx, exposed securely through a Cloudflare Tunnel.",
       },
     ],
     technicalProof: [
