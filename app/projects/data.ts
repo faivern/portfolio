@@ -74,43 +74,57 @@ export const projects: Project[] = [
     slug: "Cinelas",
     title: "Movie & TV Discovery Platform",
     tagline:
-      "A live discovery platform that turns 1.3 million titles into a personal place to explore, track, and collect.",
+      "A live discovery platform that turns 1.3 million titles into a personal place to discover, track, and find where to watch.",
     description:
-      "Cinelas helps people discover, track, rate, and organise more than 1.3 million movies and TV shows.",
+      "Cinelas combines movie and TV tracking with an Azure OpenAI RAG pipeline for grounded, natural-language discovery.",
     problem:
       "Streaming offers endless choice, but finding something worth watching often means bouncing between services, lists, and review sites.",
     solution:
       "Cinelas brings discovery, rich title information, personal lists, viewing progress, and detailed ratings into one responsive product anyone can use.",
     highlights: [
       {
-        title: "Live product",
-        detail: "Anyone can create an account and use it today.",
+        title: "Ask naturally",
+        detail:
+          "Search by mood, theme, plot, actor, or half-remembered scene, not just predefined filters.",
       },
       {
         title: "1.3M+ titles",
-        detail: "Movies and shows stay searchable in one catalogue.",
+        detail:
+          "Movies and shows stay searchable in one catalogue.",
       },
       {
-        title: "One home for taste",
-        detail: "Lists, progress, and four-part ratings travel together.",
+        title: "Discovery to decision",
+        detail:
+          "Move from a suggestion to streaming providers, custom lists, viewing progress, and detailed ratings.",
       },
     ],
     technicalProof: [
       {
-        title: "Fast repeat browsing",
+        title: "Grounded recommendations (RAG)",
         detail:
-          "A caching layer remembers frequently requested movie data instead of fetching it again.",
+          "Cinelas uses retrieval-augmented generation (RAG): it searches 15,000 prepared movie and show records by meaning, then gives the closest matches to Azure OpenAI to choose and explain. The AI works from real catalogue results instead of guessing.",
       },
       {
-        title: "Fairer rankings",
+        title: "Reliable, controlled AI",
         detail:
-          "Bayesian scoring balances a high rating against how many people actually rated the title.",
+          "Cinelas removes titles already watched and checks every suggestion against its catalogue, preventing invented results. Sign-in, usage limits, caching, and monitoring keep the live service reliable and its costs predictable.",
       },
     ],
     year: "2026",
     category: "Web",
     platforms: ["Web"],
-    techStack: [".NET", "React", "PostgreSQL", "Docker", "Azure"],
+    techStack: [
+      "RAG",
+      ".NET",
+      "React",
+      "Azure",
+      "Docker",
+      "pgvector",
+      "TypeScript",
+      "PostgreSQL",
+      "Tailwind CSS",
+      "Azure OpenAI",
+    ],
     status: "live",
     githubUrl: "https://www.github.com/faivern/streaming-app",
     liveUrl: "https://cinelas.com",
@@ -123,11 +137,11 @@ export const projects: Project[] = [
         caption: "The live discovery experience at cinelas.com.",
       },
       {
-        src: "/projects/Cinelas/discover.webp",
-        width: 1186,
+        src: "/projects/Cinelas/ai-chat.png",
+        width: 986,
         height: 1185,
-        alt: "Cinelas discover panel with filters for finding movies and television shows",
-        caption: "Focused filters help turn a huge catalogue into a useful shortlist.",
+        alt: "Cinelas AI chat with RAG pipeline showing a recommendation for a movie based on a natural-language question",
+        caption: "Turns natural-language questions into grounded recommendations.",
       },
       {
         src: "/projects/Cinelas/review.webp",
