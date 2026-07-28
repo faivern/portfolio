@@ -17,6 +17,12 @@ Deploy by copying `out/` to any static web server; `deploy/nginx.conf` is the
 reference nginx config (security headers, routing, 404, MIME fixes) for the
 Raspberry Pi host.
 
+The reference config also supports Cloudflare Tunnel on
+`127.0.0.1:8080`. Keep its proxy-safe relative redirects and the
+`$uri.html`-first route lookup intact: Next.js emits same-named route
+directories alongside HTML files, and allowing nginx to select a directory
+first leaks the internal port in its automatic trailing-slash redirect.
+
 Set the canonical origin before deploying (used by OpenGraph, sitemap and
 robots.txt):
 
