@@ -73,7 +73,7 @@ export default function Home() {
   };
 
   return (
-    <div className="business-card flex flex-1 items-center justify-center px-6 py-6 sm:px-8 sm:py-10 lg:py-16">
+    <div className="business-card flex flex-1 items-center justify-center px-3 py-4 min-[360px]:px-4 sm:px-8 sm:py-10 lg:py-16">
       <div className="card-stage w-full max-w-[929px] [perspective:1600px]">
         <div
           ref={tiltRef}
@@ -82,7 +82,7 @@ export default function Home() {
           onPointerLeave={handlePointerLeave}
         >
           <div
-            className={`card-3d grid h-[43rem] min-[360px]:h-[40rem] min-[480px]:h-[36rem] sm:h-[31rem] md:aspect-[7/4] md:h-auto ${flipped ? "is-flipped" : ""}`}
+            className={`card-3d grid min-h-[43rem] min-[360px]:min-h-[40rem] min-[480px]:min-h-[36rem] sm:h-[31rem] sm:min-h-0 md:aspect-[7/4] md:h-auto ${flipped ? "is-flipped" : ""}`}
             onPointerDown={(e) => {
               // The tilt moves the card under the pointer, so a press that
               // starts on a link can end slightly off it, the click then
@@ -187,7 +187,7 @@ export default function Home() {
             tabIndex={-1}
             aria-labelledby="about-me"
             inert={!flipped}
-            className="card-face card-back col-start-1 row-start-1 flex min-h-[280px] cursor-pointer flex-col overflow-hidden px-6 pt-6 sm:px-8 sm:pt-7"
+            className="card-face card-back col-start-1 row-start-1 flex min-h-[280px] cursor-pointer flex-col overflow-hidden px-4 pt-4 min-[360px]:px-5 sm:px-8 sm:pt-7"
           >
             <h2
               id="about-me"
@@ -196,12 +196,12 @@ export default function Home() {
               About Me
             </h2>
 
-            <div className="mt-4 flex min-h-0 flex-1 flex-col gap-4 pb-4">
-              <p className="max-w-[52rem] normal-case font-serif text-base leading-[1.45] tracking-[0.025em] sm:text-[1.05rem]">
+            <div className="mt-3 flex min-h-0 flex-1 flex-col gap-3 pb-3 sm:mt-4 sm:gap-4 sm:pb-4">
+              <p className="max-w-[52rem] normal-case font-serif text-sm leading-[1.4] tracking-[0.025em] sm:text-[1.05rem] sm:leading-[1.45]">
                 {site.profile.about}
               </p>
 
-              <div className="flex flex-col gap-2.5 border-y border-foreground/10 py-3 normal-case font-sans text-[0.85rem] leading-snug tracking-[0.035em] text-muted">
+              <div className="flex flex-col gap-1.5 border-y border-foreground/10 py-2 normal-case font-sans text-xs leading-snug tracking-[0.035em] text-muted sm:gap-2.5 sm:py-3 sm:text-[0.85rem]">
                 <p className="inline-flex items-start gap-1.5">
                   <FaLocationDot
                     aria-hidden="true"
@@ -236,20 +236,20 @@ export default function Home() {
               </div>
 
               <div className="flex min-h-0 flex-1 flex-col">
-                <h3 className="font-sans text-[0.68rem] font-medium tracking-[0.24em] text-muted pb-2">
+                <h3 className="pb-1 font-sans text-[0.62rem] font-medium tracking-[0.2em] text-muted sm:pb-2 sm:text-[0.68rem] sm:tracking-[0.24em]">
                   How I Like to Build
                 </h3>
-                <dl className="mt-2 grid flex-1 grid-cols-2 content-start gap-x-4 gap-y-3 sm:grid-rows-2 sm:content-stretch sm:gap-x-8 sm:gap-y-4">
+                <dl className="mt-1 grid flex-1 grid-cols-2 content-start gap-x-2 gap-y-2 sm:mt-2 sm:grid-rows-2 sm:content-stretch sm:gap-x-8 sm:gap-y-4">
                   {site.profile.skillGroups.map((group) => (
                     <div
                       key={group.label}
                       className="min-w-0"
                     >
-                      <dt className="font-sans text-[0.62rem] font-medium tracking-[0.2em] text-muted">
+                      <dt className="font-sans text-[0.58rem] font-medium tracking-[0.14em] text-muted sm:text-[0.62rem] sm:tracking-[0.2em]">
                         {group.label}
                       </dt>
-                      <dd className="mt-1.5">
-                        <ul className="flex flex-wrap gap-1">
+                      <dd className="mt-1 sm:mt-1.5">
+                        <ul className="flex flex-wrap gap-0.5 sm:gap-1">
                           {group.skills.map((technology) => (
                             <TechnologyBadge
                               key={technology}
@@ -266,11 +266,11 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative -mx-6 min-h-14 shrink-0 border-t border-accent/50 sm:-mx-8">
+            <div className="relative -mx-4 min-h-12 shrink-0 border-t border-accent/50 min-[360px]:-mx-5 sm:-mx-8 sm:min-h-14">
               <button
                 type="button"
                 onClick={() => setFlipped(false)}
-                className="relative z-10 ml-4 flex min-h-14 cursor-pointer items-center p-2 font-sans text-base text-muted hover:text-foreground"
+                className="relative z-10 ml-2 flex min-h-12 cursor-pointer items-center p-2 font-sans text-base text-muted hover:text-foreground sm:ml-4 sm:min-h-14"
               >
                 <span aria-hidden="true">←&#xFE0E;</span>
                 <span className="sr-only">Back to the front of the card</span>

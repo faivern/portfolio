@@ -562,54 +562,73 @@ export const projects: Project[] = [
   },
   {
     slug: "Content-Management-AI",
-    title: "Secure AI Text Analysis CLI",
+    title: "AI Content Management",
     tagline:
-      "A deliberately sceptical document assistant that summarises, translates, and reads sentiment without trusting every input or output.",
+      "A document assistant that turns unstructured text and PDFs into concise summaries, translations, and sentiment insights.",
     description:
-      "A security-first command-line assistant for summarising, translating, and analysing sentiment in text and PDF documents.",
+      "AI Content Management turns unstructured text and PDFs into actionable summaries, translations, and sentiment insights.",
     problem:
-      "AI can speed up document work, but an uploaded file can contain hostile instructions and a model response can arrive in an unexpected shape.",
+      "Reviewing long documents by hand takes time and makes it easy to miss the themes, concerns, and details that deserve attention.",
     solution:
-      "The assistant isolates document content, performs the requested analysis, and validates the structured result before saving or showing it.",
+      "The CLI reads a text file or PDF, runs the chosen analysis, and presents a structured result that can be reviewed immediately and reused later.",
     highlights: [
       {
-        title: "Three useful jobs",
-        detail: "Summarise, translate, or gauge sentiment from one tool.",
+        title: "Summaries that scan",
+        detail:
+          "Condenses long material into a short overview and focused key points.",
       },
       {
-        title: "More than plain text",
-        detail: "Both text files and PDFs follow the same clear workflow.",
+        title: "Three workflows",
+        detail:
+          "Summarise, translate, or analyse sentiment from one guided interface.",
       },
       {
-        title: "Checked before trusted",
-        detail: "Unexpected AI responses are rejected rather than passed on.",
+        title: "Useful across teams",
+        detail:
+          "Turn course material, reports, or customer feedback into actionable insights.",
       },
     ],
     technicalProof: [
       {
-        title: "Defends its instructions",
+        title: "Mixed document input",
         detail:
-          "Document content is isolated so embedded prompts cannot quietly change the task.",
+          "Text files and PDFs share the same workflow, with source language and word count detected during processing.",
       },
       {
-        title: "Fails clearly",
+        title: "Structured, reusable results",
         detail:
-          "Schema validation, retries, and explicit errors make model failures manageable.",
+          "Each analysis is validated, shown in the terminal, and saved as timestamped JSON for later use.",
       },
     ],
-    example: {
-      inputLabel: "Untrusted document",
-      input: "TXT or PDF\nRequested task\nPotential embedded instructions",
-      outputLabel: "Validated result",
-      output: "Known JSON shape\nLanguage and word count\nTimestamped output file",
-    },
-    year: "2025",
+    year: "2026",
     category: "CLI Tools",
     platforms: ["CLI"],
     techStack: ["Python", "OpenAI API", "PyPDF2", "pytest"],
     status: "demo",
     githubUrl: "https://github.com/faivern/content-management-ai",
-    screenshots: [],
+    video: "/projects/AI-Content-Manager/content-manager-demo.mp4",
+    videoCaption:
+      "A guided demonstration of the document-analysis workflow from source selection to saved result.",
+    screenshots: [
+      {
+        src: "/projects/AI-Content-Manager/lecture-note-input.png",
+        width: 776,
+        height: 730,
+        alt:
+          "AI Content Management terminal showing the summarize workflow processing a 3.5 megabyte university Security Fundamentals PDF",
+        caption:
+          "A university lecture PDF moves through reading, language detection, summarisation, and structured output.",
+      },
+      {
+        src: "/projects/AI-Content-Manager/lecture-note-result.png",
+        width: 898,
+        height: 795,
+        alt:
+          "AI Content Management terminal showing a concise Security Fundamentals lecture summary and five extracted key points",
+        caption:
+          "The result turns 1,266 words of course material into a concise summary and five revision-ready key points.",
+      },
+    ],
   },
 ];
 
