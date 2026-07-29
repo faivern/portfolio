@@ -230,40 +230,40 @@ export const projects: Project[] = [
     slug: "Cinelas-TV",
     title: "Self-Hosted Media Browser for Google TV",
     tagline:
-      "The living-room variant of Cinelas: remote-first discovery, per-profile tracking, and playback from a private media library at home.",
+      "One place to explore every film and series: play what you own, jump to the service that has what you don’t, and save the rest for later.",
     description:
-      "A Google TV app that pairs TMDB-powered discovery with Jellyfin playback of a personal library, signed in with a household PIN instead of passwords.",
+      "Cinelas TV is a Google TV media hub that streams an owned Jellyfin library, finds regional streaming availability, and keeps personal watchlists.",
     problem:
-      "Personal media and online discovery usually live in separate interfaces designed for a mouse — and nobody wants to type an email address with a television remote.",
+      "Personal collections and streaming subscriptions live in separate apps, each showing only its own world. Finding The Godfather should not mean searching every service — or forgetting about it when it is unavailable.",
     solution:
-      "Forked from the main Cinelas web platform, Cinelas TV keeps the same domain model but rebuilds the experience around a D-pad: shelf-based browsing, per-profile lists and tracking, and playback resolved server-side from the Jellyfin library on a Raspberry Pi.",
+      "Cinelas TV gathers the whole catalogue in one remote-friendly hub. Owned titles play from Jellyfin. For everything else, it shows the services carrying the title in the viewer’s region; choosing Netflix, for example, closes Cinelas TV and opens Netflix on the television. Unavailable titles can stay on a personal list until they reach a service or the viewer buys them.",
     highlights: [
       {
-        title: "Made for the sofa",
+        title: "One catalogue, no walls",
         detail:
-          "The catalogue is laid out as focusable shelves that work entirely with a television remote.",
+          "Discover titles beyond what individual streaming platforms choose to surface.",
       },
       {
-        title: "Sign in with a PIN",
+        title: "From poster to playback",
         detail:
-          "A household PIN and static profiles replace email and passwords, with lists and tracking scoped per profile.",
+          "Play owned media directly or hand an unowned title to the right TV app.",
       },
       {
-        title: "Browse, then play",
+        title: "Keep it for later",
         detail:
-          "Owned titles stream from the private Jellyfin library; everything else deep-links to subscribed streaming services.",
+          "Per-profile lists remember titles worth streaming later or adding to the collection.",
       },
     ],
     technicalProof: [
       {
-        title: "The TV holds no logic",
+        title: "A thin TV app",
         detail:
-          "The Raspberry Pi is the entire server — nginx, a .NET API, PostgreSQL, and Jellyfin — while the Capacitor-wrapped React app on Google TV renders UI only.",
+          "The Capacitor-wrapped React app stays focused on the remote-controlled experience while a Raspberry Pi runs nginx, the .NET API, PostgreSQL, and Jellyfin.",
       },
       {
-        title: "Strictly separated sources",
+        title: "The right source for each job",
         detail:
-          "TMDB supplies metadata only and playback comes exclusively from owned media through proxied Jellyfin URLs. Without a Jellyfin key the app simply reports everything unavailable and hides its Play buttons.",
+          "TMDB supplies catalogue and regional provider data; Jellyfin alone serves owned media through proxied URLs, keeping discovery and playback clearly separated.",
       },
     ],
     year: "2026",
