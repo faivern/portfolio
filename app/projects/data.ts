@@ -230,57 +230,65 @@ export const projects: Project[] = [
     slug: "Cinelas-TV",
     title: "Self-Hosted Media Browser for Google TV",
     tagline:
-      "A remote-first television experience that connects rich movie discovery with a private media library at home.",
+      "The living-room variant of Cinelas: remote-first discovery, per-profile tracking, and playback from a private media library at home.",
     description:
-      "A Google TV app for browsing movie information and playing a personal media library from a self-hosted server.",
+      "A Google TV app that pairs TMDB-powered discovery with Jellyfin playback of a personal library, signed in with a household PIN instead of passwords.",
     problem:
-      "Personal media and online discovery usually live in separate interfaces that were designed for a mouse, not a sofa and remote.",
+      "Personal media and online discovery usually live in separate interfaces designed for a mouse — and nobody wants to type an email address with a television remote.",
     solution:
-      "Cinelas TV joins both worlds in a focused ten-foot interface, with the library and streaming server running privately on a Raspberry Pi.",
+      "Cinelas TV rebuilds the Cinelas domain model around a D-pad: shelf-based browsing, per-profile lists and tracking, and playback resolved server-side from the Jellyfin library on a Raspberry Pi.",
     highlights: [
       {
         title: "Made for the sofa",
-        detail: "Every screen and action works with a television remote.",
+        detail:
+          "The catalogue is laid out as focusable shelves that work entirely with a television remote.",
+      },
+      {
+        title: "Sign in with a PIN",
+        detail:
+          "A household PIN and static profiles replace email and passwords, with lists and tracking scoped per profile.",
       },
       {
         title: "Browse, then play",
-        detail: "Rich title details sit beside the media already owned.",
-      },
-      {
-        title: "Private by default",
-        detail: "The personal library stays on a server at home.",
+        detail:
+          "Owned titles stream from the private Jellyfin library; everything else deep-links to subscribed streaming services.",
       },
     ],
     technicalProof: [
       {
-        title: "Small server, smooth playback",
+        title: "The TV holds no logic",
         detail:
-          "Video streams directly to the TV so the Raspberry Pi does not become a bottleneck.",
+          "The Raspberry Pi is the entire server — nginx, a .NET API, PostgreSQL, and Jellyfin — while the Capacitor-wrapped React app on Google TV renders UI only.",
       },
       {
-        title: "Two surfaces, one product",
+        title: "Strictly separated sources",
         detail:
-          "A Google TV client and self-hosted API are designed as one connected experience.",
+          "TMDB supplies metadata only and playback comes exclusively from owned media through proxied Jellyfin URLs. Without a Jellyfin key the app simply reports everything unavailable and hides its Play buttons.",
       },
     ],
-    example: {
-      inputLabel: "On the television",
-      input: "Discover titles\nNavigate by remote\nChoose from your library",
-      outputLabel: "On the home server",
-      output: "Match metadata\nFind the media file\nStream directly to Google TV",
-    },
     year: "2026",
     category: "Device Apps",
     platforms: ["Google TV", "Self-hosted server"],
     techStack: [
       "React",
+      "TypeScript",
       "Capacitor",
-      "ASP.NET Core",
+      "Android",
+      ".NET",
       "PostgreSQL",
       "Jellyfin",
+      "nginx",
       "Docker",
+      "Raspberry Pi",
+      "TMDB",
     ],
     status: "demo",
+    githubUrl: "https://github.com/faivern/cinelas-tv",
+    // Demo video and screenshots are recorded later; the hero shows a
+    // "coming soon" placeholder until then.
+    videoPlaceholder: true,
+    videoCaption:
+      "A walkthrough of the D-pad browsing and Jellyfin playback experience will be added here.",
     screenshots: [],
   },
   {

@@ -9,6 +9,7 @@ const fallbackIcon = "techstackicons" satisfies TechStackIconName;
 
 const technologyIcons: Record<string, TechStackIconName> = {
   ".NET": dotnet,
+  Android: "android",
   "ASP.NET Core": dotnet,
   "ASP.NET Core MVC": dotnet,
   "EF Core": dotnet,

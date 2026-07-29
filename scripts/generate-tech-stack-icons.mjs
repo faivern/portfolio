@@ -16,6 +16,7 @@ const catalog = Function(
   `"use strict"; return (${packageSource.slice(objectStart, objectEnd)});`,
 )();
 const iconNames = [
+  "android",
   "azure",
   "bootstrap5",
   "c#",

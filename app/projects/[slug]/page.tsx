@@ -238,8 +238,8 @@ function ProjectHero({ project }: { project: Project }) {
           </div>
         </div>
         <figcaption className="relative z-[1] border-t border-foreground/10 px-4 py-3 font-sans text-xs leading-relaxed normal-case tracking-normal text-muted [text-shadow:none] sm:px-5">
-          A guided demonstration of the subscriber and business advertising
-          workflows will be added here.
+          {project.videoCaption ??
+            `A guided demonstration of ${project.title} will be added here.`}
         </figcaption>
       </figure>
     );
