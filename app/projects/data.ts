@@ -236,7 +236,7 @@ export const projects: Project[] = [
     problem:
       "Personal media and online discovery usually live in separate interfaces designed for a mouse — and nobody wants to type an email address with a television remote.",
     solution:
-      "Cinelas TV rebuilds the Cinelas domain model around a D-pad: shelf-based browsing, per-profile lists and tracking, and playback resolved server-side from the Jellyfin library on a Raspberry Pi.",
+      "Forked from the main Cinelas web platform, Cinelas TV keeps the same domain model but rebuilds the experience around a D-pad: shelf-based browsing, per-profile lists and tracking, and playback resolved server-side from the Jellyfin library on a Raspberry Pi.",
     highlights: [
       {
         title: "Made for the sofa",
