@@ -7,6 +7,7 @@ import {
   type Project,
   type ProjectExample,
   type ProjectMedia,
+  type ProjectVideo,
 } from "../data";
 import MoreProjects from "./more-projects";
 import ScreenshotGallery from "./screenshot-gallery";
@@ -186,7 +187,93 @@ function HeroImage({
   );
 }
 
+function VideoShowcase({
+  project,
+  videos,
+}: {
+  project: Project;
+  videos: ProjectVideo[];
+}) {
+  return (
+    <div>
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="font-serif text-xs tracking-[0.3em] text-muted">
+            Product walkthroughs
+          </p>
+          <p className="mt-2 max-w-2xl font-sans text-sm leading-6 normal-case tracking-normal text-muted [text-shadow:none]">
+            Four short demonstrations, ordered by the clearest view of the core
+            experience.
+          </p>
+        </div>
+        <p className="font-serif text-[0.65rem] tracking-[0.24em] text-muted">
+          {videos.length} videos
+        </p>
+      </div>
+
+      <ol className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {videos.map((video, index) => {
+          const isFeatured = index === 0;
+
+          return (
+            <li
+              key={video.src}
+              className={
+                isFeatured
+                  ? "md:col-span-2 lg:col-span-3"
+                  : "min-w-0"
+              }
+            >
+              <figure className="paper-panel flex h-full flex-col overflow-hidden border border-foreground/10">
+                <div className="relative z-[1] bg-[#1b1a18]">
+                  <video
+                    controls
+                    playsInline
+                    preload="none"
+                    aria-label={`${video.title} — video ${index + 1} of ${videos.length} for ${project.title}`}
+                    className="aspect-video w-full object-contain"
+                  >
+                    <source src={video.src} type="video/mp4" />
+                    Your browser does not support embedded video.
+                  </video>
+                  <span className="pointer-events-none absolute top-3 left-3 rounded-sm border border-white/25 bg-black/75 px-2.5 py-1 font-serif text-[0.6rem] tracking-[0.2em] text-white">
+                    {isFeatured ? "01 · Start here" : `0${index + 1}`}
+                  </span>
+                </div>
+                <figcaption
+                  className={
+                    isFeatured
+                      ? "relative z-[1] border-t border-foreground/10 px-5 py-5 sm:px-6"
+                      : "relative z-[1] flex-1 border-t border-foreground/10 px-4 py-4"
+                  }
+                >
+                  <h3
+                    className={
+                      isFeatured
+                        ? "font-serif text-xl tracking-[0.055em] sm:text-2xl"
+                        : "font-serif text-lg tracking-[0.055em]"
+                    }
+                  >
+                    {video.title}
+                  </h3>
+                  <p className="mt-2 font-sans text-sm leading-6 normal-case tracking-normal text-muted [text-shadow:none]">
+                    {video.description}
+                  </p>
+                </figcaption>
+              </figure>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}
+
 function ProjectHero({ project }: { project: Project }) {
+  if (project.videos?.length) {
+    return <VideoShowcase project={project} videos={project.videos} />;
+  }
+
   if (project.video) {
     return (
       <figure className="paper-panel overflow-hidden border border-foreground/10">
@@ -293,7 +380,7 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   const supportingScreenshots =
-    project.video || project.videoPlaceholder
+    project.videos?.length || project.video || project.videoPlaceholder
       ? project.screenshots.slice(project.videoPoster ? 1 : 0)
       : project.screenshots.slice(1);
 

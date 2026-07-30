@@ -40,6 +40,12 @@ export type ProjectMedia = {
   caption: string;
 };
 
+export type ProjectVideo = {
+  src: string;
+  title: string;
+  description: string;
+};
+
 export type ProjectExample = {
   inputLabel: string;
   input: string;
@@ -66,6 +72,7 @@ export type Project = {
   githubUrl?: string;
   liveUrl?: string;
   video?: string;
+  videos?: ProjectVideo[];
   videoPoster?: string;
   videoCaption?: string;
   videoPlaceholder?: boolean;
@@ -284,11 +291,32 @@ export const projects: Project[] = [
     ],
     status: "demo",
     githubUrl: "https://github.com/faivern/cinelas-tv",
-    // Demo video and screenshots are recorded later; the hero shows a
-    // "coming soon" placeholder until then.
-    videoPlaceholder: true,
-    videoCaption:
-      "A walkthrough of the D-pad browsing and Jellyfin playback experience will be added here.",
+    videos: [
+      {
+        src: "/projects/CinelasTv/1-notownedmedia-app-redirection.mp4",
+        title: "Continue in the right streaming app",
+        description:
+          "Find a title outside the owned library, choose an available provider, and hand playback to its Google TV app.",
+      },
+      {
+        src: "/projects/CinelasTv/2-search-ownedmedia.mp4",
+        title: "Search and play owned media",
+        description:
+          "Search the personal catalogue and start streaming an owned title directly from Jellyfin.",
+      },
+      {
+        src: "/projects/CinelasTv/3-launch-profile-frontapge.mp4",
+        title: "Launch into a personal home screen",
+        description:
+          "Open Cinelas TV, choose a viewer profile, and arrive at a remote-friendly discovery experience.",
+      },
+      {
+        src: "/projects/CinelasTv/4-mediadetails-trailer.mp4",
+        title: "Explore details and watch a trailer",
+        description:
+          "Open a title to review its key details and preview the trailer before deciding what to watch.",
+      },
+    ],
     screenshots: [],
   },
   {
