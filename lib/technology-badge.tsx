@@ -17,6 +17,7 @@ const technologyIcons: Record<string, TechStackIconName> = {
   SignalR: dotnet,
   React: "react",
   PostgreSQL: "postgresql",
+  Supabase: "supabase",
   pgvector: "postgresql",
   Docker: "docker",
   Azure: "azure",

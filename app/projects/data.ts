@@ -397,39 +397,42 @@ export const projects: Project[] = [
   },
   {
     slug: "Sky-Tracker-AI",
-    title: "ADS-B Flight Tracker with AI Query Layer",
+    title: "Hardware-Backed ADS-B Flight Tracker",
     tagline:
-      "A real antenna-to-screen system that turns aircraft broadcasts into a live radar, useful answers, and a physical alert.",
+      "My own ADS-B antenna feeds a full-stack flight tracker: radio signals arrive at home, then become a live radar and flight history in the browser.",
     description:
-      "A work-in-progress integrated system spanning radio hardware, live data, a radar interface, AI queries, and an ESP32 desk gadget.",
+      "SkyTracker connects a 1090 MHz antenna, RTL-SDR receiver, and Raspberry Pi 5 to Spring Boot, Supabase, and a React radar interface.",
     problem:
-      "Aircraft broadcast a constant stream of useful data, but radio messages alone do not answer the simple question: what is above me right now?",
+      "An ADS-B receiver produces a stream of fragmented aircraft messages, not a usable picture of the sky. Turning my antenna into a tracker meant carrying that real-world signal reliably from hardware into structured, queryable flight data.",
     solution:
-      "Sky Tracker captures those signals, turns them into flight sessions and a live map, and makes the history searchable in everyday language.",
+      "An RTL-SDR receiver connected to my Raspberry Pi 5 decodes broadcasts with readsb and streams them to Spring Boot. The service assembles messages into flight sessions, stores them in Supabase, and exposes my own REST and WebSocket APIs for the web client.",
     highlights: [
       {
-        title: "Real-world input",
-        detail: "A home antenna receives broadcasts from actual aircraft.",
+        title: "Live radar",
+        detail:
+          "Every aircraft on the scope comes from my own 1090 MHz antenna and SDR receiver—not a third-party flight feed.",
       },
       {
-        title: "Ask naturally",
-        detail: "Questions become safe, read-only lookups over flight history.",
+        title: "Every pass remembered",
+        detail:
+          "Spring Boot turns partial messages into sessions stored in Supabase for history, track replay, and leaderboards.",
       },
       {
-        title: "Software meets hardware",
-        detail: "An ESP32 desk light reacts when aircraft enter the area.",
+        title: "My API, one interface",
+        detail:
+          "The React client uses my REST API for stored data and WebSockets for live aircraft, geofence events, and emergency alerts.",
       },
     ],
     technicalProof: [
       {
-        title: "A complete data journey",
+        title: "A physical data pipeline",
         detail:
-          "Radio data moves through ingestion, PostgreSQL, an API, WebSockets, and the radar UI.",
+          "The Pi 5 and readsb decode radio broadcasts, then a resilient TCP ingest client parses SBS messages and reconnects automatically when the edge feed drops.",
       },
       {
-        title: "AI with guardrails",
+        title: "Storage shaped for the product",
         detail:
-          "The query service uses parameterised SQL and a read-only database connection.",
+          "Spring Boot batches positions into Supabase, closes individual flight sessions, and downsamples routine points while retaining full detail near the antenna.",
       },
     ],
     year: "2026",
@@ -440,19 +443,32 @@ export const projects: Project[] = [
       "Java",
       "Spring Boot",
       "React",
-      "FastAPI",
-      "PostgreSQL",
-      "ESP32",
+      "TypeScript",
+      "Supabase",
+      "Raspberry Pi",
     ],
     status: "demo",
     githubUrl: "https://github.com/faivern/sky-tracker-ai",
+    video: "/projects/Sky-Tracker-AI/skytracker-beta-demo.mp4",
+    videoPoster: "/projects/Sky-Tracker-AI/live-view.png",
+    videoCaption:
+      "A beta walkthrough of the live radar, flight history, leaderboards, track replay, and alert workflow.",
     screenshots: [
       {
-        src: "/projects/Sky-Tracker-AI/architecture-v1.0.png",
-        width: 1527,
-        height: 877,
-        alt: "Sky Tracker architecture from radio antenna through ingestion, database, web radar, AI service, and ESP32 alert",
-        caption: "One data path connects an antenna in the garden to software and hardware experiences.",
+        src: "/projects/Sky-Tracker-AI/live-view.png",
+        width: 1906,
+        height: 903,
+        alt: "SkyTracker live radar showing an aircraft received by the local ADS-B ground station",
+        caption:
+          "The live scope plots the local receiver’s WebSocket feed over a range-adjustable map.",
+      },
+      {
+        src: "/projects/Sky-Tracker-AI/leaderboard.png",
+        width: 510,
+        height: 545,
+        alt: "SkyTracker fastest-aircraft leaderboard listing callsigns, dates, and maximum speeds",
+        caption:
+          "Stored flight sessions become fastest, lowest, and closest-approach leaderboards.",
       },
     ],
   },

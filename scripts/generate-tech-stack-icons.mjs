@@ -45,6 +45,7 @@ const iconNames = [
   "raspberrypi",
   "react",
   "spring",
+  "supabase",
   "tailwindcss",
   "techstackicons",
   "twilio",
