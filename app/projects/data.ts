@@ -58,6 +58,7 @@ export type Project = {
   title: string;
   tagline: string;
   description: string;
+  problemTitle?: string;
   problem: string;
   solution: string;
   highlights: ProjectHighlight[];
@@ -74,6 +75,7 @@ export type Project = {
   video?: string;
   videos?: ProjectVideo[];
   videoPoster?: string;
+  showVideoPosterInGallery?: boolean;
   videoCaption?: string;
   videoPlaceholder?: boolean;
   screenshots: ProjectMedia[];
@@ -86,7 +88,7 @@ export const projects: Project[] = [
     tagline:
       "A live discovery platform that turns 1.3 million titles into a personal place to discover, track, and find where to watch.",
     description:
-      "Cinelas combines movie and TV tracking with an Azure OpenAI RAG pipeline for grounded, natural-language discovery.",
+      "Cinelas helps people discover, track, and choose what to watch across a catalogue of more than 1.3 million movies and shows.",
     problem:
       "Streaming offers endless choice, but finding something worth watching often means bouncing between services, lists, and review sites.",
     solution:
@@ -164,7 +166,7 @@ export const projects: Project[] = [
   },
   {
     slug: "Booking-Platform",
-    title: "Booking Platform for Service Businesses",
+    title: "Online Booking",
     tagline:
       "A complete booking journey for customers, with a live operations view for the people running the business.",
     description:
@@ -239,7 +241,7 @@ export const projects: Project[] = [
     tagline:
       "One place to explore every film and series: play what you own, jump to the service that has what you don’t, and save the rest for later.",
     description:
-      "Cinelas TV is a Google TV media hub that streams an owned Jellyfin library, finds regional streaming availability, and keeps personal watchlists.",
+      "Cinelas TV brings a personal movie collection, streaming availability, and watchlists together in one television app.",
     problem:
       "Personal collections and streaming subscriptions live in separate apps, each showing only its own world. Finding The Godfather should not mean searching every service — or forgetting about it when it is unavailable.",
     solution:
@@ -321,11 +323,11 @@ export const projects: Project[] = [
   },
   {
     slug: "Distributed-Ad-Platform",
-    title: "Distributed Ad Platform",
+    title: "Newspaper Advertising Platform",
     tagline:
-      "A self-service advertising workflow for a newspaper, connecting subscriber benefits, business advertisers, and back-office management without duplicating customer data.",
+      "A simpler way for newspaper subscribers and local businesses to place adverts, while staff keep customer information accurate behind the scenes.",
     description:
-      "A newspaper advertising platform that reuses subscriber records through an API, automates advertiser pricing, and keeps subscriber administration separate.",
+      "A self-service newspaper advertising platform that recognises subscribers, applies the right price, and avoids duplicate customer records.",
     problem:
       "A newspaper needs to serve both subscribers and business advertisers. Copying subscriber details into the advertising system would create duplicate records, extra administration, and a greater risk of conflicting customer information.",
     solution:
@@ -397,42 +399,43 @@ export const projects: Project[] = [
   },
   {
     slug: "Sky-Tracker-AI",
-    title: "Hardware-Backed ADS-B Flight Tracker",
+    title: "Sky tracker AI",
     tagline:
-      "My own ADS-B antenna feeds a full-stack flight tracker: radio signals arrive at home, then become a live radar and flight history in the browser.",
+      "A live view of the aircraft above my home, powered by a small antenna and designed to make local flight activity easy to explore.",
     description:
-      "SkyTracker connects a 1090 MHz antenna, RTL-SDR receiver, and Raspberry Pi 5 to Spring Boot, Supabase, and a React radar interface.",
+      "Sky tracker AI turns aircraft radio signals received at home into a live map, searchable flight history, alerts, and easy-to-understand insights.",
+    problemTitle: "What I wanted to explore",
     problem:
-      "An ADS-B receiver produces a stream of fragmented aircraft messages, not a usable picture of the sky. Turning my antenna into a tracker meant carrying that real-world signal reliably from hardware into structured, queryable flight data.",
+      "This began as a for-fun homelab experiment. I wanted to connect a radio antenna and Raspberry Pi to software I built myself, learn how aircraft broadcasts could be received at home, and see how far I could take the idea—from live data to flight history, alerts, and eventually AI-powered questions.",
     solution:
-      "An RTL-SDR receiver connected to my Raspberry Pi 5 decodes broadcasts with readsb and streams them to Spring Boot. The service assembles messages into flight sessions, stores them in Supabase, and exposes my own REST and WebSocket APIs for the web client. Next, an AI query layer will answer natural-language questions such as ‘What plane flew over my house at lunch yesterday?’",
+      "A small home receiver listens for nearby aircraft and sends their position, speed, and altitude to the app. Sky tracker AI turns that information into a live map, remembers each flight for later, and can alert me to important events. The next step is a conversational search that can answer questions such as, ‘What plane flew over my house at lunch yesterday?’",
     highlights: [
       {
         title: "Live radar",
         detail:
-          "Every aircraft on the scope comes from my own 1090 MHz antenna and SDR receiver—not a third-party flight feed.",
+          "See nearby aircraft move across the map using signals received directly at my home, rather than data from an outside flight service.",
       },
       {
         title: "Every pass remembered",
         detail:
-          "Spring Boot turns partial messages into sessions stored in Supabase for history, track replay, and leaderboards.",
+          "Look back at previous flights, replay their routes, and compare the fastest, lowest, or closest aircraft.",
       },
       {
-        title: "My API, one interface",
+        title: "Useful alerts",
         detail:
-          "The React client uses my REST API for stored data and WebSockets for live aircraft, geofence events, and emergency alerts.",
+          "Get immediate updates when an aircraft enters a chosen area or broadcasts an emergency signal.",
       },
     ],
     technicalProof: [
       {
-        title: "A physical data pipeline",
+        title: "Reliable from antenna to screen",
         detail:
-          "The Pi 5 and readsb decode radio broadcasts, then a resilient TCP ingest client parses SBS messages and reconnects automatically when the edge feed drops.",
+          "A Raspberry Pi decodes the radio broadcasts and passes them to the Java service. If the connection drops, it reconnects automatically so tracking can continue without manual intervention.",
       },
       {
-        title: "Storage shaped for the product",
+        title: "Detailed without storing too much",
         detail:
-          "Spring Boot batches positions into Supabase, closes individual flight sessions, and downsamples routine points while retaining full detail near the antenna.",
+          "The service groups scattered position updates into complete flights and keeps the most useful detail, especially when an aircraft is close to the antenna.",
       },
     ],
     year: "2026",
@@ -451,30 +454,31 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/faivern/sky-tracker-ai",
     video: "/projects/Sky-Tracker-AI/skytracker-beta-demo.mp4",
     videoPoster: "/projects/Sky-Tracker-AI/live-view.png",
+    showVideoPosterInGallery: true,
     videoCaption:
-      "A beta walkthrough of the live radar, flight history, leaderboards, track replay, and alert workflow.",
+      "A short tour of the live map, flight history, route replay, comparisons, and alerts.",
     screenshots: [
       {
         src: "/projects/Sky-Tracker-AI/live-view.png",
         width: 1906,
         height: 903,
-        alt: "SkyTracker live radar showing an aircraft received by the local ADS-B ground station",
+        alt: "Sky tracker AI live map showing an aircraft detected by the home receiver",
         caption:
-          "The live scope plots the local receiver’s WebSocket feed over a range-adjustable map.",
+          "The live map shows aircraft detected by the receiver at my home.",
       },
       {
         src: "/projects/Sky-Tracker-AI/leaderboard.png",
         width: 510,
         height: 545,
-        alt: "SkyTracker fastest-aircraft leaderboard listing callsigns, dates, and maximum speeds",
+        alt: "Sky tracker AI comparison showing the fastest detected aircraft, with flight names, dates, and speeds",
         caption:
-          "Stored flight sessions become fastest, lowest, and closest-approach leaderboards.",
+          "Recorded flights can be compared by speed, altitude, and how close they came to the antenna.",
       },
     ],
   },
   {
     slug: "Portfolio",
-    title: "Personal Portfolio: Self-Hosted Static Site",
+    title: "Personal Portfolio",
     tagline:
       "The site you are using now: a privacy-friendly, accessible portfolio self-hosted on a Raspberry Pi at my home.",
     description:
@@ -536,20 +540,20 @@ export const projects: Project[] = [
   },
   {
     slug: "AI-Customer-Insight",
-    title: "AI Customer Insight CLI",
+    title: "AI Customer Insights",
     tagline:
-      "A guided CLI that turns a CSV of customer comments into a decision-ready report, with every analysis stage made visible.",
+      "A guided tool that turns hundreds of customer comments into a clear report with recurring themes, quick wins, and longer-term opportunities.",
     description:
-      "A guided command-line tool that validates customer feedback, combines dataset metrics with AI analysis, and produces a structured Markdown report.",
+      "AI Customer Insights turns customer feedback into a consistent, decision-ready report while keeping every step of the analysis visible.",
     problem:
       "Useful themes hide inside hundreds of comments, and reading them manually is slow, subjective, and difficult to repeat.",
     solution:
-      "The guided workflow validates the CSV, calculates dataset metrics, prepares safe samples, previews the findings, and saves themes and prioritised actions as a shareable Markdown report.",
+      "The guided workflow checks the feedback file, measures the overall patterns, and uses AI to identify common themes and priorities. It previews the most useful findings straight away and saves a clear report that can be shared with a team.",
     highlights: [
       {
         title: "Guided from the start",
         detail:
-          "Run it with no arguments to choose a CSV interactively, or provide a path directly.",
+          "Choose a customer feedback file and follow a clear step-by-step process.",
       },
       {
         title: "Progress you can see",
@@ -599,7 +603,7 @@ export const projects: Project[] = [
         alt:
           "AI Customer Insight terminal showing five completed analysis stages, dataset metrics, an insight preview, and the saved report path",
         caption:
-          "The CLI keeps validation, safety checks, progress, and the most useful findings visible.",
+          "The tool keeps its checks, progress, and most useful findings visible throughout.",
       },
       {
         src: "/projects/AI-Customer-Insight/Output-Full-Report.png",
@@ -608,21 +612,21 @@ export const projects: Project[] = [
         alt:
           "Generated customer insight report showing response metrics, a summary, top themes, prioritised improvements, quick wins, and long-term actions",
         caption:
-          "The saved Markdown report separates evidence, themes, quick wins, and longer-term actions.",
+          "The saved report separates evidence, recurring themes, quick wins, and longer-term actions.",
       },
     ],
   },
   {
     slug: "Content-Management-AI",
-    title: "AI Content Management",
+    title: "AI Document Assistant",
     tagline:
       "A document assistant that turns unstructured text and PDFs into concise summaries, translations, and sentiment insights.",
     description:
-      "AI Content Management turns unstructured text and PDFs into actionable summaries, translations, and sentiment insights.",
+      "AI Document Assistant turns long text and PDF documents into useful summaries, translations, and sentiment insights.",
     problem:
       "Reviewing long documents by hand takes time and makes it easy to miss the themes, concerns, and details that deserve attention.",
     solution:
-      "The CLI reads a text file or PDF, runs the chosen analysis, and presents a structured result that can be reviewed immediately and reused later.",
+      "Choose a text file or PDF and ask the assistant to summarise it, translate it, or assess its tone. The result is organised for quick review and saved for later use.",
     highlights: [
       {
         title: "Summaries that scan",

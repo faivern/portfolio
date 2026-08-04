@@ -381,7 +381,9 @@ export default async function ProjectPage({
 
   const supportingScreenshots =
     project.videos?.length || project.video || project.videoPlaceholder
-      ? project.screenshots.slice(project.videoPoster ? 1 : 0)
+      ? project.screenshots.slice(
+          project.videoPoster && !project.showVideoPosterInGallery ? 1 : 0,
+        )
       : project.screenshots.slice(1);
 
   return (
@@ -466,7 +468,7 @@ export default async function ProjectPage({
           </h2>
           <div>
             <h3 className="font-serif text-2xl tracking-[0.06em]">
-              The problem
+              {project.problemTitle ?? "The problem"}
             </h3>
             <p className="mt-3 font-sans text-sm leading-7 normal-case tracking-normal [text-shadow:none]">
               {project.problem}
@@ -496,18 +498,12 @@ export default async function ProjectPage({
             />
           </div>
           <ul className="mt-5 grid gap-4 md:grid-cols-3">
-            {project.highlights.map((highlight, index) => (
+            {project.highlights.map((highlight) => (
               <li
                 key={highlight.title}
                 className="paper-panel overflow-hidden border border-foreground/10 p-5 sm:p-6"
               >
                 <div className="relative z-[1]">
-                  <span
-                    aria-hidden="true"
-                    className="font-serif text-xs tracking-[0.2em] text-muted"
-                  >
-                    0{index + 1}
-                  </span>
                   <h3 className="mt-6 font-serif text-xl tracking-[0.06em]">
                     {highlight.title}
                   </h3>

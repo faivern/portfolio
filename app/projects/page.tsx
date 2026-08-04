@@ -10,20 +10,20 @@ import { ProjectCategoryIcon } from "@/lib/project-category-icon";
 import { TechnologyBadge } from "@/lib/technology-badge";
 
 const categoryDescriptions: Record<ProjectCategory, string> = {
-  Web: "Public-facing websites and browser experiences built for real-world use.",
+  Web: "Websites and online services designed around real people and everyday needs.",
   "Systems & Integration":
-    "Software connecting multiple applications, services, and hardware.",
-  "Device Apps": "Software designed for dedicated screens and the hardware behind them.",
-  "CLI Tools": "Focused utilities that turn complex work into clear outcomes.",
+    "Projects that bring software, services, and physical devices together.",
+  "Device Apps": "Apps created for televisions and other dedicated devices.",
+  "CLI Tools": "Small, focused tools that make time-consuming work easier.",
 };
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: `All projects by ${site.plainName}, including web products, systems integration, device apps, and CLI tools.`,
+  description: `Explore projects by ${site.plainName}, including web products, connected systems, device apps, and practical AI tools.`,
   alternates: { canonical: "/projects" },
   openGraph: {
     title: "Projects",
-    description: `All projects by ${site.plainName}, including web products, systems integration, device apps, and CLI tools.`,
+    description: `Explore projects by ${site.plainName}, including web products, connected systems, device apps, and practical AI tools.`,
     url: "/projects",
   },
 };
@@ -53,8 +53,8 @@ export default function ProjectsPage() {
             Projects
           </h1>
           <p className="mt-4 max-w-xl font-serif text-base leading-relaxed tracking-[0.08em] text-muted">
-            {projects.length} projects across {groups.length} disciplines,
-            from public-facing products to systems integration and focused tools.
+            {projects.length} projects across {groups.length} areas, from
+            customer-facing products to connected systems and practical tools.
           </p>
         </header>
 
@@ -62,7 +62,7 @@ export default function ProjectsPage() {
 
         <nav aria-label="Project categories" className="mt-8">
           <p className="font-serif text-xs tracking-[0.3em] text-muted">
-            Explore by discipline
+            Explore by area
           </p>
           <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {groups.map(({ category, items }) => (
