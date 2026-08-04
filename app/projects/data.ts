@@ -405,7 +405,7 @@ export const projects: Project[] = [
     problem:
       "An ADS-B receiver produces a stream of fragmented aircraft messages, not a usable picture of the sky. Turning my antenna into a tracker meant carrying that real-world signal reliably from hardware into structured, queryable flight data.",
     solution:
-      "An RTL-SDR receiver connected to my Raspberry Pi 5 decodes broadcasts with readsb and streams them to Spring Boot. The service assembles messages into flight sessions, stores them in Supabase, and exposes my own REST and WebSocket APIs for the web client.",
+      "An RTL-SDR receiver connected to my Raspberry Pi 5 decodes broadcasts with readsb and streams them to Spring Boot. The service assembles messages into flight sessions, stores them in Supabase, and exposes my own REST and WebSocket APIs for the web client. Next, an AI query layer will answer natural-language questions such as ‘What plane flew over my house at lunch yesterday?’",
     highlights: [
       {
         title: "Live radar",
