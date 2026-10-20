@@ -17,16 +17,17 @@ export const site = {
   plainName: "Gustaf Faivre",
   givenName: "Gustaf",
   familyName: "Faivre",
-  role: "Software Developer — Full-stack",
+  role: "Software Developer",
+  areas: "Full-stack / Cybersecurity",
   jobTitle: "Software Developer",
   location: "Karlstad, Sweden",
   email: "gustaf.faivre@outlook.com",
   url: siteUrl,
   description:
-    "Portfolio of Gustaf Faivre, a software developer who turns ideas into useful web products, connected systems, and AI-assisted tools.",
+    "Portfolio of Gustaf Faivre, a software developer building applications, operating infrastructure, and exploring security through hands-on labs.",
   profile: {
     about:
-      "Building from idea to production-ready software used by real people. I enjoy the full development lifecycle, especially applying AI to make systems smarter.",
+      "Building software from idea to production, with an interest in everything behind it. I enjoy the full development lifecycle, from developing applications to understanding the infrastructure and security that support them, with a particular interest in AI.",
     availability: "Open to work / connect",
     education: {
       degree: "B.Sc. Information Systems Development",
@@ -36,34 +37,19 @@ export const site = {
     skillGroups: [
       {
         label: "Frontend",
-        skills: [
-          "Next.js",
-          "React",
-          "JavaScript",
-          "TypeScript",
-          "Tailwind",
-          "HTML",
-          "CSS",
-        ],
+        skills: ["React", "JavaScript", "TypeScript", "Next.js", "Tailwind", "HTML", "CSS"],
       },
       {
         label: "Backend",
-        skills: ["Java", "Spring Boot", "Python", "C#", ".NET", "nginx"],
+        skills: ["C#", ".NET", "Java", "Spring Boot", "Python", "PostgreSQL", "SQL Server", "Supabase", "nginx"],
       },
       {
-        label: "Databases",
-        skills: ["PostgreSQL", "SQL Server", "MongoDB", "Supabase"],
+        label: "Cybersecurity",
+        skills: ["Wazuh", "Wireshark", "OpenSSH"],
       },
       {
         label: "AI, Tools & DevOps",
-        skills: [
-          "Claude Code",
-          "Linux",
-          "Docker",
-          "Git",
-          "GitHub",
-          "Azure DevOps",
-        ],
+        skills: ["Codex", "Claude Code", "Linux", "Docker", "VMware", "Azure DevOps", "Git"],
       },
     ],
   },

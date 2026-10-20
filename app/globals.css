@@ -14,6 +14,42 @@
      hairline rule, the monogram), never body text, where it would
      fail WCAG AA contrast on the bone stock. */
   --accent: #9a7b3f;
+  /* The two area inks. Same rule as --accent, decorative furniture only,
+     never body text. Both clear WCAG 1.4.11 (>= 3:1) against --background
+     for the non-text UI they colour (rules, underlines, icons):
+     --accent-software is TypeScript blue at 3.9:1, --accent-security is
+     terminal green pulled down to paper weight at 4.7:1. */
+  --accent-software: #3178c6;
+  --accent-security: #1a7a3c;
+  /* Card stock surfaces. --panel is the raised sheet (lighter than
+     --background, so --muted ink keeps its >= 4.5:1), --panel-edge the
+     lit paper edge, --panel-sunken the plate behind screenshots, and
+     --panel-raised/--panel-tint the media gradient. All five are
+     re-pointed by the dark theme below. */
+  --panel: #f6f1e8;
+  --panel-edge: #ded7c7;
+  --panel-sunken: #e8e2d6;
+  --panel-raised: #f7f2e9;
+  --panel-tint: #ece5d8;
+  /* Case-study code highlighting: strings, tags, attribute names, comments. */
+  --code-string: #75452b;
+  --code-tag: #354f63;
+  --code-attr: #6b5a2e;
+  --code-comment: #8a7f6d;
+}
+
+/* ── Per-area ink ────────────────────────────────────────────
+   Project surfaces opt into one of the two inks, and everything
+   downstream reads --area-accent with --accent as the fallback. So an
+   unmarked subtree (the home business card, /privacy) keeps the gilt,
+   and a security page turns its furniture green without any consumer
+   needing to know which area it is in. */
+.area-software {
+  --area-accent: var(--accent-software);
+}
+
+.area-security {
+  --area-accent: var(--accent-security);
 }
 
 @theme inline {
@@ -21,8 +57,23 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-area-accent: var(--area-accent, var(--accent));
+  --color-panel: var(--panel);
+  --color-panel-sunken: var(--panel-sunken);
   --font-serif: var(--font-garamond);
   --font-sans: var(--font-plex-sans);
+}
+
+html {
+  /* Match the scrollbar to the stock it sits beside. Standard properties
+     only, so the track follows the color-scheme swap further down. */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--foreground) 30%, transparent) transparent;
+  /* Keep the scrollbar's space reserved even when a page is short enough
+     not to scroll. Filtering the project index changes the page height,
+     and without this the scrollbar appearing and disappearing shifts the
+     whole layout sideways on every toggle. */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -38,6 +89,11 @@ body {
   text-shadow:
     0 -1px 1px rgb(0 0 0 / 0.12),
     0 1px 1px rgb(255 255 255 / 0.85);
+}
+
+/* Highlighting reads as a gilt marker swiped over the page. */
+::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 /* ── Accessibility ─────────────────────────────────────────── */
@@ -62,6 +118,91 @@ body {
   }
 }
 
+/* ── Scroll-driven section reveal ────────────────────────────
+   Sections rise into place as they enter the viewport. The @supports
+   guard means browsers without scroll-driven animations never apply
+   the rule at all, so content is never left stuck at opacity 0.
+
+   The reduced-motion guard has to be a no-preference wrapper rather
+   than a duration override: the global rule above only clamps
+   animation-duration, which a view() timeline ignores entirely,
+   since progress comes from scroll position and not from time. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      /* Finishes early in the entry phase on purpose. A section near the
+         end of the document may never scroll far enough to complete a
+         full-length range, and would be stranded part-faded. */
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Underline that draws itself ─────────────────────────────
+   Replaces a plain hover:underline on navigation and contact links:
+   a hairline in the surface's ink wipes in from the left, the way a
+   rule is ruled rather than printed. */
+.link-rule {
+  background-image: linear-gradient(
+    var(--area-accent, var(--accent)),
+    var(--area-accent, var(--accent))
+  );
+  background-repeat: no-repeat;
+  /* Measured from the content box, not the padding box, so the rule hugs
+     the text on links whose padding only exists to widen the touch target. */
+  background-origin: content-box;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.link-rule:hover,
+.link-rule:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* ── Letterpress press ───────────────────────────────────────
+   Controls sink a hair into the stock when held, deepening the
+   debossed impression. Scoped to real controls: the home page's card
+   is a click target too, and the whole sheet must not shift. */
+button:active,
+.filter-chip:active,
+.theme-toggle:active,
+a.paper-panel:active {
+  transform: translateY(1px);
+  text-shadow:
+    0 -1px 1px rgb(0 0 0 / 0.2),
+    0 1px 0 rgb(255 255 255 / 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No wipe, but the rule still has to be there to read as a link. */
+  .link-rule:hover,
+  .link-rule:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  button:active,
+  .filter-chip:active,
+  .theme-toggle:active,
+  a.paper-panel:active {
+    transform: none;
+  }
+}
+
 /* ── Project pages: card-stock depth ─────────────────────────
    The project detail pages sit on the light bone background, not the
    dark desk, so this echoes .card-face with a softer shadow, the
@@ -69,10 +210,9 @@ body {
 .paper-panel {
   position: relative;
   border-radius: 7px;
-  /* Lighter than --background, so --muted ink keeps its >= 4.5:1. */
-  background: #f6f1e8;
+  background: var(--panel);
   box-shadow:
-    0 1px 0 0 #ded7c7,
+    0 1px 0 0 var(--panel-edge),
     0 2px 6px rgb(0 0 0 / 0.05),
     0 12px 28px rgb(0 0 0 / 0.10);
   transition: box-shadow 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -92,9 +232,247 @@ body {
 /* Hover lift for interactive panels (the live-site link). */
 a.paper-panel:hover {
   box-shadow:
-    0 1px 0 0 #ded7c7,
+    0 1px 0 0 var(--panel-edge),
     0 4px 10px rgb(0 0 0 / 0.08),
     0 18px 40px rgb(0 0 0 / 0.16);
+}
+
+/* ── Projects index ──────────────────────────────────────────
+   Filter chips read as raised paper tabs: the selected one lifts and
+   carries a gilt underline, so the control is hard to miss without
+   adding a second colour to the palette. */
+.filter-chip {
+  border: 1px solid color-mix(in srgb, var(--foreground) 18%, transparent);
+  background: color-mix(in srgb, var(--panel) 55%, transparent);
+  box-shadow: 0 1px 0 0 var(--panel-edge);
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* Hovering a chip pulls its own area ink into the outline, so the two
+   areas identify themselves before they are selected. "All Projects"
+   carries no area class and falls back to the gilt. */
+.filter-chip:hover,
+.filter-chip.is-active:hover {
+  border-color: color-mix(in srgb, var(--area-accent, var(--accent)) 80%, transparent);
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 0 0 var(--panel-edge),
+    0 6px 14px rgb(0 0 0 / 0.08);
+}
+
+.filter-chip.is-active {
+  background: var(--panel);
+  border-color: color-mix(in srgb, var(--foreground) 55%, transparent);
+  box-shadow:
+    0 1px 0 0 var(--panel-edge),
+    0 8px 18px rgb(0 0 0 / 0.1),
+    inset 0 -2px 0 0 var(--area-accent, var(--accent));
+}
+
+/* The Software Development chip's counterpart to the security chip's
+   glyph rain: drafting paper. A blueprint grid fades up and a plotter
+   beam sweeps across it, both clipped by the chip's own overflow. */
+.chip-blueprint {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--area-accent, var(--accent)) 26%, transparent) 0 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--area-accent, var(--accent)) 26%, transparent) 0 1px,
+      transparent 1px
+    );
+  background-size: 13px 13px;
+  animation: blueprint-drift 7s linear infinite paused;
+}
+
+.chip-blueprint::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--area-accent, var(--accent)) 30%, transparent),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: blueprint-sweep 1.9s cubic-bezier(0.22, 0.61, 0.36, 1) infinite paused;
+}
+
+/* Both animations are declared paused and only resumed on hover, so
+   leaving the chip freezes the grid where it is and lets the opacity
+   transition carry it out, rather than snapping it back to the start. */
+.filter-chip:hover .chip-blueprint,
+.filter-chip:hover .chip-blueprint::after {
+  animation-play-state: running;
+}
+
+.filter-chip:hover .chip-blueprint {
+  opacity: 1;
+}
+
+@keyframes blueprint-drift {
+  to {
+    background-position:
+      13px 13px,
+      13px 13px;
+  }
+}
+
+@keyframes blueprint-sweep {
+  to {
+    transform: translateX(250%);
+  }
+}
+
+/* Media plate on a project card. The tint shows through screenshots
+   with transparent edges and stands in for the fallback tile. */
+.project-card-media {
+  background:
+    radial-gradient(
+      120% 120% at 50% 0%,
+      var(--panel-raised),
+      color-mix(in srgb, var(--area-accent, var(--accent)) 9%, var(--panel-tint)) 100%
+    );
+}
+
+/* Projects without captured media get ruled stock behind their category
+   mark, so the plate reads as intentional rather than empty. */
+.project-card-media-empty {
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--area-accent, var(--accent)) 14%, transparent) 0 1px,
+      transparent 1px 11px
+    ),
+    radial-gradient(
+      120% 120% at 50% 0%,
+      var(--panel-raised),
+      color-mix(in srgb, var(--area-accent, var(--accent)) 9%, var(--panel-tint)) 100%
+    );
+}
+
+/* Cards are dealt rather than pasted: each one rises a beat after the
+   last. --i is set per card in the markup and capped there, so the
+   final card lands well under half a second. Changing the filter
+   remounts the list and re-deals it. Same ease-out as .card-stage,
+   no overshoot. */
+.project-card-stagger {
+  animation: card-rise 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+@keyframes card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.project-card-image {
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.project-card:hover .project-card-image {
+  transform: scale(1.04);
+}
+
+/* Pointer devices get a thumbnail-and-title card that unfolds its
+   description on hover or keyboard focus. Touch has no hover state, so
+   there the details simply stay open. The 0fr -> 1fr grid row is what
+   makes an auto height animatable. */
+@media (hover: hover) and (pointer: fine) {
+  .project-card-details {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .project-card-details-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .project-card:hover .project-card-details,
+  .project-card:focus-visible .project-card-details {
+    grid-template-rows: 1fr;
+  }
+}
+
+/* The whole card is the link, so the title's rule is driven by the
+   card's hover and focus rather than the heading's own. */
+.project-card:hover .link-rule,
+.project-card:focus-visible .link-rule {
+  background-size: 100% 1px;
+}
+
+.project-card-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.project-card:hover .project-card-arrow {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter-chip:hover,
+  .project-card:hover .project-card-image,
+  .project-card:hover .project-card-arrow {
+    transform: none;
+  }
+
+  .project-card-stagger {
+    animation: none;
+  }
+
+  /* The blueprint grid still appears on hover, it just stops moving. */
+  .filter-chip:hover .chip-blueprint,
+  .filter-chip:hover .chip-blueprint::after {
+    animation: none;
+  }
+
+  .chip-blueprint::after {
+    display: none;
+  }
+}
+
+/* ── Case-study section nav ──────────────────────────────────
+   One marker slides between sections instead of a border lighting up
+   per item, so the eye follows it down the list. Position is measured
+   from the active item and written to the two custom properties. */
+.cs-nav-thumb {
+  position: absolute;
+  left: -1px;
+  width: 2px;
+  top: var(--thumb-top, 0);
+  height: var(--thumb-height, 0);
+  background: var(--area-accent, var(--accent));
+  transition:
+    top 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    height 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-nav-thumb {
+    transition: none;
+  }
 }
 
 /* Decorative gold hairline, the home page's single accent reused as
@@ -102,7 +480,7 @@ a.paper-panel:hover {
 .rule-accent {
   height: 1px;
   border: 0;
-  background: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--area-accent, var(--accent)) 55%, transparent);
 }
 
 /* ── Business card ───────────────────────────────────────────
@@ -176,12 +554,10 @@ body:has(.business-card) footer {
 .card-face {
   position: relative;
   backface-visibility: hidden;
-  /* Firefox: a face with no 3D transform of its own is not culled
-     correctly inside the nested preserve-3d contexts above, when
-     flipped, its backface stays visible and the card shows mirrored
-     content. An explicit translateZ(0) anchors the face in 3D space
-     so backface culling kicks in (verified via .flip-test bisect). */
-  transform: translateZ(0);
+  /* Give the two faces separate planes. Coplanar front/back surfaces can
+     produce depth-buffer seams during shallow hover rotations in Firefox.
+     Keep an explicit 3D transform so Firefox also culls the backface. */
+  transform: translateZ(1px);
   border-radius: 7px;
   /* Card stock reads a touch warmer and lighter than the bone desk
      tone, a sheet of cotton paper rather than pure cream. Lighter
@@ -198,7 +574,7 @@ body:has(.business-card) footer {
 }
 
 .card-back {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(1px);
 }
 
 /* Specular sheen: a soft pool of reflected light that tracks the
@@ -240,6 +616,7 @@ body:has(.business-card) footer {
   top: 1.5rem;
   right: 1.5rem;
   display: flex;
+  align-items: flex-start;
   font-size: 2.75rem;
   line-height: 1;
   /* Gilt monogram: the accent held back to a soft watermark so it
@@ -247,6 +624,34 @@ body:has(.business-card) footer {
   color: color-mix(in srgb, var(--accent) 60%, transparent);
   pointer-events: none;
   user-select: none;
+}
+
+/* Foil stamping: on pointer devices the gilt becomes a clipped
+   gradient so a highlight can travel across the letters once as the
+   card is approached, the way real foil catches the light when you
+   pick a card up. Touch keeps the flat watermark above. */
+@media (hover: hover) and (pointer: fine) {
+  .card-monogram {
+    background: linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--accent) 60%, transparent) 0% 40%,
+      color-mix(in srgb, var(--accent) 95%, white) 50%,
+      color-mix(in srgb, var(--accent) 60%, transparent) 60% 100%
+    );
+    background-size: 300% 100%;
+    background-position: 100% 0;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    /* The body's debossed shadow would otherwise show through the
+       now-transparent glyphs and read as a smudge. */
+    text-shadow: none;
+    transition: background-position 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .business-card:hover .card-monogram {
+    background-position: 0 0;
+  }
 }
 
 /* ── "About Me" dog-ear peel ─────────────────────────────────
@@ -334,5 +739,195 @@ body:has(.business-card) footer {
   .dogear.group:hover .dogear-fold::after,
   .dogear.group:focus-within .dogear-fold::after {
     transform: scale(0.6);
+  }
+}
+
+/* Keep the original card proportions at tablet widths. Compact only the
+   reverse's furniture and badges, rather than stretching the whole card. */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .card-back { padding-top: 16px; }
+  .card-profile-body { margin-top: 8px; gap: 8px; padding-bottom: 8px; }
+  .card-profile-body > p { font-size: 14px; line-height: 1.4; }
+  .card-profile-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding-block: 6px;
+    font-size: 11px;
+  }
+  .card-profile-meta > p:nth-child(2) { grid-column: 1 / -1; order: 1; }
+  .card-back dl { gap: 8px 16px; margin-top: 4px; }
+  .card-back dt { font-size: 9px; letter-spacing: 0.14em; }
+  .card-back dd { margin-top: 4px; }
+  .card-back dd ul { gap: 2px; }
+  .card-back dd li { padding: 2px 6px; gap: 4px; font-size: 11.5px; }
+  .card-back dd li > span { width: 14px; height: 14px; }
+  .card-profile-footer { margin-top: 8px; }
+}
+
+/* ── Dark theme ──────────────────────────────────────────────
+   Scoped to the project surfaces, which opt in with
+   .project-surface. The home page is a bone business card resting
+   on a dark desk, so a dark card stock there would fight the
+   conceit; /privacy stays on paper for the same reason. Same
+   token-swap mechanism as the footer rule above. Scoped from <html> so
+   the viewport scrollbar follows color-scheme; the class alone can't
+   carry it, since the class is global and the home page is not. */
+html.dark:has(.project-surface) {
+  color-scheme: dark;
+  --background: #1b1b1d;
+  --foreground: #d1cac7; /* 10.7:1 on --background */
+  --muted: #a0b1c1; /* 7.2:1 on --background, WCAG AA */
+  --focus: #d1cac7;
+  --accent: #c8a35a; /* the gilt lifted so it still reads as metal */
+  --accent-software: #6cb0e8; /* 6.9:1 on --background */
+  --accent-security: #46d97e; /* 9.0:1 on --background */
+  --panel: #232326;
+  --panel-edge: #34343a;
+  --panel-sunken: #1f1f22;
+  --panel-raised: #26262a;
+  --panel-tint: #1f1f23;
+  --code-string: #d8a07a;
+  --code-tag: #8fb6cf;
+  --code-attr: #c0a86f;
+  --code-comment: #8f8779;
+}
+
+/* A debossed letterpress impression only reads on paper. */
+html.dark:has(.project-surface) body {
+  text-shadow: none;
+}
+
+/* Paper grain is a light-stock effect; on dark panels it reads as
+   dirt, so the tiled noise is dropped. */
+html.dark:has(.project-surface) .paper-panel::after {
+  content: none;
+}
+
+/* On dark stock a drop shadow has nothing to darken, so depth comes
+   from a lit top edge instead, with the shadow kept only as a halo. */
+html.dark:has(.project-surface) .paper-panel {
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.05),
+    0 2px 6px rgb(0 0 0 / 0.35),
+    0 12px 28px rgb(0 0 0 / 0.45);
+}
+
+html.dark:has(.project-surface) a.paper-panel:hover {
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.08),
+    0 4px 10px rgb(0 0 0 / 0.4),
+    0 18px 40px rgb(0 0 0 / 0.55);
+}
+
+html.dark:has(.project-surface) .filter-chip {
+  box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.04);
+}
+
+html.dark:has(.project-surface) .filter-chip:hover {
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.07),
+    0 6px 14px rgb(0 0 0 / 0.35);
+}
+
+html.dark:has(.project-surface) .filter-chip.is-active {
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.07),
+    0 8px 18px rgb(0 0 0 / 0.4),
+    inset 0 -2px 0 0 var(--area-accent, var(--accent));
+}
+
+/* Screenshots and videos are light-UI captures; full brightness on a
+   dark page glares, so they are held back a little. */
+html.dark:has(.project-surface) .paper-panel img {
+  filter: brightness(0.92);
+}
+
+/* The theme control: a pressed paper tab in light, a lit key in dark. */
+.theme-toggle {
+  border: 1px solid color-mix(in srgb, var(--foreground) 18%, transparent);
+  background: color-mix(in srgb, var(--panel) 55%, transparent);
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.theme-toggle:hover {
+  border-color: color-mix(in srgb, var(--area-accent, var(--accent)) 70%, transparent);
+  background: var(--panel);
+}
+
+/* ── Theme toggle: sun <-> moon ──────────────────────────────
+   One disc for both states. The masking circle slides in from off-canvas
+   to carve the crescent while the rays retract into the body, so the
+   switch is a single shape changing its mind rather than two icons
+   swapping. Geometry properties (r, cx, cy) are animated as CSS, which
+   is what lets the crescent be cut rather than cross-faded. */
+.theme-morph-body {
+  transition:
+    r 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform-origin: 12px 12px;
+}
+
+.theme-morph-cut {
+  transition:
+    cx 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+    cy 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.theme-morph-rays {
+  transform-origin: 12px 12px;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.3s ease;
+}
+
+/* Light theme: the control offers the moon. The disc grows, the cut
+   arrives, the rays fold away. */
+.theme-toggle[data-mode="light"] .theme-morph-body {
+  r: 8px;
+}
+
+.theme-toggle[data-mode="light"] .theme-morph-cut {
+  cx: 19px;
+  cy: 6px;
+}
+
+.theme-toggle[data-mode="light"] .theme-morph-rays {
+  opacity: 0;
+  transform: rotate(-50deg) scale(0.35);
+}
+
+/* Dark theme: the control offers the sun, so the rays idle in a slow turn
+   on hover. Declared paused, like the chip blueprint, so the wheel stops
+   where it is instead of snapping back to zero. */
+.theme-morph-spin {
+  transform-origin: 12px 12px;
+  animation: theme-rays-turn 12s linear infinite paused;
+}
+
+.theme-toggle[data-mode="dark"]:hover .theme-morph-spin {
+  animation-play-state: running;
+}
+
+/* Hovering the moon tips it, the way a crescent is drawn. */
+.theme-toggle[data-mode="light"]:hover .theme-morph-body {
+  transform: rotate(-18deg) translateX(-0.6px);
+}
+
+@keyframes theme-rays-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-morph-spin {
+    animation: none;
+  }
+
+  .theme-toggle[data-mode="light"]:hover .theme-morph-body {
+    transform: none;
   }
 }

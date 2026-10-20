@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { ProjectMedia } from "../data";
 
 export default function ScreenshotGallery({
@@ -18,7 +19,7 @@ export default function ScreenshotGallery({
   const close = useCallback(() => {
     setActive(null);
     setZoomed(false);
-    lastTriggerRef.current?.focus();
+    lastTriggerRef.current?.focus({ preventScroll: true });
   }, []);
 
   const prev = useCallback(() => {
@@ -35,7 +36,7 @@ export default function ScreenshotGallery({
 
   useEffect(() => {
     if (active === null) return;
-    dialogRef.current?.focus();
+    dialogRef.current?.focus({ preventScroll: true });
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
       else if (e.key === "ArrowLeft") prev();
@@ -49,7 +50,7 @@ export default function ScreenshotGallery({
         const first = focusable[0];
         const last = focusable.at(-1);
         if (!first || !last) return;
-        if (e.shiftKey && document.activeElement === first) {
+        if (e.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) {
           e.preventDefault();
           last.focus();
         } else if (!e.shiftKey && document.activeElement === last) {
@@ -59,16 +60,17 @@ export default function ScreenshotGallery({
       }
     };
     document.addEventListener("keydown", onKeyDown);
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
     };
   }, [active, close, prev, next]);
 
   return (
     <>
-      <div className="mt-5 grid gap-5 md:grid-cols-2">
+      <div className={`mt-5 grid gap-5 ${screenshots.length > 1 ? "md:grid-cols-2" : ""}`}>
         {screenshots.map((media, i) => (
           <figure
             key={media.src}
@@ -80,8 +82,8 @@ export default function ScreenshotGallery({
                 lastTriggerRef.current = e.currentTarget;
                 setActive(i);
               }}
-              aria-label={`View ${title}, image ${i + 1} of ${screenshots.length}, in full size`}
-              className="group relative flex min-h-0 flex-1 cursor-zoom-in items-center justify-center overflow-hidden bg-[#e8e2d6]"
+              aria-label={`Enlarge: ${media.alt}. ${title}, image ${i + 1} of ${screenshots.length}`}
+              className="group relative flex min-h-0 flex-1 cursor-zoom-in items-center justify-center overflow-hidden bg-panel-sunken"
             >
               {/* The button provides the accessible name; the thumbnail is decorative. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -112,19 +114,37 @@ export default function ScreenshotGallery({
             </button>
             <figcaption className="relative z-[1] border-t border-foreground/10 px-4 py-3 font-sans text-xs leading-relaxed normal-case tracking-normal text-muted [text-shadow:none]">
               {media.caption}
+              {media.credit && (
+                <span className="mt-2 block">
+                  Screenshot by{" "}
+                  <a href={media.credit.sourceUrl} className="underline underline-offset-4">
+                    {media.credit.author}
+                  </a>{" "}
+                  ·{" "}
+                  <a href={media.credit.licenseUrl} className="underline underline-offset-4">
+                    {media.credit.license}
+                  </a>
+                  . Reproduced without changes.
+                </span>
+              )}
             </figcaption>
           </figure>
         ))}
       </div>
 
-      {active !== null && (
+      {/* Escape animated ancestors, whose transforms can contain fixed elements. */}
+      {active !== null && createPortal(
         <div
           ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-label={`${title}, image ${active + 1} of ${screenshots.length}`}
           tabIndex={-1}
-          onClick={close}
+          onClick={(event) => {
+            if (event.target instanceof Element && !event.target.closest("button")) {
+              close();
+            }
+          }}
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/85 p-6"
         >
           <button
@@ -137,7 +157,6 @@ export default function ScreenshotGallery({
 
           <div
             className="flex max-h-full w-full max-w-5xl flex-col items-center"
-            onClick={(e) => e.stopPropagation()}
           >
             <div
               className={
@@ -202,7 +221,8 @@ export default function ScreenshotGallery({
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );

@@ -75,7 +75,7 @@ export function SiteFooter() {
                   {...(external
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
-                  className="flex items-center gap-1.5 p-2 font-sans text-[0.65rem] tracking-[0.25em] text-muted underline-offset-4 hover:text-foreground hover:underline"
+                  className="link-rule flex items-center gap-1.5 p-2 font-sans text-[0.65rem] tracking-[0.25em] text-muted hover:text-foreground"
                 >
                   <Icon className="h-4 w-4" />
                   {l.label}
@@ -89,7 +89,7 @@ export function SiteFooter() {
         </ul>
         <Link
           href="/privacy"
-          className="font-sans text-[0.65rem] tracking-[0.3em] text-muted underline-offset-4 hover:text-foreground hover:underline"
+          className="link-rule font-sans text-[0.65rem] tracking-[0.3em] text-muted hover:text-foreground"
         >
           Privacy
         </Link>

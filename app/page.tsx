@@ -116,7 +116,10 @@ export default function Home() {
                 .map((w, i) => (
                   <span
                     key={i}
-                    className={i > 0 ? "-ml-[0.34em] translate-y-[0.34em]" : undefined}
+                    // Margin, not transform: a transformed glyph paints in its own
+                    // stacking context, so the foil gradient clipped to the
+                    // monogram's text would stay at the unshifted position.
+                    className={i > 0 ? "-ml-[0.34em] mt-[0.34em]" : undefined}
                   >
                     {w[0]}
                   </span>
@@ -132,6 +135,9 @@ export default function Home() {
               </h1>
               <p className="mt-3 font-sans text-[0.65rem] tracking-[0.3em] text-muted">
                 {site.role}
+              </p>
+              <p className="mt-4 max-w-md font-sans text-[0.65rem] leading-6 tracking-[0.12em] text-muted">
+                {site.areas}
               </p>
               <hr className="mt-6 w-12 border-t border-accent/70" />
             </div>
@@ -196,12 +202,12 @@ export default function Home() {
               About Me
             </h2>
 
-            <div className="mt-3 flex min-h-0 flex-1 flex-col gap-3 pb-3 sm:mt-4 sm:gap-4 sm:pb-4">
+            <div className="card-profile-body mt-3 flex min-h-0 flex-1 flex-col gap-3 pb-3 sm:mt-4 sm:gap-3 sm:pb-4">
               <p className="max-w-[52rem] normal-case font-serif text-sm leading-[1.4] tracking-[0.025em] sm:text-[1.05rem] sm:leading-[1.45]">
                 {site.profile.about}
               </p>
 
-              <div className="flex flex-col gap-1.5 border-y border-foreground/10 py-2 normal-case font-sans text-xs leading-snug tracking-[0.035em] text-muted sm:gap-2.5 sm:py-3 sm:text-[0.85rem]">
+              <div className="card-profile-meta flex flex-col gap-1.5 border-y border-foreground/10 py-2 normal-case font-sans text-xs leading-snug tracking-[0.035em] text-muted sm:gap-2.5 sm:py-3 sm:text-[0.85rem]">
                 <p className="inline-flex items-start gap-1.5">
                   <FaLocationDot
                     aria-hidden="true"
@@ -237,9 +243,9 @@ export default function Home() {
 
               <div className="flex min-h-0 flex-1 flex-col">
                 <h3 className="pb-1 font-sans text-[0.62rem] font-medium tracking-[0.2em] text-muted sm:pb-2 sm:text-[0.68rem] sm:tracking-[0.24em]">
-                  How I Like to Build
+                  How I Build & Explore
                 </h3>
-                <dl className="mt-1 grid flex-1 grid-cols-2 content-start gap-x-2 gap-y-2 sm:mt-2 sm:grid-rows-2 sm:content-stretch sm:gap-x-8 sm:gap-y-4">
+                <dl className="mt-1 grid flex-1 grid-cols-2 content-start gap-x-2 gap-y-2 sm:mt-2 sm:grid-rows-2 sm:content-stretch sm:gap-x-8 sm:gap-y-2.5">
                   {site.profile.skillGroups.map((group) => (
                     <div
                       key={group.label}
@@ -266,7 +272,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative -mx-4 min-h-12 shrink-0 border-t border-accent/50 min-[360px]:-mx-5 sm:-mx-8 sm:min-h-14">
+            <div className="card-profile-footer relative mt-3 -mx-4 min-h-12 shrink-0 border-t border-accent/50 min-[360px]:-mx-5 sm:-mx-8 sm:min-h-14">
               <button
                 type="button"
                 onClick={() => setFlipped(false)}

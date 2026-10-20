@@ -1,3 +1,5 @@
+import SecurityCaseStudy from "./case-study";
+import { caseStudies } from "@/content/case-studies";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -5,6 +7,7 @@ import {
   getProject,
   projects,
   type Project,
+  type SoftwareProject,
   type ProjectExample,
   type ProjectMedia,
   type ProjectVideo,
@@ -13,6 +16,7 @@ import MoreProjects from "./more-projects";
 import ScreenshotGallery from "./screenshot-gallery";
 import { ProjectCategoryIcon } from "@/lib/project-category-icon";
 import { TechnologyBadge } from "@/lib/technology-badge";
+import { ThemeToggle } from "@/lib/theme-toggle";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -29,14 +33,37 @@ export async function generateMetadata({
   const project = getProject(slug);
   if (!project) return { title: "Project not found" };
 
+  const preview =
+    project.screenshots[0] ??
+    (project.caseStudy
+      ? caseStudies[project.caseStudy]?.sections
+          .flatMap((s) => s.blocks)
+          .find((b) => b.type === "images")?.images[0]
+      : undefined);
   return {
     title: project.title,
     description: project.description,
+    twitter: {
+      card: preview ? "summary_large_image" : "summary",
+      title: project.title,
+      description: project.description,
+      ...(preview && { images: [{ url: preview.src, alt: preview.alt }] }),
+    },
     alternates: { canonical: `/projects/${project.slug}` },
     openGraph: {
       title: project.title,
       description: project.description,
       url: `/projects/${project.slug}`,
+      ...(preview && {
+        images: [
+          {
+            url: preview.src,
+            width: preview.width,
+            height: preview.height,
+            alt: preview.alt,
+          },
+        ],
+      }),
     },
   };
 }
@@ -76,7 +103,7 @@ function ProjectLinks({ project }: { project: Project }) {
             href={project.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 rounded-md border border-foreground/20 bg-[#f6f1e8] px-4 py-2.5 underline-offset-4 hover:underline"
+            className="group inline-flex items-center gap-2 rounded-md border border-foreground/20 bg-panel px-4 py-2.5 underline-offset-4 hover:underline"
           >
             Visit live project
             <ExternalArrow />
@@ -147,7 +174,7 @@ function HeroImage({
   project,
   media,
 }: {
-  project: Project;
+  project: SoftwareProject;
   media: ProjectMedia;
 }) {
   const image = (
@@ -218,11 +245,7 @@ function VideoShowcase({
           return (
             <li
               key={video.src}
-              className={
-                isFeatured
-                  ? "md:col-span-2 lg:col-span-3"
-                  : "min-w-0"
-              }
+              className={isFeatured ? "md:col-span-2 lg:col-span-3" : "min-w-0"}
             >
               <figure className="paper-panel flex h-full flex-col overflow-hidden border border-foreground/10">
                 <div className="relative z-[1] bg-[#1b1a18]">
@@ -269,7 +292,7 @@ function VideoShowcase({
   );
 }
 
-function ProjectHero({ project }: { project: Project }) {
+function ProjectHero({ project }: { project: SoftwareProject }) {
   if (project.videos?.length) {
     return <VideoShowcase project={project} videos={project.videos} />;
   }
@@ -299,7 +322,7 @@ function ProjectHero({ project }: { project: Project }) {
   if (project.videoPlaceholder) {
     return (
       <figure className="paper-panel overflow-hidden border border-foreground/10">
-        <div className="relative z-[1] flex aspect-video items-center justify-center bg-[#e8e2d6] p-8 text-center">
+        <div className="relative z-[1] flex aspect-video items-center justify-center bg-panel-sunken p-8 text-center">
           <div>
             <svg
               viewBox="0 0 48 48"
@@ -379,6 +402,12 @@ export default async function ProjectPage({
   const project = getProject(slug);
   if (!project) notFound();
 
+  if (project.caseStudy !== undefined) {
+    const study = caseStudies[project.caseStudy];
+    if (!study) throw new Error(`Missing case study: ${project.caseStudy}`);
+    return <SecurityCaseStudy project={project} study={study} />;
+  }
+
   const supportingScreenshots =
     project.videos?.length || project.video || project.videoPlaceholder
       ? project.screenshots.slice(
@@ -387,14 +416,17 @@ export default async function ProjectPage({
       : project.screenshots.slice(1);
 
   return (
-    <div className="flex flex-1 justify-center px-6 py-14 sm:px-8 sm:py-20">
+    <div className="project-surface area-software flex flex-1 justify-center px-6 py-14 sm:px-8 sm:py-20">
       <article className="w-full max-w-6xl">
-        <Link
-          href="/projects"
-          className="inline-block py-2 font-serif text-xs tracking-[0.25em] text-muted underline-offset-4 hover:text-foreground hover:underline"
-        >
-          ←&#xFE0E; All projects
-        </Link>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Link
+            href="/projects"
+            className="link-rule inline-block py-2 font-serif text-xs tracking-[0.25em] text-muted hover:text-foreground"
+          >
+            ←&#xFE0E; All projects
+          </Link>
+          <ThemeToggle />
+        </div>
 
         <header className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end lg:gap-16">
           <div>
@@ -413,7 +445,7 @@ export default async function ProjectPage({
                 {project.status === "live" ? "Live product" : "Project demo"}
               </span>
               {project.wip && (
-                <span className="rounded-md border border-accent/60 px-2 py-1 tracking-[0.14em]">
+                <span className="rounded-md border border-area-accent/60 px-2 py-1 tracking-[0.14em]">
                   Work in progress
                 </span>
               )}
@@ -458,7 +490,7 @@ export default async function ProjectPage({
 
         <section
           aria-labelledby="story-heading"
-          className="mt-14 grid gap-8 lg:grid-cols-[12rem_1fr_1fr] lg:gap-12"
+          className="reveal mt-14 grid gap-8 lg:grid-cols-[12rem_1fr_1fr] lg:gap-12"
         >
           <h2
             id="story-heading"
@@ -484,7 +516,7 @@ export default async function ProjectPage({
           </div>
         </section>
 
-        <section aria-labelledby="highlights-heading" className="mt-16">
+        <section aria-labelledby="highlights-heading" className="reveal mt-16">
           <div className="flex items-end justify-between gap-8">
             <h2
               id="highlights-heading"
@@ -518,7 +550,7 @@ export default async function ProjectPage({
 
         <section
           aria-labelledby="proof-heading"
-          className="mt-16 grid gap-8 lg:grid-cols-[12rem_1fr] lg:gap-12"
+          className="reveal mt-16 grid gap-8 lg:grid-cols-[12rem_1fr] lg:gap-12"
         >
           <div>
             <h2
@@ -543,7 +575,10 @@ export default async function ProjectPage({
           </div>
           <ul className="grid gap-6 sm:grid-cols-2">
             {project.technicalProof.map((proof) => (
-              <li key={proof.title} className="border-l border-foreground/20 pl-5">
+              <li
+                key={proof.title}
+                className="border-l border-foreground/20 pl-5"
+              >
                 <h3 className="font-serif text-lg tracking-[0.07em]">
                   {proof.title}
                 </h3>
@@ -556,7 +591,7 @@ export default async function ProjectPage({
         </section>
 
         {supportingScreenshots.length > 0 && (
-          <section aria-labelledby="screenshots-heading" className="mt-16">
+          <section aria-labelledby="screenshots-heading" className="reveal mt-16">
             <h2
               id="screenshots-heading"
               className="font-serif text-xs tracking-[0.3em] text-muted"

@@ -1,12 +1,16 @@
-// Project copy is written for a one-minute recruiter scan. Keep the story
-// human and concise; use `technicalProof` for the engineering signal.
-// Media is always local so the portfolio makes no third-party requests.
+// Project copy is written for a quick recruiter scan. Keep it human and concise.
+// Use technicalProof for the engineering details behind each project.
+// Project media is served locally to avoid third-party image and video requests.
+
 export const projectCategories = [
   "Web",
   "Systems & Integration",
   "Device Apps",
   "CLI Tools",
+  "Security Lab",
 ] as const;
+
+export type ProjectArea = "Software Development" | "Cybersecurity";
 
 export type ProjectCategory = (typeof projectCategories)[number];
 
@@ -38,6 +42,12 @@ export type ProjectMedia = {
   height: number;
   alt: string;
   caption: string;
+  credit?: {
+    author: string;
+    sourceUrl: string;
+    license: string;
+    licenseUrl: string;
+  };
 };
 
 export type ProjectVideo = {
@@ -53,23 +63,21 @@ export type ProjectExample = {
   output: string;
 };
 
-export type Project = {
+type ProjectBase = {
+  areas: ProjectArea[];
+  projectType: string;
   slug: string;
   title: string;
   tagline: string;
   description: string;
-  problemTitle?: string;
-  problem: string;
-  solution: string;
-  highlights: ProjectHighlight[];
-  technicalProof: ProjectProof[];
-  example?: ProjectExample;
   year: string;
   wip?: boolean;
   category: ProjectCategory;
   platforms: ProjectPlatform[];
   techStack: string[];
-  status: "live" | "demo";
+  status: "live" | "demo" | "completed";
+  /* Preview image for the /projects index card; defaults to the first screenshot. */
+  cardImage?: ProjectMedia;
   githubUrl?: string;
   liveUrl?: string;
   video?: string;
@@ -81,45 +89,85 @@ export type Project = {
   screenshots: ProjectMedia[];
 };
 
+export type SoftwareProject = ProjectBase & {
+  caseStudy?: undefined;
+  problemTitle?: string;
+  problem: string;
+  solution: string;
+  highlights: ProjectHighlight[];
+  technicalProof: ProjectProof[];
+  example?: ProjectExample;
+};
+
+export type SecurityProject = ProjectBase & { caseStudy: string };
+
+export type Project = SoftwareProject | SecurityProject;
+
 export const projects: Project[] = [
   {
-    slug: "Cinelas",
-    title: "Movie & TV Discovery Platform",
+    slug: "FRA-Exfiltratoren",
+    title: "FRA CTF: Exfiltratören — Network Traffic Forensics",
     tagline:
-      "A live discovery platform that turns 1.3 million titles into a personal place to discover, track, and find where to watch.",
+      "Tracing a suspected data leak through FTP, email, and UDP traffic in FRA’s seven-flag challenge. Three flags documented.",
     description:
-      "Cinelas helps people discover, track, and choose what to watch across a catalogue of more than 1.3 million movies and shows.",
+      "A PCAP investigation covering FTP transfers, an email attachment, and a custom UDP transfer. I used Wireshark, Python, CyberChef, and ExifTool to examine the evidence and document three of the seven flags.",
+    areas: ["Cybersecurity"],
+    projectType: "CTF Write-up",
+    caseStudy: "FRA-Exfiltratoren",
+    year: "2026",
+    category: "Security Lab",
+    platforms: ["Desktop", "CLI"],
+    techStack: ["CyberChef", "Wireshark", "Python 3", "dCode"],
+    status: "demo",
+    wip: true,
+    cardImage: {
+      src: "/projects/FRA-Exfiltratoren/ftp-control.png",
+      width: 1488,
+      height: 750,
+      alt: "Wireshark capture showing FTP commands and the upload of msg.txt",
+      caption: "Following file transfers and other clues in a captured FTP session.",
+    },
+    screenshots: [],
+  },
+  {
+    areas: ["Software Development"],
+    projectType: "Full-stack Application",
+    slug: "Cinelas",
+    title: "Cinelas — Movie & TV Discovery",
+    tagline:
+      "A live film and TV platform for discovering titles, tracking what you watch, and finding where to stream them.",
+    description:
+      "Cinelas combines search, recommendations, watchlists, viewing progress, and streaming availability across more than 1.3 million films and series.",
     problem:
-      "Streaming offers endless choice, but finding something worth watching often means bouncing between services, lists, and review sites.",
+      "Finding something to watch often means switching between streaming services, recommendation sites, and personal watchlists.",
     solution:
-      "Cinelas brings discovery, rich title information, personal lists, viewing progress, and detailed ratings into one responsive product anyone can use.",
+      "I built Cinelas to bring discovery, title details, personal lists, viewing progress, and multi-category reviews into one responsive application.",
     highlights: [
       {
-        title: "Ask naturally",
+        title: "Search in your own words",
         detail:
-          "Search by mood, theme, plot, actor, or half-remembered scene, not just predefined filters.",
+          "Ask for a film by mood, story, actor, or a scene you remember instead of relying only on filters.",
       },
       {
         title: "1.3M+ titles",
-        detail:
-          "Movies and shows stay searchable in one catalogue.",
+        detail: "Search a catalogue of more than 1.3 million films and series.",
       },
       {
-        title: "Discovery to decision",
+        title: "From discovery to watchlist",
         detail:
-          "Move from a suggestion to streaming providers, custom lists, viewing progress, and detailed ratings.",
+          "Find a title, check where it streams, save it to a list, and track or review it later.",
       },
     ],
     technicalProof: [
       {
         title: "Grounded recommendations (RAG)",
         detail:
-          "Cinelas uses retrieval-augmented generation (RAG): it searches 15,000 prepared movie and show records by meaning, then gives the closest matches to Azure OpenAI to choose and explain. The AI works from real catalogue results instead of guessing.",
+          "A retrieval-augmented generation (RAG) workflow searches a prepared index of film and TV records for relevant matches. Azure OpenAI uses the retrieved titles to select and explain recommendations, keeping suggestions grounded in catalogue data.",
       },
       {
-        title: "Reliable, controlled AI",
+        title: "Checks around AI output",
         detail:
-          "Cinelas removes titles already watched and checks every suggestion against its catalogue, preventing invented results. Sign-in, usage limits, caching, and monitoring keep the live service reliable and its costs predictable.",
+          "The recommendation flow filters out watched titles and verifies suggestions against the catalogue before displaying them. Authentication, usage limits, caching, and monitoring help manage performance and API costs.",
       },
     ],
     year: "2026",
@@ -152,8 +200,9 @@ export const projects: Project[] = [
         src: "/projects/Cinelas/ai-chat.png",
         width: 986,
         height: 1185,
-        alt: "Cinelas AI chat with RAG pipeline showing a recommendation for a movie based on a natural-language question",
-        caption: "Turns natural-language questions into grounded recommendations.",
+        alt: "Cinelas AI chat showing a film recommendation in response to a natural-language question",
+        caption:
+          "Uses catalogue matches to support recommendations from natural-language requests.",
       },
       {
         src: "/projects/Cinelas/review.webp",
@@ -165,40 +214,76 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "SOC-001",
+    title: "SOC Home Lab: SSH Brute-Force Detection with Wazuh SIEM",
+    tagline:
+      "From failed SSH logins to a live SIEM alert: a custom Wazuh rule and a separate file-integrity investigation.",
+    description:
+      "A three-VM SOC lab where I investigated SSH login failures, developed a source-IP correlation rule, and tested file integrity monitoring.",
+    areas: ["Cybersecurity"],
+    projectType: "Security Lab",
+    caseStudy: "SOC-001",
+    category: "Security Lab",
+    platforms: ["Self-hosted"],
+    year: "2026",
+    status: "completed",
+    techStack: [
+      "Wazuh SIEM",
+      "Ubuntu Linux",
+      "Windows",
+      "OpenSSH",
+      "VMware Workstation",
+      "File Integrity Monitoring",
+      "XML detection rules",
+    ],
+    githubUrl: "https://github.com/faivern/soc-detection-lab",
+    cardImage: {
+      src: "/projects/SOC-001/05-custom-rule-alert.png",
+      width: 1128,
+      height: 993,
+      alt: "Wazuh alert raised by the lab's custom SSH brute-force rule, showing the matched rule and source address.",
+      caption: "Live Wazuh alert generated by custom rule 100101.",
+    },
+    screenshots: [],
+  },
+  {
+    areas: ["Software Development"],
+    projectType: "Full-stack Application",
     slug: "Booking-Platform",
     title: "Online Booking",
     tagline:
-      "A complete booking journey for customers, with a live operations view for the people running the business.",
+      "A booking flow for customers and a real-time dashboard for staff managing appointments.",
     description:
-      "A booking platform with customer verification, real-time staff updates, and automated confirmations and reminders.",
+      "A booking application with customer verification, live staff updates, and automated booking emails and reminders.",
     problem:
-      "Phone-based booking creates interruptions, missed details, and avoidable no-shows for both customers and staff.",
+      "Manual bookings can interrupt staff, lead to missing information, and make confirmations harder to track.",
     solution:
-      "Customers choose and confirm an appointment in a guided flow while staff manage availability and see every new booking arrive instantly.",
+      "I built a guided appointment flow for customers, alongside a staff dashboard that receives booking updates in real time.",
     highlights: [
       {
         title: "Book in a few steps",
-        detail: "Services, times, details, and confirmation form one clear flow.",
+        detail:
+          "Services, times, details, and confirmation form one clear flow.",
       },
       {
         title: "Live staff view",
         detail: "New bookings appear without refreshing the dashboard.",
       },
       {
-        title: "Less chasing",
-        detail: "Verification, confirmations, and reminders run automatically.",
+        title: "Automated follow-up",
+        detail: "Customer verification, confirmation emails, and scheduled reminders reduce repetitive administration.",
       },
     ],
     technicalProof: [
       {
         title: "Real-time by design",
         detail:
-          "SignalR pushes booking changes directly to the correct organisation dashboard.",
+          "SignalR delivers booking updates to the relevant organisation dashboard without requiring a page refresh.",
       },
       {
-        title: "Work happens off-screen",
+        title: "Background processing",
         detail:
-          "Background services queue emails and schedule reminders without slowing the booking flow.",
+          "Background services handle confirmation emails and reminders separately from the customer booking flow.",
       },
     ],
     year: "2026",
@@ -217,7 +302,8 @@ export const projects: Project[] = [
         width: 1920,
         height: 947,
         alt: "Booking administration dashboard listing appointments and their current status",
-        caption: "Staff can filter, review, and update the day’s bookings in one place.",
+        caption:
+          "Staff can filter, review, and update the day’s bookings in one place.",
       },
       {
         src: "/projects/Booking-Platform/customer-booking.webp",
@@ -236,43 +322,45 @@ export const projects: Project[] = [
     ],
   },
   {
+    areas: ["Software Development"],
+    projectType: "Device Application",
     slug: "Cinelas-TV",
-    title: "Self-Hosted Media Browser for Google TV",
+    title: "Cinelas TV — Self-Hosted Media Browser",
     tagline:
-      "One place to explore every film and series: play what you own, jump to the service that has what you don’t, and save the rest for later.",
+      "A Google TV app that brings a personal media library, film discovery, and streaming-service links into one remote-friendly interface.",
     description:
-      "Cinelas TV brings a personal movie collection, streaming availability, and watchlists together in one television app.",
+      "Cinelas TV combines a Jellyfin media library, TMDB catalogue data, provider links, and personal lists in a Google TV application.",
     problem:
-      "Personal collections and streaming subscriptions live in separate apps, each showing only its own world. Finding The Godfather should not mean searching every service — or forgetting about it when it is unavailable.",
+      "A personal media library and streaming subscriptions are usually spread across different apps, making it harder to see all available viewing options in one place.",
     solution:
-      "Cinelas TV gathers the whole catalogue in one remote-friendly hub. Owned titles play from Jellyfin. For everything else, it shows the services carrying the title in the viewer’s region; choosing Netflix, for example, closes Cinelas TV and opens Netflix on the television. Unavailable titles can stay on a personal list until they reach a service or the viewer buys them.",
+      "I built a remote-friendly interface that plays locally owned media through Jellyfin and shows regional streaming providers for other titles. Users can open supported provider apps or save titles to their own lists.",
     highlights: [
       {
-        title: "One catalogue, no walls",
+        title: "One discovery view",
         detail:
-          "Discover titles beyond what individual streaming platforms choose to surface.",
+          "Browse films and series independently of any one streaming service’s catalogue.",
       },
       {
-        title: "From poster to playback",
+        title: "Playback or provider link",
         detail:
-          "Play owned media directly or hand an unowned title to the right TV app.",
+          "Play items from the Jellyfin library or open a supported streaming-provider app.",
       },
       {
-        title: "Keep it for later",
+        title: "Personal watchlists",
         detail:
-          "Per-profile lists remember titles worth streaming later or adding to the collection.",
+          "Save titles to personal lists organised by viewer profile.",
       },
     ],
     technicalProof: [
       {
-        title: "A thin TV app",
+        title: "TV-focused client",
         detail:
-          "The Capacitor-wrapped React app stays focused on the remote-controlled experience while a Raspberry Pi runs nginx, the .NET API, PostgreSQL, and Jellyfin.",
+          "The React and Capacitor client handles the remote-control interface, while a Raspberry Pi hosts nginx, the .NET API, PostgreSQL, and Jellyfin.",
       },
       {
-        title: "The right source for each job",
+        title: "Separate discovery and playback",
         detail:
-          "TMDB supplies catalogue and regional provider data; Jellyfin alone serves owned media through proxied URLs, keeping discovery and playback clearly separated.",
+          "TMDB supplies metadata and regional provider availability. Jellyfin serves personally owned media through proxied URLs, keeping catalogue discovery separate from local playback.",
       },
     ],
     year: "2026",
@@ -296,9 +384,9 @@ export const projects: Project[] = [
     videos: [
       {
         src: "/projects/CinelasTv/1-notownedmedia-app-redirection.mp4",
-        title: "Continue in the right streaming app",
+        title: "Open a streaming provider",
         description:
-          "Find a title outside the owned library, choose an available provider, and hand playback to its Google TV app.",
+          "Choose a streaming provider for a title outside the local library and open its Google TV app.",
       },
       {
         src: "/projects/CinelasTv/2-search-ownedmedia.mp4",
@@ -310,7 +398,7 @@ export const projects: Project[] = [
         src: "/projects/CinelasTv/3-launch-profile-frontapge.mp4",
         title: "Launch into a personal home screen",
         description:
-          "Open Cinelas TV, choose a viewer profile, and arrive at a remote-friendly discovery experience.",
+          "Launch Cinelas TV, choose a viewer profile, and browse with the remote.",
       },
       {
         src: "/projects/CinelasTv/4-mediadetails-trailer.mp4",
@@ -322,16 +410,18 @@ export const projects: Project[] = [
     screenshots: [],
   },
   {
+    areas: ["Software Development"],
+    projectType: "Systems & Hardware",
     slug: "Distributed-Ad-Platform",
     title: "Newspaper Advertising Platform",
     tagline:
-      "A simpler way for newspaper subscribers and local businesses to place adverts, while staff keep customer information accurate behind the scenes.",
+      "A newspaper advertising workflow connecting a self-service website, subscriber API, and desktop administration tool.",
     description:
-      "A self-service newspaper advertising platform that recognises subscribers, applies the right price, and avoids duplicate customer records.",
+      "A .NET advertising system that retrieves subscriber details through an API and handles subscriber and business pricing separately.",
     problem:
-      "A newspaper needs to serve both subscribers and business advertisers. Copying subscriber details into the advertising system would create duplicate records, extra administration, and a greater risk of conflicting customer information.",
+      "The advertising application needs subscriber details without maintaining a second, potentially conflicting copy of the subscriber database.",
     solution:
-      "Subscribers identify themselves with a subscription number, review details retrieved from the subscriber service, and place an advert for free. Companies enter their own billing details and receive the standard 40 SEK advertising price automatically.",
+      "I separated subscriber management from the advertising website. Subscribers can retrieve their details with a subscription number and place an advert at no charge, while businesses are charged the configured 40 SEK fee.",
     highlights: [
       {
         title: "Self-service intake",
@@ -339,26 +429,26 @@ export const projects: Project[] = [
           "One guided web flow adapts to subscribers and business advertisers.",
       },
       {
-        title: "Subscriber benefit",
+        title: "Subscriber pricing",
         detail:
-          "A subscription number unlocks saved customer details and zero-cost advertising.",
+          "A subscription number retrieves customer details and applies the subscriber price.",
       },
       {
-        title: "Less duplicate data",
+        title: "Single source of subscriber data",
         detail:
-          "Subscriber information remains owned by one system and is reused through its API.",
+          "Subscriber records are maintained by one service and retrieved through its API.",
       },
     ],
     technicalProof: [
       {
-        title: "Two systems, two databases",
+        title: "Separate services and databases",
         detail:
-          "Advertising and subscriber responsibilities stay independently deployable, with their own data models and storage.",
+          "The advertising and subscriber services have separate responsibilities, data models, and databases.",
       },
       {
-        title: "API-led workflows",
+        title: "Shared subscriber API",
         detail:
-          "The advertising site retrieves existing customers while a Windows CRUD client manages subscriber records through the same HTTP API.",
+          "The advertising website reads subscriber details through an HTTP API; a Windows Forms client uses the same API to manage those records.",
       },
     ],
     year: "2025",
@@ -382,8 +472,7 @@ export const projects: Project[] = [
         src: "/projects/Distributed-Ad-Platform/ad-system.webp",
         width: 1468,
         height: 1271,
-        alt:
-          "Web application showing a grid of advertisements with subscriber and business labels, prices, and sellers",
+        alt: "Web application showing a grid of advertisements with subscriber and business labels, prices, and sellers",
         caption:
           "The advertising site clearly distinguishes subscriber and business listings.",
       },
@@ -398,44 +487,46 @@ export const projects: Project[] = [
     ],
   },
   {
+    areas: ["Software Development"],
+    projectType: "Systems & Hardware",
     slug: "Sky-Tracker-AI",
-    title: "Sky tracker AI",
+    title: "Sky Tracker AI",
     tagline:
-      "A live view of the aircraft above my home, powered by a small antenna and designed to make local flight activity easy to explore.",
+      "A personal ADS-B receiver and web dashboard for following aircraft overhead and exploring recorded flight activity.",
     description:
-      "Sky tracker AI turns aircraft radio signals received at home into a live map, searchable flight history, alerts, and easy-to-understand insights.",
+      "Sky Tracker AI collects aircraft transponder broadcasts and presents them through a live map and flight history, with further alerting and AI features under development.",
     problemTitle: "What I wanted to explore",
     problem:
-      "This began as a for-fun homelab experiment. I wanted to connect a radio antenna and Raspberry Pi to software I built myself, learn how aircraft broadcasts could be received at home, and see how far I could take the idea—from live data to flight history, alerts, and eventually AI-powered questions.",
+      "I wanted to combine a Raspberry Pi and radio receiver with software I built myself, then turn aircraft broadcasts into something I could explore through a browser. The project began with live tracking and grew into flight history and statistics, with alerts and AI-assisted queries planned as later steps.",
     solution:
-      "A small home receiver listens for nearby aircraft and sends their position, speed, and altitude to the app. Sky tracker AI turns that information into a live map, remembers each flight for later, and can alert me to important events. The next step is a conversational search that can answer questions such as, ‘What plane flew over my house at lunch yesterday?’",
+      "A 1090 MHz antenna and RTL-SDR receiver feed aircraft broadcasts to a Raspberry Pi. A Java service processes the observations, stores flight data, and serves a React dashboard with live positions and history. Planned work includes geofence alerts and natural-language queries over the recorded data.",
     highlights: [
       {
         title: "Live radar",
         detail:
-          "See nearby aircraft move across the map using signals received directly at my home, rather than data from an outside flight service.",
+          "Follow aircraft positions received through my own antenna and ADS-B receiver, rather than an external flight-tracking feed.",
       },
       {
-        title: "Every pass remembered",
+        title: "Flight history",
         detail:
-          "Look back at previous flights, replay their routes, and compare the fastest, lowest, or closest aircraft.",
+          "Review recorded flight sessions and compare aircraft by speed, altitude, or distance from the receiver.",
       },
       {
-        title: "Useful alerts",
+        title: "Designed for alerts",
         detail:
-          "Get immediate updates when an aircraft enters a chosen area or broadcasts an emergency signal.",
+          "The planned alerting phase covers geofences and emergency transponder codes.",
       },
     ],
     technicalProof: [
       {
-        title: "Reliable from antenna to screen",
+        title: "From radio signal to web UI",
         detail:
-          "A Raspberry Pi decodes the radio broadcasts and passes them to the Java service. If the connection drops, it reconnects automatically so tracking can continue without manual intervention.",
+          "The Raspberry Pi decodes ADS-B signals and streams them to a Spring Boot service, which processes flight observations for the live dashboard and historical queries.",
       },
       {
-        title: "Detailed without storing too much",
+        title: "Flight-session processing",
         detail:
-          "The service groups scattered position updates into complete flights and keeps the most useful detail, especially when an aircraft is close to the antenna.",
+          "The service groups position updates into flight sessions and applies sampling and retention logic to manage stored data.",
       },
     ],
     year: "2026",
@@ -462,7 +553,7 @@ export const projects: Project[] = [
         src: "/projects/Sky-Tracker-AI/live-view.png",
         width: 1906,
         height: 903,
-        alt: "Sky tracker AI live map showing an aircraft detected by the home receiver",
+        alt: "Sky Tracker AI live map showing an aircraft detected by the home receiver",
         caption:
           "The live map shows aircraft detected by the receiver at my home.",
       },
@@ -470,47 +561,50 @@ export const projects: Project[] = [
         src: "/projects/Sky-Tracker-AI/leaderboard.png",
         width: 510,
         height: 545,
-        alt: "Sky tracker AI comparison showing the fastest detected aircraft, with flight names, dates, and speeds",
+        alt: "Sky Tracker AI comparison showing the fastest detected aircraft, with flight names, dates, and speeds",
         caption:
-          "Recorded flights can be compared by speed, altitude, and how close they came to the antenna.",
+          "Compare recorded flights by speed, altitude, and proximity to the receiver.",
       },
     ],
   },
   {
+    areas: ["Software Development"],
+    projectType: "Website",
     slug: "Portfolio",
     title: "Personal Portfolio",
     tagline:
-      "The site you are using now: a privacy-friendly, accessible portfolio self-hosted on a Raspberry Pi at my home.",
+      "The portfolio you are viewing: a static Next.js site designed for accessibility and privacy, served from a Raspberry Pi.",
     description:
-      "A privacy-first, accessible static portfolio with no tracking or third-party requests, self-hosted on a Raspberry Pi.",
+      "A statically exported Next.js portfolio, self-hosted on a Raspberry Pi, without analytics or tracking cookies.",
     problem:
-      "A portfolio should be memorable and easy for anyone to use without quietly trading visitor privacy for convenience.",
+      "I wanted a portfolio that felt personal, loaded quickly, and worked well without relying on visitor tracking.",
     solution:
-      "This site presents the work as a tactile digital business card and fast static case studies, with accessibility and privacy built into every layer.",
+      "I built a business-card-inspired landing page and a collection of lightweight project case studies, with keyboard accessibility and privacy in mind.",
     highlights: [
       {
-        title: "Zero tracking",
-        detail: "No cookies, analytics, or tracking scripts.",
+        title: "No analytics",
+        detail: "The site does not use analytics or visitor-tracking scripts.",
       },
       {
-        title: "Built for everyone",
-        detail: "Keyboard and screen-reader use are treated as core paths.",
+        title: "Accessibility",
+        detail: "Navigation and components are designed for keyboard and screen-reader use.",
       },
       {
         title: "Self-hosted",
-        detail: "A Raspberry Pi serves the static export through nginx, exposed securely through a Cloudflare Tunnel.",
+        detail:
+          "A Raspberry Pi serves the static export through nginx, with public access routed through a Cloudflare Tunnel.",
       },
     ],
     technicalProof: [
       {
-        title: "Static on purpose",
+        title: "Static by design",
         detail:
-          "Every route is exported to plain files, reducing server work and attack surface.",
+          "Next.js exports the pages as static files, avoiding a continuously running application server for the portfolio itself.",
       },
       {
-        title: "Accessible details",
+        title: "Accessibility in practice",
         detail:
-          "Landmarks, focus handling, contrast, and reduced motion are part of the design system.",
+          "The UI includes semantic landmarks, visible focus states, sufficient text contrast, and reduced-motion support.",
       },
     ],
     year: "2026",
@@ -534,21 +628,24 @@ export const projects: Project[] = [
         width: 934,
         height: 551,
         alt: "Portfolio home page showing a letterpress-style business card on a dark desk",
-        caption: "The business card is both the introduction and the navigation.",
+        caption:
+          "The business-card landing page introduces the site and provides navigation.",
       },
     ],
   },
   {
+    areas: ["Software Development"],
+    projectType: "CLI Tool",
     slug: "AI-Customer-Insight",
     title: "AI Customer Insights",
     tagline:
-      "A guided tool that turns hundreds of customer comments into a clear report with recurring themes, quick wins, and longer-term opportunities.",
+      "A Python CLI that turns CSV customer feedback into a structured report of common themes and possible improvements.",
     description:
-      "AI Customer Insights turns customer feedback into a consistent, decision-ready report while keeping every step of the analysis visible.",
+      "AI Customer Insights analyses customer feedback from CSV files and produces a structured report using the OpenAI API.",
     problem:
-      "Useful themes hide inside hundreds of comments, and reading them manually is slow, subjective, and difficult to repeat.",
+      "Reviewing large collections of customer feedback manually takes time and can make recurring issues hard to spot.",
     solution:
-      "The guided workflow checks the feedback file, measures the overall patterns, and uses AI to identify common themes and priorities. It previews the most useful findings straight away and saves a clear report that can be shared with a team.",
+      "I built a guided CLI that validates the input CSV, calculates summary metrics, and uses an LLM to group feedback into themes and suggested actions. It displays a preview and saves the report as Markdown.",
     highlights: [
       {
         title: "Guided from the start",
@@ -556,32 +653,32 @@ export const projects: Project[] = [
           "Choose a customer feedback file and follow a clear step-by-step process.",
       },
       {
-        title: "Progress you can see",
+        title: "Visible progress",
         detail:
-          "Five clear stages show validation, metrics, safety checks, AI analysis, and report creation.",
+          "The CLI reports progress through validation, metrics, input checks, AI analysis, and report generation.",
       },
       {
-        title: "Useful before you leave",
+        title: "Preview and saved report",
         detail:
-          "A terminal preview surfaces the top themes and next steps while the full report is saved.",
+          "The terminal shows the main findings while a full Markdown report is saved.",
       },
     ],
     technicalProof: [
       {
-        title: "Guarded inputs",
+        title: "Input validation",
         detail:
-          "Required columns are validated, samples are capped and sanitised, and feedback is treated as untrusted data rather than instructions.",
+          "The tool checks required CSV columns, limits sample sizes, and treats customer feedback as data rather than instructions to the model.",
       },
       {
-        title: "Structured, repeatable output",
+        title: "Consistent report structure",
         detail:
-          "Model responses are checked before a fixed report structure turns metrics and insights into comparable findings.",
+          "Model output is validated before being formatted alongside metrics and suggested actions in a consistent Markdown report.",
       },
     ],
     example: {
       inputLabel: "Raw feedback",
       input:
-        'Hundreds of CSV rows\n“Checkout fails on mobile.”\n“Support was quick and friendly.”',
+        "Hundreds of CSV rows\n“Checkout fails on mobile.”\n“Support was quick and friendly.”",
       outputLabel: "Decision-ready report",
       output:
         "Overall sentiment\nTop recurring themes\nQuick wins\nLong-term actions",
@@ -594,66 +691,66 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/faivern/ai-customer-insight",
     video: "/projects/AI-Customer-Insight/AI-Customer-Insight-Demo.mp4",
     videoCaption:
-      "The guided workflow turns an example CSV into a preview and a saved customer insight report.",
+      "The example run shows CSV analysis, a terminal preview, and a saved Markdown report.",
     screenshots: [
       {
         src: "/projects/AI-Customer-Insight/Input-and-Worflow.png",
         width: 1091,
         height: 878,
-        alt:
-          "AI Customer Insight terminal showing five completed analysis stages, dataset metrics, an insight preview, and the saved report path",
+        alt: "AI Customer Insight terminal showing five completed analysis stages, dataset metrics, an insight preview, and the saved report path",
         caption:
-          "The tool keeps its checks, progress, and most useful findings visible throughout.",
+          "The terminal shows each stage of the workflow and previews the main findings.",
       },
       {
         src: "/projects/AI-Customer-Insight/Output-Full-Report.png",
         width: 1579,
         height: 891,
-        alt:
-          "Generated customer insight report showing response metrics, a summary, top themes, prioritised improvements, quick wins, and long-term actions",
+        alt: "Generated customer insight report showing response metrics, a summary, top themes, prioritised improvements, quick wins, and long-term actions",
         caption:
-          "The saved report separates evidence, recurring themes, quick wins, and longer-term actions.",
+          "The Markdown report organises metrics, recurring themes, and suggested actions.",
       },
     ],
   },
   {
+    areas: ["Software Development"],
+    projectType: "CLI Tool",
     slug: "Content-Management-AI",
     title: "AI Document Assistant",
     tagline:
-      "A document assistant that turns unstructured text and PDFs into concise summaries, translations, and sentiment insights.",
+      "A Python CLI for summarising, translating, and analysing the sentiment of text and PDF documents.",
     description:
-      "AI Document Assistant turns long text and PDF documents into useful summaries, translations, and sentiment insights.",
+      "AI Document Assistant processes text files and PDFs to produce summaries, translations, or sentiment analysis.",
     problem:
-      "Reviewing long documents by hand takes time and makes it easy to miss the themes, concerns, and details that deserve attention.",
+      "Long documents can be time-consuming to review, especially when the goal is to extract key points or translate content.",
     solution:
-      "Choose a text file or PDF and ask the assistant to summarise it, translate it, or assess its tone. The result is organised for quick review and saved for later use.",
+      "I built a command-line workflow that reads a text file or PDF, runs the selected analysis, and displays and saves the result.",
     highlights: [
       {
-        title: "Summaries that scan",
+        title: "Concise summaries",
         detail:
-          "Condenses long material into a short overview and focused key points.",
+          "Produces a short overview and a list of key points from longer documents.",
       },
       {
-        title: "Three workflows",
+        title: "Three analysis modes",
         detail:
-          "Summarise, translate, or analyse sentiment from one guided interface.",
+          "Summarise, translate, or assess sentiment through the same CLI.",
       },
       {
-        title: "Useful across teams",
+        title: "Reusable output",
         detail:
-          "Turn course material, reports, or customer feedback into actionable insights.",
+          "Use the same workflow for lecture notes, reports, and other text-based material.",
       },
     ],
     technicalProof: [
       {
-        title: "Mixed document input",
+        title: "Text and PDF input",
         detail:
-          "Text files and PDFs share the same workflow, with source language and word count detected during processing.",
+          "Text and PDF files follow the same workflow, including language detection and word-count reporting.",
       },
       {
-        title: "Structured, reusable results",
+        title: "Saved results",
         detail:
-          "Each analysis is validated, shown in the terminal, and saved as timestamped JSON for later use.",
+          "Results are checked, displayed in the terminal, and saved as timestamped JSON.",
       },
     ],
     year: "2026",
@@ -664,25 +761,23 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/faivern/content-management-ai",
     video: "/projects/AI-Content-Manager/content-manager-demo.mp4",
     videoCaption:
-      "A guided demonstration of the document-analysis workflow from source selection to saved result.",
+      "A CLI demonstration from document selection to saved output.",
     screenshots: [
       {
         src: "/projects/AI-Content-Manager/lecture-note-input.png",
         width: 776,
         height: 730,
-        alt:
-          "AI Content Management terminal showing the summarize workflow processing a 3.5 megabyte university Security Fundamentals PDF",
+        alt: "AI Content Management terminal showing the summarize workflow processing a 3.5 megabyte university Security Fundamentals PDF",
         caption:
-          "A university lecture PDF moves through reading, language detection, summarisation, and structured output.",
+          "The CLI reads a lecture PDF, detects its language, and produces a structured summary.",
       },
       {
         src: "/projects/AI-Content-Manager/lecture-note-result.png",
         width: 898,
         height: 795,
-        alt:
-          "AI Content Management terminal showing a concise Security Fundamentals lecture summary and five extracted key points",
+        alt: "AI Content Management terminal showing a concise Security Fundamentals lecture summary and five extracted key points",
         caption:
-          "The result turns 1,266 words of course material into a concise summary and five revision-ready key points.",
+          "The example condenses course material into a summary and five key points.",
       },
     ],
   },

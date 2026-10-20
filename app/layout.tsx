@@ -45,8 +45,13 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+// colorScheme stays "light": `/` is always bone stock, and the dark project
+// surfaces set `color-scheme: dark` themselves in globals.css.
 export const viewport: Viewport = {
-  themeColor: "#f1ede2",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f1ede2" },
+    { media: "(prefers-color-scheme: dark)", color: "#1b1b1d" },
+  ],
   colorScheme: "light",
 };
 
@@ -91,6 +96,18 @@ export default function RootLayout({
       className={`${garamond.variable} ${plexSans.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {/* Applies the stored (or system) theme before first paint, so the
+            project pages never flash bone before going dark. The class is
+            only consumed by the .project-surface-scoped rules in
+            globals.css, so the business card stays on paper either way.
+            Dark is the default: with nothing stored it is applied unless the
+            browser reports an explicit light preference. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&!matchMedia("(prefers-color-scheme: light)").matches))document.documentElement.classList.add("dark")}catch(e){}`,
+          }}
+        />
+
         {/* WCAG 2.4.1, bypass repeated blocks */}
         <a
           href="#content"

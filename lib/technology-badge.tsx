@@ -1,3 +1,6 @@
+import type { IconType } from "react-icons";
+import { SiVmware, SiWireshark } from "react-icons/si";
+import { TbShieldCheck, TbTerminal2 } from "react-icons/tb";
 import {
   TechStackIcon,
   type TechStackIconName,
@@ -6,6 +9,18 @@ import {
 const dotnet = "netcore" satisfies TechStackIconName;
 const python = "python" satisfies TechStackIconName;
 const fallbackIcon = "techstackicons" satisfies TechStackIconName;
+
+// Simple Icons brand marks; Tabler symbols represent tools without a brand mark.
+// Imported from the installed package and bundled locally, with no remote requests.
+const supplementalIcons: Record<string, { icon: IconType; color: string }> = {
+  Wireshark: { icon: SiWireshark, color: "#1679A7" },
+  VMware: { icon: SiVmware, color: "#607078" },
+  Wazuh: { icon: TbShieldCheck, color: "#0073B7" },
+  OpenSSH: { icon: TbTerminal2, color: "currentColor" },
+  CyberChef: { icon: TbTerminal2, color: "currentColor" },
+  dCode: { icon: TbTerminal2, color: "currentColor" },
+  ExifTool: { icon: TbTerminal2, color: "currentColor" },
+};
 
 const technologyIcons: Record<string, TechStackIconName> = {
   ".NET": dotnet,
@@ -22,6 +37,7 @@ const technologyIcons: Record<string, TechStackIconName> = {
   Docker: "docker",
   Azure: "azure",
   "Azure OpenAI": "openai",
+  Codex: "openai",
   RAG: "openai",
   "SQL Server": "microsoft",
   Twilio: "twilio",
@@ -49,6 +65,7 @@ const technologyIcons: Record<string, TechStackIconName> = {
   Cloudflare: "cloudflare",
   "Raspberry Pi": "raspberrypi",
   Python: python,
+  "Python 3": python,
   "OpenAI API": "openai",
   "Claude Code": "claude",
   pandas: "pandas",
@@ -70,6 +87,8 @@ export function TechnologyBadge({
   variant = "compact",
 }: TechnologyBadgeProps) {
   const technologyIcon = technologyIcons[technology] ?? fallbackIcon;
+  const supplemental = supplementalIcons[technology];
+  const SupplementalIcon = supplemental?.icon;
   const className =
     variant === "full"
       ? "inline-flex items-center gap-1.5 rounded-sm border border-foreground/15 px-2.5 py-1 font-sans text-[0.80rem] normal-case tracking-normal text-muted [text-shadow:none]"
@@ -84,7 +103,15 @@ export function TechnologyBadge({
   return (
     <Tag className={className}>
       <span aria-hidden="true" className={`${iconClassName} shrink-0`}>
-        <TechStackIcon className="h-full w-full" name={technologyIcon} />
+        {SupplementalIcon ? (
+          <SupplementalIcon
+            className="h-full w-full"
+            color={supplemental.color}
+            focusable="false"
+          />
+        ) : (
+          <TechStackIcon className="h-full w-full" name={technologyIcon} />
+        )}
       </span>
       {technology}
     </Tag>
