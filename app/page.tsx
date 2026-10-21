@@ -16,12 +16,18 @@ import { TechnologyBadge } from "@/lib/technology-badge";
 
 export default function Home() {
   const [flipped, setFlipped] = useState(false);
+  const [hasTurned, setHasTurned] = useState(false);
   const frontRef = useRef<HTMLElement>(null);
   const backRef = useRef<HTMLElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);
   const mounted = useRef(false);
   // Where the current pointer press started (nearest link/button, if any).
   const pressRef = useRef<Element | null>(null);
+
+  const flipCard = (next: boolean) => {
+    setHasTurned(true);
+    setFlipped(next);
+  };
 
   // Flipping makes the visible face inert, which would silently drop
   // keyboard focus to <body>; move it to the revealed face instead.
@@ -35,6 +41,8 @@ export default function Home() {
     if (flipped) {
       tiltRef.current?.style.setProperty("--rx", "0deg");
       tiltRef.current?.style.setProperty("--ry", "0deg");
+      tiltRef.current?.style.setProperty("--shadow-x", "0px");
+      tiltRef.current?.style.setProperty("--shadow-y", "0px");
     }
   }, [flipped]);
 
@@ -42,9 +50,23 @@ export default function Home() {
   // and only when motion is welcome, per the a11y conventions.
   const tiltEnabled = useRef(false);
   useEffect(() => {
-    tiltEnabled.current =
-      window.matchMedia("(pointer: fine)").matches &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const pointer = window.matchMedia("(pointer: fine)");
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => {
+      tiltEnabled.current = pointer.matches && !motion.matches;
+      if (!tiltEnabled.current) {
+        for (const property of ["--rx", "--ry", "--shadow-x", "--shadow-y", "--sheen"]) {
+          tiltRef.current?.style.removeProperty(property);
+        }
+      }
+    };
+    update();
+    pointer.addEventListener("change", update);
+    motion.addEventListener("change", update);
+    return () => {
+      pointer.removeEventListener("change", update);
+      motion.removeEventListener("change", update);
+    };
   }, []);
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -58,6 +80,8 @@ export default function Home() {
       // Cap tilt at 2.5deg each way; a restrained "held card" angle.
       el.style.setProperty("--ry", `${(px - 0.5) * 5}deg`);
       el.style.setProperty("--rx", `${(py - 0.5) * -5}deg`);
+      el.style.setProperty("--shadow-x", `${(px - 0.5) * -12}px`);
+      el.style.setProperty("--shadow-y", `${(py - 0.5) * -8}px`);
     }
     el.style.setProperty("--mx", `${px * 100}%`);
     el.style.setProperty("--my", `${py * 100}%`);
@@ -70,19 +94,22 @@ export default function Home() {
     el.style.setProperty("--rx", "0deg");
     el.style.setProperty("--ry", "0deg");
     el.style.setProperty("--sheen", "0");
+    el.style.setProperty("--shadow-x", "0px");
+    el.style.setProperty("--shadow-y", "0px");
   };
 
   return (
     <div className="business-card flex flex-1 items-center justify-center px-3 py-4 min-[360px]:px-4 sm:px-8 sm:py-10 lg:py-16">
-      <div className="card-stage w-full max-w-[929px] [perspective:1600px]">
+      <div className="card-stage w-full max-w-[929px] [container-type:inline-size] [perspective:1600px]">
         <div
           ref={tiltRef}
           className="card-tilt"
           onPointerMove={handlePointerMove}
           onPointerLeave={handlePointerLeave}
         >
+          <div className={`card-lift ${hasTurned ? (flipped ? "turn-to-back" : "turn-to-front") : ""}`}>
           <div
-            className={`card-3d grid min-h-[43rem] min-[360px]:min-h-[40rem] min-[480px]:min-h-[36rem] sm:h-[31rem] sm:min-h-0 md:aspect-[7/4] md:h-auto ${flipped ? "is-flipped" : ""}`}
+            className={`card-3d grid min-h-[43rem] min-[360px]:min-h-[40rem] min-[480px]:min-h-[36rem] sm:min-h-[31rem] md:min-h-[calc(100cqw*4/7)] ${flipped ? "is-flipped" : ""}`}
             onPointerDown={(e) => {
               // The tilt moves the card under the pointer, so a press that
               // starts on a link can end slightly off it, the click then
@@ -99,7 +126,7 @@ export default function Home() {
               // list (separators, padding, empty rows) are dead hits near a
               // target and do nothing. Anywhere else flips.
               if ((e.target as HTMLElement).closest("a, button, ul")) return;
-              setFlipped((f) => !f);
+              flipCard(!flipped);
             }}
           >
           {/* ── Front: the pure card ─────────────────────────── */}
@@ -108,7 +135,7 @@ export default function Home() {
             tabIndex={-1}
             aria-labelledby="card-name"
             inert={flipped}
-            className="card-face col-start-1 row-start-1 flex min-h-[280px] cursor-pointer flex-col items-center px-8 py-7 text-center"
+            className="card-face col-start-1 row-start-1 flex min-h-[280px] cursor-pointer flex-col items-center px-8 pt-7 pb-20 text-center"
           >
             <span aria-hidden="true" className="card-monogram font-serif">
               {site.name
@@ -179,10 +206,10 @@ export default function Home() {
               <span aria-hidden="true" className="dogear-fold" />
               <button
                 type="button"
-                onClick={() => setFlipped(true)}
-                className="dogear-label relative z-10 -m-2 cursor-pointer p-2 font-sans text-[0.6rem] tracking-[0.25em] text-muted hover:text-foreground"
+                onClick={() => flipCard(true)}
+                className="dogear-label relative z-10 inline-flex min-h-11 cursor-pointer items-center gap-2 px-4 py-2 font-sans text-[0.8rem] tracking-[0.04em] text-foreground"
               >
-                About Me
+                Flip to meet me <span aria-hidden="true">↻</span>
               </button>
             </span>
           </section>
@@ -202,12 +229,12 @@ export default function Home() {
               About Me
             </h2>
 
-            <div className="card-profile-body mt-3 flex min-h-0 flex-1 flex-col gap-3 pb-3 sm:mt-4 sm:gap-3 sm:pb-4">
+            <div className="card-profile-body mt-3 flex flex-1 flex-col gap-3 pb-3 sm:mt-4 sm:gap-3">
               <p className="max-w-[52rem] normal-case font-serif text-sm leading-[1.4] tracking-[0.025em] sm:text-[1.05rem] sm:leading-[1.45]">
                 {site.profile.about}
               </p>
 
-              <div className="card-profile-meta flex flex-col gap-1.5 border-y border-foreground/10 py-2 normal-case font-sans text-xs leading-snug tracking-[0.035em] text-muted sm:gap-2.5 sm:py-3 sm:text-[0.85rem]">
+              <div className="card-profile-meta flex flex-col gap-1.5 border-y border-foreground/10 py-2 normal-case font-sans text-xs leading-snug tracking-[0.035em] text-muted sm:text-[0.85rem]">
                 <p className="inline-flex items-start gap-1.5">
                   <FaLocationDot
                     aria-hidden="true"
@@ -241,11 +268,11 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="flex min-h-0 flex-1 flex-col">
+              <div className="flex flex-1 flex-col">
                 <h3 className="pb-1 font-sans text-[0.62rem] font-medium tracking-[0.2em] text-muted sm:pb-2 sm:text-[0.68rem] sm:tracking-[0.24em]">
-                  How I Build & Explore
+                  My Toolbox
                 </h3>
-                <dl className="mt-1 grid flex-1 grid-cols-2 content-start gap-x-2 gap-y-2 sm:mt-2 sm:grid-rows-2 sm:content-stretch sm:gap-x-8 sm:gap-y-2.5">
+                <dl className="mt-1 grid flex-1 grid-cols-2 content-start gap-x-2 gap-y-2 sm:mt-2 sm:content-stretch sm:gap-x-8 sm:gap-y-2.5">
                   {site.profile.skillGroups.map((group) => (
                     <div
                       key={group.label}
@@ -272,11 +299,11 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="card-profile-footer relative mt-3 -mx-4 min-h-12 shrink-0 border-t border-accent/50 min-[360px]:-mx-5 sm:-mx-8 sm:min-h-14">
+            <div className="card-profile-footer mt-2 -mx-4 flex shrink-0 items-center gap-2 border-t border-area-accent/50 px-3 py-2 min-[360px]:-mx-5 sm:-mx-8 sm:px-5">
               <button
                 type="button"
-                onClick={() => setFlipped(false)}
-                className="relative z-10 ml-2 flex min-h-12 cursor-pointer items-center p-2 font-sans text-base text-muted hover:text-foreground sm:ml-4 sm:min-h-14"
+                onClick={() => flipCard(false)}
+                className="flex min-h-11 min-w-11 shrink-0 cursor-pointer items-center justify-center font-sans text-base text-muted hover:text-foreground"
               >
                 <span aria-hidden="true">←&#xFE0E;</span>
                 <span className="sr-only">Back to the front of the card</span>
@@ -284,12 +311,14 @@ export default function Home() {
 
               <Link
                 href="/projects"
-                className="absolute inset-0 flex items-center justify-center px-14 text-center font-sans text-[0.78rem] tracking-[0.28em] text-muted underline-offset-4 hover:text-foreground hover:underline"
+                className="card-projects-button mx-auto inline-flex min-h-11 items-center justify-center gap-2 rounded-sm border border-area-accent bg-foreground px-3 py-3 text-center font-sans text-xs font-medium tracking-[0.06em] text-panel hover:underline hover:underline-offset-4 sm:gap-3 sm:px-5 sm:text-sm"
               >
-                Explore all projects <span aria-hidden="true">→&#xFE0E;</span>
+                Explore projects <span aria-hidden="true">→&#xFE0E;</span>
               </Link>
+              <span aria-hidden="true" className="hidden w-11 shrink-0 sm:block" />
             </div>
           </section>
+          </div>
           </div>
         </div>
       </div>

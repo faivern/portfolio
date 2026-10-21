@@ -148,7 +148,16 @@ cp .env.example .env.local   # then edit NEXT_PUBLIC_SITE_URL
   header/navbar, contact links live on the front of the home-page business
   card; a short profile and technical stack are on its reverse (card flip on
   click, instant swap under reduced motion), with no nested scrolling. The full
-  work index lives on `/projects`.
+  work index lives on `/projects`. The front offers a visible, borderless
+  "Flip to meet me" button; the reverse ends with a
+  filled "Explore projects" link. The folded corner lifts once after entrance
+  (static under reduced motion); the card never flips automatically.
+  Preserve the desktop card's 7:4 proportions by keeping reverse-side spacing
+  compact; narrower screens may grow to fit the content without clipping.
+  The material treatment uses the local `public/textures/walnut-desk.webp`,
+  matte paper grain, layered stock edges, and a pointer-responsive shadow.
+  A separate `.card-lift` wrapper lifts and settles during user-triggered flips;
+  reduced motion disables the lift and tilt, with an instant face swap.
 - First focusable element is a "skip to main content" link.
 - Never use `text-foreground/<opacity>` for text, it fails contrast
   requirements. Use the `text-muted` token (4.95:1) for secondary text
