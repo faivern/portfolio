@@ -105,6 +105,56 @@ export type Project = SoftwareProject | SecurityProject;
 
 export const projects: Project[] = [
   {
+    slug: "web-application-security",
+    title: "Web Application Security: SQL Injection & XSS",
+    tagline:
+      "From HTTP enumeration to database extraction and session access in a deliberately vulnerable lab.",
+    description:
+      "A web security lab covering authentication attacks, manual and automated SQL injection, reflected and stored XSS, and proposed countermeasures.",
+    areas: ["Cybersecurity"],
+    projectType: "Security Lab",
+    caseStudy: "web-application-security",
+    year: "2026",
+    category: "Security Lab",
+    platforms: ["Web", "CLI"],
+    techStack: ["Nmap", "Hydra", "sqlmap", "Python 3"],
+    status: "completed",
+    cardImage: {
+      src: "/projects/web-application-security/login-bypass.png",
+      width: 811,
+      height: 404,
+      alt: "Porthos admin page welcoming admin and displaying the login-bypass flag",
+      caption:
+        "Authenticated admin access after the SQL injection login bypass.",
+    },
+    screenshots: [],
+  },
+  {
+    slug: "linux-firewall-engineering",
+    title: "Linux Firewall Engineering: Filtering & Access Control",
+    tagline:
+      "Stateful forwarding, client-specific access, and ICMP rate limiting, with an evidence review of scan controls.",
+    description:
+      "An iptables lab covering default-deny policies, stateful forwarding, Telnet access controls, ICMP rate limiting, and the limits of scan-control validation.",
+    areas: ["Cybersecurity"],
+    projectType: "Security Lab",
+    caseStudy: "linux-firewall-engineering",
+    year: "2025",
+    category: "Security Lab",
+    platforms: ["CLI", "Desktop"],
+    techStack: ["Linux", "iptables", "Nmap", "VMware"],
+    status: "completed",
+    cardImage: {
+      src: "/projects/linux-firewall-engineering/final-rule-counters.png",
+      width: 829,
+      height: 434,
+      alt: "Numbered FORWARD rules with HTTP accepts above recent checks, a 15-second window, and zero scan-drop counters",
+      caption:
+        "The saved rules and counters expose differences from the written scan-control configuration.",
+    },
+    screenshots: [],
+  },
+  {
     slug: "FRA-Exfiltratoren",
     title: "FRA CTF: Exfiltratören — Network Traffic Forensics",
     tagline:

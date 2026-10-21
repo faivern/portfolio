@@ -41,7 +41,7 @@ cp .env.example .env.local   # then edit NEXT_PUBLIC_SITE_URL
   `npm run generate:tech-icons`. Do not edit the generated file directly.
   Supplemental icons use locally bundled `react-icons`: Simple Icons for
   Wireshark and VMware, and Tabler shield/terminal symbols for Wazuh, OpenSSH,
-  CyberChef, dCode, and ExifTool
+  CyberChef, dCode, ExifTool, Nmap, Hydra, sqlmap, and iptables
   (representative symbols, not their brand logos). Assignments and colours live
   in `lib/technology-badge.tsx`.
 - Projects: `app/projects/data.ts`; media lives in

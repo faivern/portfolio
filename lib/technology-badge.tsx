@@ -20,6 +20,10 @@ const supplementalIcons: Record<string, { icon: IconType; color: string }> = {
   CyberChef: { icon: TbTerminal2, color: "currentColor" },
   dCode: { icon: TbTerminal2, color: "currentColor" },
   ExifTool: { icon: TbTerminal2, color: "currentColor" },
+  Nmap: { icon: TbTerminal2, color: "currentColor" },
+  Hydra: { icon: TbTerminal2, color: "currentColor" },
+  sqlmap: { icon: TbTerminal2, color: "currentColor" },
+  iptables: { icon: TbShieldCheck, color: "currentColor" },
 };
 
 const technologyIcons: Record<string, TechStackIconName> = {
