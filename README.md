@@ -264,6 +264,7 @@ The reusable renderer supports paragraphs, XML-highlighted configuration,
 terminal/code blocks, image galleries, architecture flows, workflow/incident
 timelines, and findings tables. Timeline entries should distinguish workflow
 order from verified timestamps. The contents navigation comes from section IDs.
+Reports can use labelled fact grids and subheadings; optional story/report section presentation separates narrative from formal findings.
 Typed content fits the existing TypeScript metadata approach without an MDX
 compiler or runtime Markdown dependency. Add new block types only as needed.
 Sitemap entries and detail metadata are generated from project metadata; previews
@@ -274,3 +275,5 @@ screenshots and a diagram reconstructed from its documented architecture.
 extracted from the author's PDF. Its evidence provenance is recorded in
 `public/projects/FRA-Exfiltratoren/SOURCES.md`; gaps in UDP reconstruction
 validation are stated in the article.
+
+`/projects/SOC-002` presents four TryHackMe SOC alert investigations as screenshot-led stories, each immediately followed by its formal report. PDF evidence provenance lives in `public/projects/SOC-002/SOURCES.md`. Two alerts concern the same blocked request.

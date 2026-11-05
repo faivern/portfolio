@@ -8,8 +8,11 @@ import ScreenshotGallery from "./screenshot-gallery";
 
 function blockText(block: CaseBlock): string {
   switch (block.type) {
+    case "heading":
     case "paragraph":
       return block.text;
+    case "facts":
+      return block.items.map((item) => `${item.label} ${item.value}`).join(" ");
     case "code":
       return `${block.caption} ${block.code}`;
     case "images":
@@ -67,6 +70,19 @@ function highlightXml(code: string) {
 
 function Block({ block }: { block: CaseBlock }) {
   switch (block.type) {
+    case "heading":
+      return <h3 className="pt-3 text-base font-semibold leading-7">{block.text}</h3>;
+    case "facts":
+      return (
+        <dl className="grid gap-x-6 sm:grid-cols-2">
+          {block.items.map((item) => (
+            <div key={item.label} className="min-w-0 border-b border-foreground/15 py-3">
+              <dt className="text-xs font-medium text-muted">{item.label}</dt>
+              <dd className="mt-1 break-words text-sm leading-6 [overflow-wrap:anywhere]">{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      );
     case "paragraph":
       return <p className="leading-7">{block.text}</p>;
     case "images":
@@ -239,12 +255,13 @@ export default function SecurityCaseStudy({
               <section
                 key={section.id}
                 aria-labelledby={section.id}
-                className="reveal scroll-mt-8"
+                className={`reveal scroll-mt-8 ${section.presentation === "report" ? "rounded-lg border border-foreground/15 bg-panel p-5 sm:p-7" : section.presentation === "story" ? "border-t border-foreground/20 pt-10" : ""}`}
               >
+                {section.presentation && <p className="mb-3 font-sans text-xs font-medium uppercase tracking-[0.15em] text-muted">{section.presentation === "report" ? "Investigation report" : "Investigation story"}</p>}
                 <h2
                   id={section.id}
                   tabIndex={-1}
-                  className="font-serif text-2xl tracking-[0.05em]"
+                  className={`font-serif leading-snug ${section.presentation === "report" ? "text-xl" : "text-2xl tracking-[0.03em]"}`}
                 >
                   {section.title}
                 </h2>

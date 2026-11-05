@@ -24,3 +24,5 @@ Full details live in `README.md`, keep both in sync when conventions change.
 - **Routing metadata**: add new public pages to `app/sitemap.ts`.
 
 - **Project content**: `app/projects/data.ts` holds unified metadata (`areas`, `projectType`, and optional `caseStudy`). Software showcases retain their existing layout; security write-ups use typed blocks in `content/case-studies/` and the shared case-study renderer. Keep evidence local and distinguish observations from proposed tests. See README.md for the authoring workflow.
+
+- **Case-study readability**: typed blocks support subheadings and labelled fact grids; optional story/report section presentation separates narrative from formal findings.

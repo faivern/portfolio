@@ -24,7 +24,7 @@ export const site = {
   email: "gustaf.faivre@outlook.com",
   url: siteUrl,
   description:
-    "Portfolio of Gustaf Faivre, a software developer building applications, operating infrastructure, and exploring security through hands-on labs.",
+    "Gustaf Faivre’s portfolio in software development and cybersecurity, featuring full-stack applications, SOC investigations, and hands-on security labs.",
   profile: {
     about:
       "Building software from idea to production, with an interest in everything behind it. I enjoy the full development lifecycle, from developing applications to understanding the infrastructure and security that support them, with a particular interest in AI.",

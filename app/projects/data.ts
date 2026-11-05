@@ -104,6 +104,34 @@ export type SecurityProject = ProjectBase & { caseStudy: string };
 export type Project = SoftwareProject | SecurityProject;
 
 export const projects: Project[] = [
+{
+  "slug": "SOC-002",
+  "title": "SOC Alert Investigations: Phishing & Firewall Triage",
+  "tagline": "Following the evidence from suspicious emails to allowed and blocked connections.",
+  "description": "Four TryHackMe SOC alert investigations covering phishing, firewall correlation, escalation and false-positive triage.",
+  "areas": [
+    "Cybersecurity"
+  ],
+  "projectType": "Security Lab",
+  "caseStudy": "SOC-002",
+  "year": "2026",
+  "category": "Security Lab",
+  "platforms": [
+    "Web"
+  ],
+  "techStack": [
+    "Splunk"
+  ],
+  "status": "completed",
+  "screenshots": [],
+  "cardImage": {
+    "src": "/projects/SOC-002/case-4-page-2-1.png",
+    "width": 962,
+    "height": 751,
+    "alt": "Splunk firewall evidence from the Microsoft impersonation investigation",
+    "caption": "Investigating an allowed connection."
+  }
+},
   {
     slug: "web-application-security",
     title: "Web Application Security: SQL Injection & XSS",

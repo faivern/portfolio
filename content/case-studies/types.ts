@@ -2,6 +2,8 @@ import type { ProjectMedia } from "@/app/projects/data";
 
 export type CaseBlock =
   | { type: "paragraph"; text: string }
+  | { type: "heading"; text: string }
+  | { type: "facts"; items: { label: string; value: string }[] }
   | {
       type: "code";
       language: "xml" | "bash" | "text";
@@ -20,5 +22,5 @@ export type CaseStudy = {
   context: string;
   sources?: { title: string; url: string; detail: string }[];
   techniques?: { id: string; name: string; url: string }[];
-  sections: { id: string; title: string; blocks: CaseBlock[] }[];
+  sections: { id: string; title: string; presentation?: "story" | "report"; blocks: CaseBlock[] }[];
 };
