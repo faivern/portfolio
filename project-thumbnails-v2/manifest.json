@@ -1,0 +1,275 @@
+[
+  {
+    "title": "SOC Alert Investigations: Phishing & Firewall Triage",
+    "url": "https://gustaffaivre.dev/projects/SOC-002",
+    "slug": "SOC-002",
+    "visualStory": "A suspicious email becomes actionable when its destination matches a blocked firewall event.",
+    "creativeConcept": "A forensic light table aligns matching destination markers on email and firewall evidence.",
+    "storytellingTechnique": "Discovery and revelation",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, invented features, illegible copy, neon, watermarks, decorative particles or generic tech decoration. An overhead visual of an open cream envelope on a deep forest-green forensic light table. The oversized printed email carries a bold hook-shaped mark. A single amber line physically joins a matching mark on a black firewall receipt, ending at one bold red blocked mark. The dramatic highlight falls on this evidence match. Layered paper and ink, tight crop but safe margins. No brands, domains or addresses. If useful, only the exact text ‘BLOCKED’ in bold beside the stop mark.",
+    "qualityScores": {
+      "immediateComprehension": 9,
+      "storytelling": 9,
+      "visualImpact": 9,
+      "thumbnailReadability": 9,
+      "originality": 9,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "SOC-002.webp",
+    "status": "generated",
+    "attempts": 1
+  },
+  {
+    "title": "Web Application Security: SQL Injection & XSS",
+    "url": "https://gustaffaivre.dev/projects/web-application-security",
+    "slug": "web-application-security",
+    "visualStory": "An ordinary web page opens to reveal database and browser scripting vulnerabilities in a controlled lab.",
+    "creativeConcept": "A torn-away browser surface reveals the web stack underneath.",
+    "storytellingTechnique": "Discovery and revelation",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, fake results, neon or watermarks. Redesign as a front-facing porcelain browser page with a split cutaway beneath two fields. Two unmistakably separate, unconnected recesses in the same dark material expose a cobalt database cylinder engraved ‘SQL’ and a burnt-orange browser script block engraved ‘XSS’. The same large lifted browser surface unifies the scene. Keep the two discoveries side by side with empty space between them. Absolutely no arrows, connectors or visual implication that one vulnerability leads to the other. Matte ivory and charcoal with controlled orange and blue accents. No payloads, code, targets, commands or URLs.",
+    "qualityScores": {
+      "immediateComprehension": 9,
+      "storytelling": 8,
+      "visualImpact": 9,
+      "thumbnailReadability": 9,
+      "originality": 9,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "web-application-security.webp",
+    "status": "generated",
+    "attempts": 2
+  },
+  {
+    "title": "Linux Firewall Engineering: Filtering & Access Control",
+    "url": "https://gustaffaivre.dev/projects/linux-firewall-engineering",
+    "slug": "linux-firewall-engineering",
+    "visualStory": "A Linux firewall lets approved network traffic through while unwanted packets stop at the boundary.",
+    "creativeConcept": "A firewall rendered as a machined network cross-section, with one open channel and one blocked lane.",
+    "storytellingTechnique": "Cause and effect",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, invented features, illegible copy, neon, watermarks, decorative particles or generic tech decoration. Oblique cutaway of a broad solid graphite network appliance like a machine section in a design magazine. One straight sea-green channel through the cutaway contains a few broad packet blocks emerging cleanly. A distinct red-orange channel ends at a solid internal baffle with packet blocks stopped visibly before it. One large physical object with strong edge lighting, gray slate background. No labels, code or decorative wiring.",
+    "qualityScores": {
+      "immediateComprehension": 9,
+      "storytelling": 9,
+      "visualImpact": 9,
+      "thumbnailReadability": 9,
+      "originality": 9,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "linux-firewall-engineering.webp",
+    "status": "generated",
+    "attempts": 1
+  },
+  {
+    "title": "FRA CTF: Exfiltratören — Network Traffic Forensics",
+    "url": "https://gustaffaivre.dev/projects/FRA-Exfiltratoren",
+    "slug": "FRA-Exfiltratoren",
+    "visualStory": "A captured stream of network traffic gives up a concealed image artifact during a forensic examination.",
+    "creativeConcept": "A segmented packet ribbon unwraps into the recovered file artifact.",
+    "storytellingTechnique": "Discovery and revelation",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, invented features, illegible copy, neon, watermarks, decorative particles or generic tech decoration. A dynamic diagonal spool of broad segmented blue network-capture tape, sparsely marked ‘PCAP’ in wide bold letters. One highlighted packet segment on the tape folds up and resolves into a large recognizable photo print showing a landscape silhouette, with a small metadata corner tab. Build the whole image as one flowing shape. Off-white evidence-table backdrop and ultramarine with a small golden highlight. No commands, real codes or hidden instructions.",
+    "qualityScores": {
+      "immediateComprehension": 8,
+      "storytelling": 9,
+      "visualImpact": 9,
+      "thumbnailReadability": 9,
+      "originality": 9,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "FRA-Exfiltratoren.webp",
+    "status": "generated",
+    "attempts": 1
+  },
+  {
+    "title": "Cinelas — Movie & TV Discovery",
+    "url": "https://gustaffaivre.dev/projects/Cinelas",
+    "slug": "Cinelas",
+    "visualStory": "A natural-language movie request brings relevant titles to the surface of a large catalogue.",
+    "creativeConcept": "A matching movie poster projects forward from the results of a natural-language browser search.",
+    "storytellingTechnique": "Defining moment",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, fake results, neon or watermarks. Redesign around an unmistakable web search interaction: a bold wide cream search bar, conventional black magnifying glass at left and exact large sentence ‘Find rainy mysteries’ at center. Just below it a single large rain-soaked fictional detective poster with umbrella under a streetlamp springs forward from two subdued matching poster silhouettes, filling the composition. Integrate the browser search strip and the results in one cinema-like layered composition. Burgundy, muted teal, amber highlights. No lettering on posters, no archive labels or props.",
+    "qualityScores": {
+      "immediateComprehension": 10,
+      "storytelling": 9,
+      "visualImpact": 10,
+      "thumbnailReadability": 9,
+      "originality": 9,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "Cinelas.webp",
+    "status": "generated",
+    "attempts": 2
+  },
+  {
+    "title": "SOC Home Lab: SSH Brute-Force Detection with Wazuh SIEM",
+    "url": "https://gustaffaivre.dev/projects/SOC-001",
+    "slug": "SOC-001",
+    "visualStory": "A series of rejected SSH logins triggers a custom SIEM alert.",
+    "creativeConcept": "The alert lifts off a continuous strip of failed-login records at the moment the pattern is detected.",
+    "storytellingTechnique": "Defining moment",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, invented features, illegible copy, neon, watermarks, decorative particles or generic tech decoration. A broad diagonal charcoal event-log strip with the large label ‘SSH’ and a visible rhythm of repeated red failed-login crosses over abstract rows. At the end of that very strip, one thick amber notification card pops upward with an exclamation mark and exact text ‘ALERT’. Strong hard-edged shadows over a pale clay background, editorial still-life lighting, large simple forms. No commands, addresses or real configuration.",
+    "qualityScores": {
+      "immediateComprehension": 9,
+      "storytelling": 9,
+      "visualImpact": 9,
+      "thumbnailReadability": 9,
+      "originality": 8,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "SOC-001.webp",
+    "status": "generated",
+    "attempts": 1
+  },
+  {
+    "title": "Online Booking",
+    "url": "https://gustaffaivre.dev/projects/Booking-Platform",
+    "slug": "Booking-Platform",
+    "visualStory": "A customer's confirmed booking appears on the staff appointment calendar.",
+    "creativeConcept": "A new appointment tile snaps into a calendar while the customer sees confirmation on their phone.",
+    "storytellingTechnique": "Cause and effect",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, invented features, illegible copy, neon, watermarks, decorative particles or generic tech decoration. Bold foreshortened view of an open dark-blue appointment book composed as a large clean calendar grid. A single contrasting salmon appointment tile visibly slides into the corresponding empty slot, casting a sharp shadow. A foreground smartphone partially overlaps the book edge and shows a large matching salmon checkmark. A few clean grid cells, ivory desk, blue shadows, restrained product-launch lighting. No text.",
+    "qualityScores": {
+      "immediateComprehension": 9,
+      "storytelling": 9,
+      "visualImpact": 9,
+      "thumbnailReadability": 10,
+      "originality": 9,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "Booking-Platform.webp",
+    "status": "generated",
+    "attempts": 1
+  },
+  {
+    "title": "Cinelas TV — Self-Hosted Media Browser",
+    "url": "https://gustaffaivre.dev/projects/Cinelas-TV",
+    "slug": "Cinelas-TV",
+    "visualStory": "A remote control starts playback from a home media library on the television.",
+    "creativeConcept": "The viewer selects a locally hosted film, captured from just behind the remote.",
+    "storytellingTechnique": "Real-world context",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, invented features, illegible copy, neon, watermarks, decorative particles or generic tech decoration. Cinematic over-the-hand view of a thumb pressing play on an oversized physical black TV remote in the near foreground. Midground widescreen television prominently shows one selected original film poster switching to full playback, shown as a widescreen mountain scene with a single discreet play triangle. Beside TV a compact home media server with a short visible cable reinforces local playback. Cool slate room, warm amber screen lighting, no streaming logos or extra furnishings.",
+    "qualityScores": {
+      "immediateComprehension": 8,
+      "storytelling": 9,
+      "visualImpact": 9,
+      "thumbnailReadability": 9,
+      "originality": 8,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "Cinelas-TV.webp",
+    "status": "generated",
+    "attempts": 1
+  },
+  {
+    "title": "Newspaper Advertising Platform",
+    "url": "https://gustaffaivre.dev/projects/Distributed-Ad-Platform",
+    "slug": "Distributed-Ad-Platform",
+    "visualStory": "An online ad submission becomes a newspaper classified listing, with subscriber details looked up as part of intake.",
+    "creativeConcept": "A digital ad form folds into the classified box of a physical newspaper.",
+    "storytellingTechnique": "Transformation",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, invented features, illegible copy, neon, watermarks, decorative particles or generic tech decoration. A folded newsprint broadsheet dominates the frame in a diagonal, overhead composition. One bold boxed ‘AD’ area visibly peels upward from the newspaper and transforms into an online form with only two broad field outlines. A small subscriber card is tucked into the folded corner as supporting context. Cream newsprint, navy ink, coral red highlight on the ad box, cool ivory background. No other text, no logos and no pricing.",
+    "qualityScores": {
+      "immediateComprehension": 9,
+      "storytelling": 9,
+      "visualImpact": 9,
+      "thumbnailReadability": 9,
+      "originality": 9,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "Distributed-Ad-Platform.webp",
+    "status": "generated",
+    "attempts": 1
+  },
+  {
+    "title": "Sky Tracker AI",
+    "url": "https://gustaffaivre.dev/projects/Sky-Tracker-AI",
+    "slug": "Sky-Tracker-AI",
+    "visualStory": "A home antenna turns aircraft transmissions into a live position and route on a browser map.",
+    "creativeConcept": "A real aircraft and its mapped position meet at the horizon of a physical-to-digital cutaway.",
+    "storytellingTechnique": "Transformation",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, invented features, illegible copy, neon, watermarks, decorative particles or generic tech decoration. Bold side-profile of a single airliner crossing the upper half of a vivid pale sky. In the near lower left a realistic ground ADS-B antenna receives two spare radio wave arcs from above. The land surface on the lower half becomes a crisp folded top-down map with one prominent aircraft marker and one clearly recorded route, matching the overhead jet. Use bright sky, dark teal and warm rust accents. No invented stats or secondary aircraft. Optional large exact ‘ADS-B’ adjacent to the antenna.",
+    "qualityScores": {
+      "immediateComprehension": 10,
+      "storytelling": 9,
+      "visualImpact": 9,
+      "thumbnailReadability": 9,
+      "originality": 9,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "Sky-Tracker-AI.webp",
+    "status": "generated",
+    "attempts": 1
+  },
+  {
+    "title": "Personal Portfolio",
+    "url": "https://gustaffaivre.dev/projects/Portfolio",
+    "slug": "Portfolio",
+    "visualStory": "A business-card landing page flips to reveal a developer's portfolio and projects.",
+    "creativeConcept": "The physical card is caught mid-flip above its web project index.",
+    "storytellingTechnique": "Defining moment",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, fake results, neon or watermarks. Redesign the developer portfolio as a dramatic folded ivory business card with large engraved ‘GF’ caught mid-flip on walnut. Behind it, a distinctly modern browser project index opens from the turning card. Two large preview tiles explicitly depict software and cybersecurity work: one shows an appointment-calendar grid with a bold checkmark, the other a browser inspection graphic with a large magnifier over code brackets. Any background detail is extremely simple. Software engineer portfolio is the story, avoid furniture, buildings, interiors, photography or art gallery content. Warm raking light and distinct foreground silhouettes. No other text.",
+    "qualityScores": {
+      "immediateComprehension": 9,
+      "storytelling": 9,
+      "visualImpact": 9,
+      "thumbnailReadability": 9,
+      "originality": 9,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "Portfolio.webp",
+    "status": "generated",
+    "attempts": 2
+  },
+  {
+    "title": "AI Customer Insights",
+    "url": "https://gustaffaivre.dev/projects/AI-Customer-Insight",
+    "slug": "AI-Customer-Insight",
+    "visualStory": "Scattered feedback rows resolve into recurring themes and suggested actions in a report.",
+    "creativeConcept": "CSV feedback slips sort into three visible theme groups within one report.",
+    "storytellingTechnique": "Transformation",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, invented features, illegible copy, neon, watermarks, decorative particles or generic tech decoration. A bold cream report sheet in near overhead view fills almost two thirds of the image, with the exact oversized title ‘REPORT’. Three broad clearly organized rows contain distinct themed speech-bubble shapes and one final checkmark. From lower left, a small tilted ‘CSV’ grid spills a few of these mismatched conversation slips, which visibly align into the report rows. Muted olive desktop and terracotta accents, tactile paper editorial design. No data values, graphs or extra words.",
+    "qualityScores": {
+      "immediateComprehension": 9,
+      "storytelling": 9,
+      "visualImpact": 9,
+      "thumbnailReadability": 9,
+      "originality": 9,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "AI-Customer-Insight.webp",
+    "status": "generated",
+    "attempts": 1
+  },
+  {
+    "title": "AI Document Assistant",
+    "url": "https://gustaffaivre.dev/projects/Content-Management-AI",
+    "slug": "Content-Management-AI",
+    "visualStory": "A long document becomes a concise summary, a translation, or a sentiment reading.",
+    "creativeConcept": "A thick PDF unfolds into three organized editorial annotations.",
+    "storytellingTechnique": "Transformation",
+    "generationPrompt": "Create a 16:9 landscape raster project-card thumbnail, 1600×900 target. Premium technology-magazine cover illustration with one dominant visual moment, visually specific cause or outcome, meaningful depth, controlled lighting and crisp silhouettes at 160×90. Fill the frame with the main subject while leaving a safe margin. No project title, invented features, illegible copy, neon, watermarks, decorative particles or generic tech decoration. A single oversized deep aubergine folded document marked ‘PDF’ opens diagonally like an accordion, revealing three clean ivory output tabs integrated into the fold. Each tab has one bold icon and one exact short label: ‘Summary’ with condensed lines, ‘Translate’ with overlapping language balloons, and ‘Sentiment’ with a clear face glyph. Arrange as one connected subject with the labels legible at 160 px wide. Pale mint surface, dark mulberry typography, light warm shadows, no other text.",
+    "qualityScores": {
+      "immediateComprehension": 10,
+      "storytelling": 9,
+      "visualImpact": 9,
+      "thumbnailReadability": 9,
+      "originality": 9,
+      "professionalism": 9,
+      "technicalAccuracy": 9
+    },
+    "filename": "Content-Management-AI.webp",
+    "status": "generated",
+    "attempts": 1
+  }
+]

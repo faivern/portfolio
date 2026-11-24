@@ -1,0 +1,19 @@
+.track {
+  border-radius: 9999px;
+  background: var(--panel-sunken);
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--area-accent, var(--accent));
+}
+
+.featuredFill {
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--area-accent, var(--accent)) 75%, var(--panel)),
+    var(--area-accent, var(--accent))
+  );
+}

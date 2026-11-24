@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { projects } from "./projects/data";
+import { projectPath, writeUps } from "./projects/crate-ctf-2026/write-ups";
 import { site } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -31,5 +32,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...projectRoutes];
+  const crateRoutes: MetadataRoute.Sitemap = writeUps.map(({ slug }) => ({
+    url: `${site.url}${projectPath}/${slug}`,
+    lastModified,
+    changeFrequency: "yearly",
+    priority: 0.8,
+  }));
+
+  return [...staticRoutes, ...projectRoutes, ...crateRoutes];
 }

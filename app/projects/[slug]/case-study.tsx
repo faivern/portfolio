@@ -1,8 +1,8 @@
-import Link from "next/link";
 import type { Project } from "../data";
 import type { CaseBlock, CaseStudy } from "@/content/case-studies/types";
 import { TechnologyBadge } from "@/lib/technology-badge";
-import { ThemeToggle } from "@/lib/theme-toggle";
+import ProjectShell from "../_editorial/project-shell";
+import styles from "../_editorial/article.module.css";
 import CaseStudyNav from "./case-study-nav";
 import ScreenshotGallery from "./screenshot-gallery";
 
@@ -43,7 +43,7 @@ const xmlToken =
 
 // Index matches the capture group order above.
 const xmlTokenClass = [
-  "text-(--code-comment)",
+  "text-muted",
   "text-(--code-string)",
   "font-semibold text-(--code-tag)",
   "text-(--code-attr)",
@@ -71,37 +71,36 @@ function highlightXml(code: string) {
 function Block({ block }: { block: CaseBlock }) {
   switch (block.type) {
     case "heading":
-      return <h3 className="pt-3 text-base font-semibold leading-7">{block.text}</h3>;
+      return <h3 className={`${styles.measure} ${styles.subheading}`}>{block.text}</h3>;
     case "facts":
       return (
-        <dl className="grid gap-x-6 sm:grid-cols-2">
+        <dl className={`${styles.measure} grid gap-x-6 sm:grid-cols-2`}>
           {block.items.map((item) => (
             <div key={item.label} className="min-w-0 border-b border-foreground/15 py-3">
-              <dt className="text-xs font-medium text-muted">{item.label}</dt>
-              <dd className="mt-1 break-words text-sm leading-6 [overflow-wrap:anywhere]">{item.value}</dd>
+              <dt className={styles.meta}>{item.label}</dt>
+              <dd className="mt-1 text-base leading-relaxed">{item.value}</dd>
             </div>
           ))}
         </dl>
       );
     case "paragraph":
-      return <p className="leading-7">{block.text}</p>;
+      return <p className={styles.measure}>{block.text}</p>;
     case "images":
       return (
-        <ScreenshotGallery
-          title="Investigation evidence"
-          screenshots={block.images}
-        />
+        <div className={styles.evidence}>
+          <ScreenshotGallery
+            title="Investigation evidence"
+            screenshots={block.images}
+          />
+        </div>
       );
     case "code":
       return (
-        <figure className="min-w-0 rounded-md border border-foreground/20 bg-panel">
-          <figcaption className="border-b border-foreground/15 px-4 py-3 text-xs text-muted">
-            {block.caption}
-          </figcaption>
+        <figure className={styles.evidence}>
           <pre
             tabIndex={0}
             aria-label={block.caption}
-            className="overflow-x-auto p-4 text-sm leading-7"
+            className={styles.code}
           >
             <code>
               {block.language === "xml"
@@ -109,39 +108,34 @@ function Block({ block }: { block: CaseBlock }) {
                 : block.code}
             </code>
           </pre>
+          <figcaption className={styles.caption}>{block.caption}</figcaption>
         </figure>
       );
     case "diagram":
       return (
-        <figure className="paper-panel border border-foreground/15 p-5">
-          <ol className="grid gap-5 md:grid-cols-3">
-            {block.nodes.map((node, index) => (
-              <li key={node.title} className="border-l border-area-accent pl-4">
-                <p className="text-xs text-muted">
-                  0{index + 1}{" "}
-                  {index < block.nodes.length - 1 && (
-                    <span aria-hidden="true">→</span>
-                  )}
-                </p>
+        <figure className={styles.evidence}>
+          <ol className="grid list-decimal gap-5 pl-6 marker:text-muted sm:grid-cols-3 sm:gap-10">
+            {block.nodes.map((node) => (
+              <li key={node.title} className="pl-1">
                 <p className="mt-2 font-semibold">{node.title}</p>
-                <p className="mt-2 text-sm leading-6 text-muted">
+                <p className="mt-2 text-base leading-relaxed">
                   {node.detail}
                 </p>
               </li>
             ))}
           </ol>
-          <figcaption className="mt-5 text-xs leading-6 text-muted">
+          <figcaption className={styles.caption}>
             {block.caption}
           </figcaption>
         </figure>
       );
     case "timeline":
       return (
-        <ol className="space-y-5 border-l border-foreground/20 pl-5">
+        <ol className={`${styles.measure} space-y-5 border-l border-foreground/20 pl-5`}>
           {block.items.map((item) => (
             <li key={item.title}>
               <h3 className="font-semibold">{item.title}</h3>
-              <p className="mt-1 leading-7 text-muted">{item.detail}</p>
+              <p className="mt-1">{item.detail}</p>
             </li>
           ))}
         </ol>
@@ -149,13 +143,13 @@ function Block({ block }: { block: CaseBlock }) {
     case "table":
       return (
         <div
-          className="overflow-x-auto"
+          className={`${styles.evidence} overflow-x-auto`}
           tabIndex={0}
           role="region"
           aria-label={block.caption}
         >
-          <table className="w-full text-left text-sm leading-6">
-            <caption className="mb-3 text-left text-muted">
+          <table className="w-full text-left text-base leading-relaxed [overflow-wrap:normal]">
+            <caption className={`${styles.caption} mb-3 text-left`}>
               {block.caption}
             </caption>
             <thead>
@@ -204,137 +198,93 @@ export default function SecurityCaseStudy({
   project: Project;
   study: CaseStudy;
 }) {
+  const hasSources = Boolean(project.githubUrl || study.techniques?.length || study.sources?.length);
+  const sourcesTitle = study.sources?.length ? "Sources & tools used" : "Full technical write-up";
+  const contents = [
+    ...study.sections.map(({ id, title }) => ({ id, title })),
+    ...(hasSources ? [{ id: "full-write-up", title: sourcesTitle }] : []),
+  ];
+
   return (
-    <div className="project-surface area-security flex flex-1 justify-center px-6 py-14 sm:px-8 sm:py-20">
-      <article className="w-full max-w-5xl min-w-0">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <Link
-            href="/projects"
-            className="link-rule py-2 text-xs tracking-[0.2em] text-muted"
-          >
-            ← All projects
-          </Link>
-          <ThemeToggle />
-        </div>
-        <header className="mt-8">
-          <p className="text-xs leading-6 text-muted">{study.context}</p>
-          <h1 className="mt-5 max-w-4xl font-serif text-3xl leading-tight tracking-[0.04em] sm:text-5xl">
-            {project.title}
-          </h1>
+    <ProjectShell area="security">
+      <article className={styles.article}>
+        <header className={`${styles.header} ${styles.measure}`}>
+          <p className={styles.meta}>{study.context}</p>
+          <h1 className={styles.title}>{project.title}</h1>
+          <p className={`${styles.meta} mt-4`}>{readingMinutes(study)} min read</p>
+          <ul aria-label="Technology stack" className="mt-4 flex flex-wrap gap-1.5">
+            {project.techStack.map((technology) => (
+              <TechnologyBadge as="li" key={technology} technology={technology} variant="profile" />
+            ))}
+          </ul>
         </header>
-        <hr className="my-10 rule-accent" />
-        <div className="grid items-start gap-10 lg:grid-cols-[14rem_minmax(0,1fr)]">
-          <div className="lg:sticky lg:top-8">
-            <nav aria-label="Case study sections">
-              <p className="mb-3 text-xs text-muted">Contents</p>
-              <CaseStudyNav
-                sections={[
-                  ...study.sections.map(({ id, title }) => ({ id, title })),
-                  ...(project.githubUrl || study.techniques?.length || study.sources?.length
-                    ? [{ id: "full-write-up", title: study.sources?.length ? "Sources & tools used" : "Full technical write-up" }]
-                    : []),
-                ]}
-              />
-            </nav>
-            <p className="mt-5 pl-3 text-xs text-muted">
-              {readingMinutes(study)} min read
-            </p>
-            <ul className="mt-5 flex flex-wrap gap-1.5 pl-3">
-              {project.techStack.map((technology) => (
-                <TechnologyBadge
-                  as="li"
-                  key={technology}
-                  technology={technology}
-                  variant="profile"
-                />
-              ))}
-            </ul>
-          </div>
-          <div className="min-w-0 space-y-12">
+
+        <div className={styles.contentsLayout}>
+          <CaseStudyNav sections={contents} />
+          <div className={`${styles.contentsBody} ${styles.sections} min-w-0`}>
             {study.sections.map((section) => (
-              <section
-                key={section.id}
-                aria-labelledby={section.id}
-                className={`reveal scroll-mt-8 ${section.presentation === "report" ? "rounded-lg border border-foreground/15 bg-panel p-5 sm:p-7" : section.presentation === "story" ? "border-t border-foreground/20 pt-10" : ""}`}
-              >
-                {section.presentation && <p className="mb-3 font-sans text-xs font-medium uppercase tracking-[0.15em] text-muted">{section.presentation === "report" ? "Investigation report" : "Investigation story"}</p>}
+              <section key={section.id} aria-labelledby={section.id} className={styles.divider}>
+                {section.presentation && (
+                  <p className={`${styles.meta} mb-2`}>
+                    {section.presentation === "report" ? "Investigation report" : "Investigation story"}
+                  </p>
+                )}
                 <h2
                   id={section.id}
                   tabIndex={-1}
-                  className={`font-serif leading-snug ${section.presentation === "report" ? "text-xl" : "text-2xl tracking-[0.03em]"}`}
+                  className={`${styles.measure} ${styles.heading} ${styles.anchor}`}
                 >
                   {section.title}
                 </h2>
-                <div className="mt-5 min-w-0 space-y-5 font-sans text-sm normal-case tracking-normal [text-shadow:none]">
+                <div className={`${styles.flow} mt-5 min-w-0`}>
                   {section.blocks.map((block, index) => (
                     <Block key={index} block={block} />
                   ))}
                 </div>
               </section>
             ))}
-            {(project.githubUrl || study.techniques?.length || study.sources?.length) && <section
-              aria-labelledby="full-write-up"
-              className="scroll-mt-8 border-t border-foreground/20 pt-8"
-            >
-              <h2
-                id="full-write-up"
-                tabIndex={-1}
-                className="font-serif text-2xl"
-              >
-                {study.sources?.length ? "Sources & tools used" : "Full technical write-up"}
-              </h2>
-              <p className="mt-4 font-sans text-sm leading-7 normal-case tracking-normal">
+            {hasSources && (
+              <section aria-labelledby="full-write-up" className={`${styles.measure} ${styles.divider} ${styles.flow}`}>
+                <h2 id="full-write-up" tabIndex={-1} className={`${styles.heading} ${styles.anchor}`}>
+                  {sourcesTitle}
+                </h2>
                 {project.githubUrl && (
-                  <a
-                    href={project.githubUrl}
-                    className="underline underline-offset-4"
-                  >
-                    Repository, configuration, and complete evidence on GitHub ↗
-                  </a>
+                  <p>
+                    <a href={project.githubUrl} className="underline underline-offset-4">
+                      Repository, configuration, and complete evidence on GitHub ↗
+                    </a>
+                  </p>
                 )}
-              </p>
-              {study.techniques?.map((t) => (
-                <p
-                  key={t.id}
-                  className="mt-4 font-sans text-sm normal-case tracking-normal text-muted"
-                >
-                  <a href={t.url} className="underline underline-offset-4">
-                    MITRE ATT&amp;CK {t.id} · {t.name} ↗
-                  </a>
-                </p>
-              ))}
-              {study.sources?.map((source) => (
-                <p
-                  key={source.url}
-                  className="mt-4 font-sans text-sm leading-7 normal-case tracking-normal"
-                >
-                  <a href={source.url} className="underline underline-offset-4">
-                    {source.title} ↗
-                  </a>
-                  <span className="mt-1 block text-muted">{source.detail}</span>
-                </p>
-              ))}
-              {!!study.sources?.length && (
-                <div className="mt-6">
-                  <h3 className="font-sans text-sm font-semibold normal-case tracking-normal">
-                    Tools used
-                  </h3>
-                  <ul className="mt-3 flex flex-wrap gap-2">
-                    {project.techStack.map((technology) => (
-                      <TechnologyBadge
-                        as="li"
-                        key={technology}
-                        technology={technology}
-                        variant="full"
-                      />
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </section>}
+                {study.techniques?.map((technique) => (
+                  <p key={technique.id}>
+                    <a href={technique.url} className="underline underline-offset-4">
+                      MITRE ATT&amp;CK {technique.id} · {technique.name} ↗
+                    </a>
+                  </p>
+                ))}
+                {study.sources?.map((source) => (
+                  <p key={source.url}>
+                    <a href={source.url} className="underline underline-offset-4">
+                      {source.title} ↗
+                    </a>
+                    <span className="mt-1 block">{source.detail}</span>
+                  </p>
+                ))}
+                {!!study.sources?.length && (
+                  <>
+                    <h3 className={styles.subheading}>Tools used</h3>
+                    <ul className="flex flex-wrap gap-2">
+                      {project.techStack.map((technology) => (
+                        <TechnologyBadge as="li" key={technology} technology={technology} variant="full" />
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </section>
+            )}
           </div>
         </div>
       </article>
-    </div>
+    </ProjectShell>
   );
 }

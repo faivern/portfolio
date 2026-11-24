@@ -1,11 +1,10 @@
 import SecurityCaseStudy from "./case-study";
 import { caseStudies } from "@/content/case-studies";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   getProject,
-  projects,
+  generatedProjects,
   type Project,
   type SoftwareProject,
   type ProjectExample,
@@ -16,10 +15,11 @@ import MoreProjects from "./more-projects";
 import ScreenshotGallery from "./screenshot-gallery";
 import { ProjectCategoryIcon } from "@/lib/project-category-icon";
 import { TechnologyBadge } from "@/lib/technology-badge";
-import { ThemeToggle } from "@/lib/theme-toggle";
+import ProjectShell from "../_editorial/project-shell";
+import styles from "../_editorial/article.module.css";
 
 export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+  return generatedProjects.map((project) => ({ slug: project.slug }));
 }
 
 export const dynamicParams = false;
@@ -95,7 +95,7 @@ function ProjectLinks({ project }: { project: Project }) {
   return (
     <ul
       aria-label="Project links"
-      className="mt-8 flex flex-wrap gap-3 font-serif text-sm"
+      className="mt-6 flex flex-wrap gap-3 text-sm font-medium"
     >
       {project.liveUrl && (
         <li>
@@ -138,32 +138,32 @@ function ExampleFlow({
   example: ProjectExample;
 }) {
   return (
-    <figure className="paper-panel overflow-hidden border border-foreground/10 p-5 sm:p-8">
-      <div className="relative z-[1] grid items-stretch gap-4 md:grid-cols-[1fr_auto_1fr] md:gap-6">
-        <div className="rounded-md border border-foreground/15 bg-background p-5">
-          <p className="font-serif text-[0.65rem] tracking-[0.28em] text-muted">
+    <figure className={styles.evidence}>
+      <div className="grid items-stretch gap-4 md:grid-cols-[1fr_auto_1fr] md:gap-6">
+        <div className="min-w-0 border-t border-foreground/20 pt-4">
+          <p className={styles.meta}>
             {example.inputLabel}
           </p>
-          <p className="mt-4 whitespace-pre-line font-sans text-sm leading-7 normal-case tracking-normal [text-shadow:none]">
+          <p className="mt-3 whitespace-pre-line">
             {example.input}
           </p>
         </div>
         <span
           aria-hidden="true"
-          className="self-center text-center font-serif text-xl text-muted md:rotate-0"
+          className="self-center text-center font-serif text-xl text-muted rotate-90 md:rotate-0"
         >
           →&#xFE0E;
         </span>
-        <div className="rounded-md border border-foreground/15 bg-background p-5">
-          <p className="font-serif text-[0.65rem] tracking-[0.28em] text-muted">
+        <div className="min-w-0 border-t border-foreground/20 pt-4">
+          <p className={styles.meta}>
             {example.outputLabel}
           </p>
-          <p className="mt-4 whitespace-pre-line font-sans text-sm leading-7 normal-case tracking-normal [text-shadow:none]">
+          <p className="mt-3 whitespace-pre-line">
             {example.output}
           </p>
         </div>
       </div>
-      <figcaption className="relative z-[1] mt-4 font-sans text-xs leading-relaxed normal-case tracking-normal text-muted [text-shadow:none]">
+      <figcaption className={styles.caption}>
         A simplified view of how {title} turns an input into a useful outcome.
       </figcaption>
     </figure>
@@ -186,18 +186,18 @@ function HeroImage({
       width={media.width}
       height={media.height}
       alt={media.alt}
-      className="relative z-[1] h-auto w-full"
+      className="h-auto w-full"
     />
   );
 
   return (
-    <figure className="paper-panel overflow-hidden border border-foreground/10">
+    <figure className="min-w-0">
       {project.liveUrl ? (
         <a
           href={project.liveUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="group block"
+          className="block"
         >
           {image}
           <span className="sr-only">
@@ -207,7 +207,7 @@ function HeroImage({
       ) : (
         image
       )}
-      <figcaption className="relative z-[1] border-t border-foreground/10 px-4 py-3 font-sans text-xs leading-relaxed normal-case tracking-normal text-muted [text-shadow:none] sm:px-5">
+      <figcaption className={styles.caption}>
         {media.caption}
       </figcaption>
     </figure>
@@ -225,15 +225,15 @@ function VideoShowcase({
     <div>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="font-serif text-xs tracking-[0.3em] text-muted">
+          <p className={styles.meta}>
             Product walkthroughs
           </p>
-          <p className="mt-2 max-w-2xl font-sans text-sm leading-6 normal-case tracking-normal text-muted [text-shadow:none]">
+          <p className={styles.caption}>
             Four short demonstrations, ordered by the clearest view of the core
             experience.
           </p>
         </div>
-        <p className="font-serif text-[0.65rem] tracking-[0.24em] text-muted">
+        <p className={styles.meta}>
           {videos.length} videos
         </p>
       </div>
@@ -247,8 +247,8 @@ function VideoShowcase({
               key={video.src}
               className={isFeatured ? "md:col-span-2 lg:col-span-3" : "min-w-0"}
             >
-              <figure className="paper-panel flex h-full flex-col overflow-hidden border border-foreground/10">
-                <div className="relative z-[1] bg-[#1b1a18]">
+              <figure className="min-w-0">
+                <div className="relative bg-panel-sunken">
                   <video
                     controls
                     playsInline
@@ -259,27 +259,12 @@ function VideoShowcase({
                     <source src={video.src} type="video/mp4" />
                     Your browser does not support embedded video.
                   </video>
-                  <span className="pointer-events-none absolute top-3 left-3 rounded-sm border border-white/25 bg-black/75 px-2.5 py-1 font-serif text-[0.6rem] tracking-[0.2em] text-white">
-                    {isFeatured ? "01 · Start here" : `0${index + 1}`}
-                  </span>
                 </div>
-                <figcaption
-                  className={
-                    isFeatured
-                      ? "relative z-[1] border-t border-foreground/10 px-5 py-5 sm:px-6"
-                      : "relative z-[1] flex-1 border-t border-foreground/10 px-4 py-4"
-                  }
-                >
-                  <h3
-                    className={
-                      isFeatured
-                        ? "font-serif text-xl tracking-[0.055em] sm:text-2xl"
-                        : "font-serif text-lg tracking-[0.055em]"
-                    }
-                  >
+                <figcaption className={styles.caption}>
+                  <h3 className={`${styles.subheading} text-foreground`}>
                     {video.title}
                   </h3>
-                  <p className="mt-2 font-sans text-sm leading-6 normal-case tracking-normal text-muted [text-shadow:none]">
+                  <p className="mt-2">
                     {video.description}
                   </p>
                 </figcaption>
@@ -299,19 +284,19 @@ function ProjectHero({ project }: { project: SoftwareProject }) {
 
   if (project.video) {
     return (
-      <figure className="paper-panel overflow-hidden border border-foreground/10">
+      <figure className="min-w-0">
         <video
           controls
           playsInline
           preload="metadata"
           poster={project.videoPoster}
           aria-label={`Video demonstration of ${project.title}`}
-          className="relative z-[1] w-full"
+          className="w-full"
         >
           <source src={project.video} type="video/mp4" />
           Your browser does not support embedded video.
         </video>
-        <figcaption className="relative z-[1] border-t border-foreground/10 px-4 py-3 font-sans text-xs leading-relaxed normal-case tracking-normal text-muted [text-shadow:none] sm:px-5">
+        <figcaption className={styles.caption}>
           {project.videoCaption ??
             `A guided demonstration of ${project.title}.`}
         </figcaption>
@@ -321,8 +306,8 @@ function ProjectHero({ project }: { project: SoftwareProject }) {
 
   if (project.videoPlaceholder) {
     return (
-      <figure className="paper-panel overflow-hidden border border-foreground/10">
-        <div className="relative z-[1] flex aspect-video items-center justify-center bg-panel-sunken p-8 text-center">
+      <figure className="min-w-0">
+        <div className="flex aspect-video items-center justify-center bg-panel-sunken p-8 text-center">
           <div>
             <svg
               viewBox="0 0 48 48"
@@ -339,15 +324,15 @@ function ProjectHero({ project }: { project: SoftwareProject }) {
               />
               <path d="m20 16 13 8-13 8V16Z" fill="currentColor" />
             </svg>
-            <p className="mt-5 font-serif text-xs tracking-[0.3em] text-muted">
+            <p className={`${styles.meta} mt-5`}>
               Video walkthrough
             </p>
-            <p className="mt-2 font-sans text-sm normal-case tracking-normal text-muted [text-shadow:none]">
+            <p className={styles.caption}>
               Coming soon
             </p>
           </div>
         </div>
-        <figcaption className="relative z-[1] border-t border-foreground/10 px-4 py-3 font-sans text-xs leading-relaxed normal-case tracking-normal text-muted [text-shadow:none] sm:px-5">
+        <figcaption className={styles.caption}>
           {project.videoCaption ??
             `A guided demonstration of ${project.title} will be added here.`}
         </figcaption>
@@ -368,10 +353,10 @@ function ProjectHero({ project }: { project: SoftwareProject }) {
 
 function getRelatedProjects(project: Project) {
   const originalOrder = new Map(
-    projects.map((candidate, index) => [candidate.slug, index]),
+    generatedProjects.map((candidate, index) => [candidate.slug, index]),
   );
 
-  return projects
+  return generatedProjects
     .filter((candidate) => candidate.slug !== project.slug)
     .map((candidate) => {
       const sharedPlatforms = candidate.platforms.filter((platform) =>
@@ -416,70 +401,56 @@ export default async function ProjectPage({
       : project.screenshots.slice(1);
 
   return (
-    <div className="project-surface area-software flex flex-1 justify-center px-6 py-14 sm:px-8 sm:py-20">
-      <article className="w-full max-w-6xl">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <Link
-            href="/projects"
-            className="link-rule inline-block py-2 font-serif text-xs tracking-[0.25em] text-muted hover:text-foreground"
-          >
-            ←&#xFE0E; All projects
-          </Link>
-          <ThemeToggle />
-        </div>
-
-        <header className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end lg:gap-16">
-          <div>
-            <p className="flex flex-wrap items-center gap-x-3 gap-y-2 font-serif text-[0.68rem] tracking-[0.24em] text-muted">
-              <span className="inline-flex items-center gap-1.5">
-                <ProjectCategoryIcon
-                  category={project.category}
-                  className="h-5 w-5"
-                />
-                {project.category}
+    <ProjectShell area="software">
+      <article className={styles.article}>
+        <header className={`${styles.header} ${styles.measure} ${styles.centered}`}>
+          <p className={`${styles.meta} flex flex-wrap items-center gap-x-3 gap-y-2`}>
+            <span className="inline-flex items-center gap-1.5">
+              <ProjectCategoryIcon
+                category={project.category}
+                className="h-5 w-5"
+              />
+              {project.category}
+            </span>
+            <span aria-hidden="true">·</span>
+            <span>{project.year}</span>
+            <span aria-hidden="true">·</span>
+            <span>
+              {project.status === "live" ? "Live product" : "Project demo"}
+            </span>
+            {project.wip && (
+              <span className="border-l-2 border-area-accent pl-2">
+                Work in progress
               </span>
-              <span aria-hidden="true">·</span>
-              <span>{project.year}</span>
-              <span aria-hidden="true">·</span>
-              <span>
-                {project.status === "live" ? "Live product" : "Project demo"}
-              </span>
-              {project.wip && (
-                <span className="rounded-md border border-area-accent/60 px-2 py-1 tracking-[0.14em]">
-                  Work in progress
-                </span>
-              )}
-            </p>
-            <h1 className="mt-5 max-w-4xl font-serif text-4xl leading-[1.08] tracking-[0.045em] sm:text-5xl lg:text-6xl">
-              {project.title}
-            </h1>
-            <p className="mt-5 max-w-3xl font-serif text-xl leading-relaxed normal-case tracking-[0.025em] text-muted sm:text-2xl">
-              {project.tagline}
-            </p>
-            <ProjectLinks project={project} />
-          </div>
+            )}
+          </p>
+          <h1 className={styles.title}>
+            {project.title}
+          </h1>
+          <p className={styles.lede}>
+            {project.tagline}
+          </p>
+          <ProjectLinks project={project} />
 
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-5 border-l border-foreground/15 pl-5 lg:grid-cols-1">
+          <dl className={`${styles.divider} mt-7 grid gap-x-6 gap-y-4 sm:grid-cols-2`}>
             <div>
-              <dt className="font-serif text-[0.62rem] tracking-[0.28em] text-muted">
+              <dt className={styles.meta}>
                 Platforms
               </dt>
-              <dd className="mt-1 font-sans text-sm normal-case tracking-normal [text-shadow:none]">
+              <dd className="mt-1 text-base leading-relaxed">
                 {project.platforms.join(" · ")}
               </dd>
             </div>
             <div>
-              <dt className="font-serif text-[0.62rem] tracking-[0.28em] text-muted">
+              <dt className={styles.meta}>
                 Focus
               </dt>
-              <dd className="mt-1 font-sans text-sm normal-case tracking-normal [text-shadow:none]">
+              <dd className="mt-1 text-base leading-relaxed">
                 {project.highlights.map((item) => item.title).join(" · ")}
               </dd>
             </div>
           </dl>
         </header>
-
-        <hr className="mt-10 rule-accent" />
 
         <section aria-labelledby="project-view-heading" className="mt-10">
           <h2 id="project-view-heading" className="sr-only">
@@ -488,113 +459,50 @@ export default async function ProjectPage({
           <ProjectHero project={project} />
         </section>
 
-        <section
-          aria-labelledby="story-heading"
-          className="reveal mt-14 grid gap-8 lg:grid-cols-[12rem_1fr_1fr] lg:gap-12"
-        >
-          <h2
-            id="story-heading"
-            className="font-serif text-xs tracking-[0.3em] text-muted"
-          >
-            The story
-          </h2>
-          <div>
-            <h3 className="font-serif text-2xl tracking-[0.06em]">
-              {project.problemTitle ?? "The problem"}
-            </h3>
-            <p className="mt-3 font-sans text-sm leading-7 normal-case tracking-normal [text-shadow:none]">
-              {project.problem}
-            </p>
-          </div>
-          <div>
-            <h3 className="font-serif text-2xl tracking-[0.06em]">
-              What it delivers
-            </h3>
-            <p className="mt-3 font-sans text-sm leading-7 normal-case tracking-normal [text-shadow:none]">
-              {project.solution}
-            </p>
-          </div>
-        </section>
+        <div className={`${styles.measure} ${styles.centered} ${styles.sections} mt-14`}>
+          <section aria-labelledby="story-heading" className={styles.flow}>
+            <h2 id="story-heading" className={styles.heading}>The story</h2>
+            <h3 className={styles.subheading}>{project.problemTitle ?? "The problem"}</h3>
+            <p>{project.problem}</p>
+            <h3 className={styles.subheading}>What it delivers</h3>
+            <p>{project.solution}</p>
+          </section>
 
-        <section aria-labelledby="highlights-heading" className="reveal mt-16">
-          <div className="flex items-end justify-between gap-8">
-            <h2
-              id="highlights-heading"
-              className="font-serif text-xs tracking-[0.3em] text-muted"
-            >
-              At a glance
-            </h2>
-            <span
-              aria-hidden="true"
-              className="hidden h-px flex-1 bg-foreground/15 sm:block"
-            />
-          </div>
-          <ul className="mt-5 grid gap-4 md:grid-cols-3">
-            {project.highlights.map((highlight) => (
-              <li
-                key={highlight.title}
-                className="paper-panel overflow-hidden border border-foreground/10 p-5 sm:p-6"
-              >
-                <div className="relative z-[1]">
-                  <h3 className="mt-6 font-serif text-xl tracking-[0.06em]">
-                    {highlight.title}
-                  </h3>
-                  <p className="mt-3 font-sans text-sm leading-6 normal-case tracking-normal text-muted [text-shadow:none]">
-                    {highlight.detail}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section
-          aria-labelledby="proof-heading"
-          className="reveal mt-16 grid gap-8 lg:grid-cols-[12rem_1fr] lg:gap-12"
-        >
-          <div>
-            <h2
-              id="proof-heading"
-              className="font-serif text-xs tracking-[0.3em] text-muted"
-            >
-              Built with
-            </h2>
-            <ul
-              aria-label="Technology stack"
-              className="mt-5 flex flex-wrap gap-2"
-            >
-              {project.techStack.map((technology) => (
-                <TechnologyBadge
-                  as="li"
-                  key={technology}
-                  technology={technology}
-                  variant="full"
-                />
+          <section aria-labelledby="highlights-heading" className={`${styles.divider} ${styles.flow}`}>
+            <h2 id="highlights-heading" className={styles.heading}>At a glance</h2>
+            <ul className="space-y-6">
+              {project.highlights.map((highlight) => (
+                <li key={highlight.title}>
+                  <h3 className={styles.subheading}>{highlight.title}</h3>
+                  <p className="mt-2">{highlight.detail}</p>
+                </li>
               ))}
             </ul>
-          </div>
-          <ul className="grid gap-6 sm:grid-cols-2">
-            {project.technicalProof.map((proof) => (
-              <li
-                key={proof.title}
-                className="border-l border-foreground/20 pl-5"
-              >
-                <h3 className="font-serif text-lg tracking-[0.07em]">
-                  {proof.title}
-                </h3>
-                <p className="mt-2 font-sans text-sm leading-6 normal-case tracking-normal text-muted [text-shadow:none]">
-                  {proof.detail}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
+          </section>
+
+          <section aria-labelledby="proof-heading" className={`${styles.divider} ${styles.flow}`}>
+            <h2 id="proof-heading" className={styles.heading}>Built with</h2>
+            <ul aria-label="Technology stack" className="flex flex-wrap gap-2">
+              {project.techStack.map((technology) => (
+                <TechnologyBadge as="li" key={technology} technology={technology} variant="full" />
+              ))}
+            </ul>
+            <ul className="space-y-6">
+              {project.technicalProof.map((proof) => (
+                <li key={proof.title}>
+                  <h3 className={styles.subheading}>{proof.title}</h3>
+                  <p className="mt-2">{proof.detail}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
 
         {supportingScreenshots.length > 0 && (
-          <section aria-labelledby="screenshots-heading" className="reveal mt-16">
+          <section aria-labelledby="screenshots-heading" className="mt-(--article-section-gap)">
             <h2
               id="screenshots-heading"
-              className="font-serif text-xs tracking-[0.3em] text-muted"
+              className={styles.heading}
             >
               A closer look
             </h2>
@@ -607,6 +515,6 @@ export default async function ProjectPage({
 
         <MoreProjects projects={getRelatedProjects(project)} />
       </article>
-    </div>
+    </ProjectShell>
   );
 }

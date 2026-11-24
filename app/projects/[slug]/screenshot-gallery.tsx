@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ProjectMedia } from "../data";
+import styles from "../_editorial/article.module.css";
 
 export default function ScreenshotGallery({
   title,
@@ -74,7 +75,7 @@ export default function ScreenshotGallery({
         {screenshots.map((media, i) => (
           <figure
             key={media.src}
-            className="paper-panel flex min-w-0 flex-col overflow-hidden border border-foreground/10"
+            className="min-w-0"
           >
             <button
               type="button"
@@ -83,7 +84,7 @@ export default function ScreenshotGallery({
                 setActive(i);
               }}
               aria-label={`Enlarge: ${media.alt}. ${title}, image ${i + 1} of ${screenshots.length}`}
-              className="group relative flex min-h-0 flex-1 cursor-zoom-in items-center justify-center overflow-hidden bg-panel-sunken"
+              className="group relative block w-full cursor-zoom-in bg-panel-sunken"
             >
               {/* The button provides the accessible name; the thumbnail is decorative. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -97,7 +98,7 @@ export default function ScreenshotGallery({
               />
               <span
                 aria-hidden="true"
-                className="absolute right-2 bottom-2 z-[2] flex items-center gap-1.5 bg-background/90 px-2 py-1 font-serif text-[0.6rem] tracking-[0.2em] text-muted group-hover:bg-background group-hover:text-foreground group-focus-visible:bg-background group-focus-visible:text-foreground"
+                className="absolute right-2 bottom-2 z-[2] flex items-center gap-1.5 bg-background px-2 py-1 text-xs text-muted group-hover:bg-background group-hover:text-foreground group-focus-visible:bg-background group-focus-visible:text-foreground"
               >
                 <svg
                   viewBox="0 0 16 16"
@@ -112,7 +113,7 @@ export default function ScreenshotGallery({
                 Enlarge
               </span>
             </button>
-            <figcaption className="relative z-[1] border-t border-foreground/10 px-4 py-3 font-sans text-xs leading-relaxed normal-case tracking-normal text-muted [text-shadow:none]">
+            <figcaption className={styles.caption}>
               {media.caption}
               {media.credit && (
                 <span className="mt-2 block">

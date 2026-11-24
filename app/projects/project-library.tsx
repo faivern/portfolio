@@ -14,7 +14,6 @@ import {
 } from "react-icons/tb";
 import {
   projects,
-  type Project,
   type ProjectArea,
   type ProjectCategory,
 } from "./data";
@@ -40,7 +39,7 @@ const categoryIcons: Record<ProjectCategory, IconType> = {
   "Security Lab": TbShieldCheck,
 };
 
-function statusLabel(project: Project) {
+function statusLabel(project: (typeof projects)[number]) {
   if (project.wip) return "Work in progress";
   if (project.status === "live") return "Live";
   if (project.status === "completed") return "Completed personal lab";
@@ -48,7 +47,7 @@ function statusLabel(project: Project) {
 }
 
 // Cross-listed projects take the security ink, the more specific of the two.
-function areaClass(project: Project) {
+function areaClass(project: (typeof projects)[number]) {
   return project.areas.includes("Cybersecurity")
     ? "area-security"
     : "area-software";

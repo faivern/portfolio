@@ -1,0 +1,106 @@
+[
+  {
+    "title": "SOC Alert Investigations: Phishing & Firewall Triage",
+    "url": "https://gustaffaivre.dev/projects/SOC-002",
+    "slug": "SOC-002",
+    "thumbnailFilename": "SOC-002.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, designed for 320 by 180. A large suspicious email envelope paired with a security analyst's magnifying lens, beside a simple firewall event sheet with two thick rows marked by a check and a stop symbol. Show phishing and firewall alert triage as parallel evidence sources, no arrows or causal link. Matte ink navy canvas, muted mint and warm ivory highlights, crisp silhouettes, slight tactile depth and soft shadows. No words, logos, metrics, glow or code. Center all important objects within inner 75 percent.",
+    "status": "generated"
+  },
+  {
+    "title": "Web Application Security: SQL Injection & XSS",
+    "url": "https://gustaffaivre.dev/projects/web-application-security",
+    "slug": "web-application-security",
+    "thumbnailFilename": "web-application-security.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. Depict web vulnerability assessment in a controlled lab. Center a large simplified browser window with a magnifier examining one blank input field. Inside the browser, two bold evidence tiles pair a database cylinder with the exact label ‘SQL’ and browser angle brackets with the exact label ‘XSS’. Pale cool-gray canvas, graphite forms and muted terracotta warning accents. No payloads, commands, requests, targets or URLs.",
+    "status": "generated"
+  },
+  {
+    "title": "Linux Firewall Engineering: Filtering & Access Control",
+    "url": "https://gustaffaivre.dev/projects/linux-firewall-engineering",
+    "slug": "linux-firewall-engineering",
+    "thumbnailFilename": "linux-firewall-engineering.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. Show selective network traffic filtering as a physical, upright graphite brick firewall with two distinct packet lanes. The mint lane visibly passes through a small gate, while a rust-colored lane stops at a solid part of the wall. Make the brick firewall the dominant object. Warm pale sandstone background, forest-green and muted rust accents. No lettering, configuration values or code.",
+    "status": "generated"
+  },
+  {
+    "title": "FRA CTF: Exfiltratören — Network Traffic Forensics",
+    "url": "https://gustaffaivre.dev/projects/FRA-Exfiltratoren",
+    "slug": "FRA-Exfiltratoren",
+    "thumbnailFilename": "FRA-Exfiltratoren.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. Depict a packet-capture investigation, centered on a big strip of three segmented network-packet rows as a physical evidence sheet. A large magnifier reveals a stylized image-file evidence tile embedded in one row, with a simple picture icon. Cool blue-black work surface, ivory evidence sheet and restrained violet accents. No text, URLs, commands, real QR codes or protocol mechanics.",
+    "status": "generated"
+  },
+  {
+    "title": "Cinelas — Movie & TV Discovery",
+    "url": "https://gustaffaivre.dev/projects/Cinelas",
+    "slug": "Cinelas",
+    "thumbnailFilename": "Cinelas.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. A single broad, simplified movie discovery browser, its oversized search field reading exactly ‘Rainy mysteries’ with a magnifier icon, above three large fictional film poster results showing a rainy street, a solitary lighthouse and a foggy forest. No poster lettering or other words. Grounded cinema-poster styling in dark plum, dusty rose and warm cream. Make the natural-language query and movie results read as one clear visual.",
+    "status": "generated"
+  },
+  {
+    "title": "SOC Home Lab: SSH Brute-Force Detection with Wazuh SIEM",
+    "url": "https://gustaffaivre.dev/projects/SOC-001",
+    "slug": "SOC-001",
+    "thumbnailFilename": "SOC-001.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. Show failed SSH logins turning into a security monitoring alert. A dark simplified terminal on the left includes a large ‘SSH’ label, then three clean horizontal event rows each ending in a red cross, with no commands. A single large ivory alert card on the right features a muted amber warning triangle and the label ‘SIEM’. Dark desaturated pine canvas, matte teal accents. No addresses, payloads, commands or configuration.",
+    "status": "generated"
+  },
+  {
+    "title": "Online Booking",
+    "url": "https://gustaffaivre.dev/projects/Booking-Platform",
+    "slug": "Booking-Platform",
+    "thumbnailFilename": "Booking-Platform.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. A single oversized appointment calendar with a bold highlighted time slot and a checkmark overlaps a smaller upright customer phone showing the same confirmation. Use the exact time ‘10:30’ once on the highlighted calendar slot and no other text. Visually suggest a customer appointment appearing on the staff calendar. Thick simple calendar cells with no tiny dates. Warm off-white backdrop, navy typography and muted cobalt blue accents.",
+    "status": "generated"
+  },
+  {
+    "title": "Cinelas TV — Self-Hosted Media Browser",
+    "url": "https://gustaffaivre.dev/projects/Cinelas-TV",
+    "slug": "Cinelas-TV",
+    "thumbnailFilename": "Cinelas-TV.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. A recognizable widescreen television on a low stand fills most of the frame, showing three simple fictional movie posters and a clear play triangle on the selected title. A large physical remote in the foreground and a subordinate compact home-media server beside the TV communicate remote-controlled playback of locally hosted media. No words or branding. Slate and warm amber palette, soft cream background, restrained 3D product editorial treatment.",
+    "status": "generated"
+  },
+  {
+    "title": "Newspaper Advertising Platform",
+    "url": "https://gustaffaivre.dev/projects/Distributed-Ad-Platform",
+    "slug": "Distributed-Ad-Platform",
+    "thumbnailFilename": "Distributed-Ad-Platform.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. Center a folded newspaper with a large clearly boxed classified placement marked exactly ‘AD’. A simple self-service browser form and a small subscriber ID card feed into the newspaper as two subordinate visual elements, suggesting online ad submission with a subscriber lookup. Avoid printed headlines, filler text or dense newspaper columns. Warm ochre, restrained ink blue and cream paper, an overhead tactile editorial composition.",
+    "status": "generated"
+  },
+  {
+    "title": "Sky Tracker AI",
+    "url": "https://gustaffaivre.dev/projects/Sky-Tracker-AI",
+    "slug": "Sky-Tracker-AI",
+    "thumbnailFilename": "Sky-Tracker-AI.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. A large aircraft silhouette and a clean curved recorded route are integrated into a wide simplified coastal live map, with one prominent map point. An understated but recognizable physical ground antenna in the foreground suggests receiving aircraft broadcasts locally. Only optional text is exact ‘ADS-B’ if large. Muted ocean blue and pale sage map shapes, ivory aircraft and amber route. No alerts, invented stats or AI iconography.",
+    "status": "generated"
+  },
+  {
+    "title": "Personal Portfolio",
+    "url": "https://gustaffaivre.dev/projects/Portfolio",
+    "slug": "Portfolio",
+    "thumbnailFilename": "Portfolio.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. A large warm ivory business card on deep walnut, visually integrated into a simple website frame with a subordinate row of two project tiles. Make the tactile folded corner on the business card clear, and use only a large abstract monogram of the exact initials ‘GF’ on the card. Gilt edge, walnut grain, warm neutral lighting. Show a developer portfolio website styled as a business card.",
+    "status": "generated"
+  },
+  {
+    "title": "AI Customer Insights",
+    "url": "https://gustaffaivre.dev/projects/AI-Customer-Insight",
+    "slug": "AI-Customer-Insight",
+    "thumbnailFilename": "AI-Customer-Insight.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. A clear left-to-right transformation from a compact grid sheet with a large ‘CSV’ label and small integrated comment icons, into a dominant clean paper with the large label ‘Report’, containing three distinct bulleted theme rows and a simple action check. A single directional arrow links them. No sample values, graphs, invented figures or further lettering. Deep bottle-green canvas, pale mint and ivory paper cutouts.",
+    "status": "generated"
+  },
+  {
+    "title": "AI Document Assistant",
+    "url": "https://gustaffaivre.dev/projects/Content-Management-AI",
+    "slug": "Content-Management-AI",
+    "thumbnailFilename": "Content-Management-AI.webp",
+    "generationPrompt": "Wide 16:9 portfolio thumbnail, polished restrained technology editorial illustration, readable at 320 by 180. Strong silhouettes, one dominant focal point, generous safe margins, matte materials with subtle tactile depth and soft shadows. No project title, logos, watermark, neon, decorative particles, tiny labels, fake metrics or dense details. A large slightly angled page marked ‘PDF’ alongside a tiny second plain-text page, leading into a dominant compact results sheet with three clear rows. Use only the exact large labels ‘Summary’, ‘Translate’, ‘Sentiment’, one per row. Use three spare corresponding icons, aligned and bold. Pale lavender background, ink navy, muted plum and off-white, tactile editorial paper composition. No other text.",
+    "status": "generated"
+  }
+]

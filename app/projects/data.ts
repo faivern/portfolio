@@ -1,3 +1,5 @@
+import { challengesSolved, challengesTotal } from "./crate-ctf-2026/results";
+
 // Project copy is written for a quick recruiter scan. Keep it human and concise.
 // Use technicalProof for the engineering details behind each project.
 // Project media is served locally to avoid third-party image and video requests.
@@ -103,7 +105,19 @@ export type SecurityProject = ProjectBase & { caseStudy: string };
 
 export type Project = SoftwareProject | SecurityProject;
 
-export const projects: Project[] = [
+type StandaloneProject = ProjectBase & { caseStudy?: never };
+
+function projectThumbnail(slug: string, alt: string): ProjectMedia {
+  return {
+    src: `/projects/${slug}/thumbnail.webp`,
+    width: 1600,
+    height: 900,
+    alt,
+    caption: alt,
+  };
+}
+
+export const generatedProjects: Project[] = [
 {
   "slug": "SOC-002",
   "title": "SOC Alert Investigations: Phishing & Firewall Triage",
@@ -124,16 +138,17 @@ export const projects: Project[] = [
   ],
   "status": "completed",
   "screenshots": [],
-  "cardImage": {
-    "src": "/projects/SOC-002/case-4-page-2-1.png",
-    "width": 962,
-    "height": 751,
-    "alt": "Splunk firewall evidence from the Microsoft impersonation investigation",
-    "caption": "Investigating an allowed connection."
-  }
+  "cardImage": projectThumbnail(
+    "SOC-002",
+    "Phishing email and firewall events under investigation",
+  )
 },
   {
     slug: "web-application-security",
+    cardImage: projectThumbnail(
+      "web-application-security",
+      "Browser input under inspection for SQL injection and cross-site scripting",
+    ),
     title: "Web Application Security: SQL Injection & XSS",
     tagline:
       "From HTTP enumeration to database extraction and session access in a deliberately vulnerable lab.",
@@ -147,18 +162,14 @@ export const projects: Project[] = [
     platforms: ["Web", "CLI"],
     techStack: ["Nmap", "Hydra", "sqlmap", "Python 3"],
     status: "completed",
-    cardImage: {
-      src: "/projects/web-application-security/login-bypass.png",
-      width: 811,
-      height: 404,
-      alt: "Porthos admin page welcoming admin and displaying the login-bypass flag",
-      caption:
-        "Authenticated admin access after the SQL injection login bypass.",
-    },
     screenshots: [],
   },
   {
     slug: "linux-firewall-engineering",
+    cardImage: projectThumbnail(
+      "linux-firewall-engineering",
+      "A firewall allowing one stream of packets and blocking another",
+    ),
     title: "Linux Firewall Engineering: Filtering & Access Control",
     tagline:
       "Stateful forwarding, client-specific access, and ICMP rate limiting, with an evidence review of scan controls.",
@@ -172,18 +183,14 @@ export const projects: Project[] = [
     platforms: ["CLI", "Desktop"],
     techStack: ["Linux", "iptables", "Nmap", "VMware"],
     status: "completed",
-    cardImage: {
-      src: "/projects/linux-firewall-engineering/final-rule-counters.png",
-      width: 829,
-      height: 434,
-      alt: "Numbered FORWARD rules with HTTP accepts above recent checks, a 15-second window, and zero scan-drop counters",
-      caption:
-        "The saved rules and counters expose differences from the written scan-control configuration.",
-    },
     screenshots: [],
   },
   {
     slug: "FRA-Exfiltratoren",
+    cardImage: projectThumbnail(
+      "FRA-Exfiltratoren",
+      "A magnifying glass revealing an image file in captured network traffic",
+    ),
     title: "FRA CTF: Exfiltratören — Network Traffic Forensics",
     tagline:
       "Tracing a suspected data leak through FTP, email, and UDP traffic in FRA’s seven-flag challenge. Three flags documented.",
@@ -198,19 +205,16 @@ export const projects: Project[] = [
     techStack: ["CyberChef", "Wireshark", "Python 3", "dCode"],
     status: "demo",
     wip: true,
-    cardImage: {
-      src: "/projects/FRA-Exfiltratoren/ftp-control.png",
-      width: 1488,
-      height: 750,
-      alt: "Wireshark capture showing FTP commands and the upload of msg.txt",
-      caption: "Following file transfers and other clues in a captured FTP session.",
-    },
     screenshots: [],
   },
   {
     areas: ["Software Development"],
     projectType: "Full-stack Application",
     slug: "Cinelas",
+    cardImage: projectThumbnail(
+      "Cinelas",
+      "A movie search for rainy mysteries returning three film posters",
+    ),
     title: "Cinelas — Movie & TV Discovery",
     tagline:
       "A live film and TV platform for discovering titles, tracking what you watch, and finding where to stream them.",
@@ -293,6 +297,10 @@ export const projects: Project[] = [
   },
   {
     slug: "SOC-001",
+    cardImage: projectThumbnail(
+      "SOC-001",
+      "Failed SSH login events producing a SIEM alert",
+    ),
     title: "SOC Home Lab: SSH Brute-Force Detection with Wazuh SIEM",
     tagline:
       "From failed SSH logins to a live SIEM alert: a custom Wazuh rule and a separate file-integrity investigation.",
@@ -315,19 +323,16 @@ export const projects: Project[] = [
       "XML detection rules",
     ],
     githubUrl: "https://github.com/faivern/soc-detection-lab",
-    cardImage: {
-      src: "/projects/SOC-001/05-custom-rule-alert.png",
-      width: 1128,
-      height: 993,
-      alt: "Wazuh alert raised by the lab's custom SSH brute-force rule, showing the matched rule and source address.",
-      caption: "Live Wazuh alert generated by custom rule 100101.",
-    },
     screenshots: [],
   },
   {
     areas: ["Software Development"],
     projectType: "Full-stack Application",
     slug: "Booking-Platform",
+    cardImage: projectThumbnail(
+      "Booking-Platform",
+      "A booking confirmed on a phone and reflected on an appointment calendar",
+    ),
     title: "Online Booking",
     tagline:
       "A booking flow for customers and a real-time dashboard for staff managing appointments.",
@@ -403,6 +408,10 @@ export const projects: Project[] = [
     areas: ["Software Development"],
     projectType: "Device Application",
     slug: "Cinelas-TV",
+    cardImage: projectThumbnail(
+      "Cinelas-TV",
+      "A television browsing films with a remote and a home media server",
+    ),
     title: "Cinelas TV — Self-Hosted Media Browser",
     tagline:
       "A Google TV app that brings a personal media library, film discovery, and streaming-service links into one remote-friendly interface.",
@@ -491,6 +500,10 @@ export const projects: Project[] = [
     areas: ["Software Development"],
     projectType: "Systems & Hardware",
     slug: "Distributed-Ad-Platform",
+    cardImage: projectThumbnail(
+      "Distributed-Ad-Platform",
+      "An online form and subscriber card feeding into a newspaper ad",
+    ),
     title: "Newspaper Advertising Platform",
     tagline:
       "A newspaper advertising workflow connecting a self-service website, subscriber API, and desktop administration tool.",
@@ -568,6 +581,10 @@ export const projects: Project[] = [
     areas: ["Software Development"],
     projectType: "Systems & Hardware",
     slug: "Sky-Tracker-AI",
+    cardImage: projectThumbnail(
+      "Sky-Tracker-AI",
+      "An ADS-B antenna and an aircraft route on a map",
+    ),
     title: "Sky Tracker AI",
     tagline:
       "A personal ADS-B receiver and web dashboard for following aircraft overhead and exploring recorded flight activity.",
@@ -649,6 +666,10 @@ export const projects: Project[] = [
     areas: ["Software Development"],
     projectType: "Website",
     slug: "Portfolio",
+    cardImage: projectThumbnail(
+      "Portfolio",
+      "A folded business card on the portfolio home page",
+    ),
     title: "Personal Portfolio",
     tagline:
       "The portfolio you are viewing: a static Next.js site designed for accessibility and privacy, served from a Raspberry Pi.",
@@ -715,6 +736,10 @@ export const projects: Project[] = [
     areas: ["Software Development"],
     projectType: "CLI Tool",
     slug: "AI-Customer-Insight",
+    cardImage: projectThumbnail(
+      "AI-Customer-Insight",
+      "Customer feedback in a CSV becoming a structured report",
+    ),
     title: "AI Customer Insights",
     tagline:
       "A Python CLI that turns CSV customer feedback into a structured report of common themes and possible improvements.",
@@ -793,6 +818,10 @@ export const projects: Project[] = [
     areas: ["Software Development"],
     projectType: "CLI Tool",
     slug: "Content-Management-AI",
+    cardImage: projectThumbnail(
+      "Content-Management-AI",
+      "A PDF processed for summary, translation, and sentiment",
+    ),
     title: "AI Document Assistant",
     tagline:
       "A Python CLI for summarising, translating, and analysing the sentiment of text and PDF documents.",
@@ -861,6 +890,31 @@ export const projects: Project[] = [
   },
 ];
 
+export const projects: (Project | StandaloneProject)[] = [
+  {
+    slug: "crate-ctf-2026",
+    title: "Crate-CTF 2026",
+    tagline: `${challengesSolved} of ${challengesTotal} challenges solved in my first solo CTF.`,
+    description: "Competition results and three write-ups on digital forensics and OSINT.",
+    areas: ["Cybersecurity"],
+    projectType: "CTF Competition",
+    year: "2026",
+    category: "Security Lab",
+    platforms: ["Web"],
+    techStack: [],
+    status: "completed",
+    screenshots: [],
+    cardImage: {
+      src: "/projects/crate-ctf-2026/event-ctf.jpg",
+      width: 1920,
+      height: 1033,
+      alt: "Crate-CTF 2026 event artwork with the FOI and Swedish Armed Forces logos",
+      caption: "Crate-CTF 2026 event artwork.",
+    },
+  },
+  ...generatedProjects,
+];
+
 export function getProject(slug: string): Project | undefined {
-  return projects.find((project) => project.slug === slug);
+  return generatedProjects.find((project) => project.slug === slug);
 }
